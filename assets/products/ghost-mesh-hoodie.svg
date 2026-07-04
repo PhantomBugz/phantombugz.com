@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Ghost Mesh Hoodie mockup</title>
+  <desc id="desc">A dark PhantomBugz hoodie mockup with a glowing chest mark and signal mesh sleeves.</desc>
+  <rect width="900" height="900" fill="#061014"/>
+  <path d="M220 210c35-90 110-142 230-142s195 52 230 142l105 90-92 160-60-36v300H267V424l-60 36-92-160 105-90Z" fill="#08191d" stroke="#26575d" stroke-width="8"/>
+  <path d="M331 124c34 44 73 66 119 66s85-22 119-66c-26-40-66-60-119-60s-93 20-119 60Z" fill="#020606" stroke="#16444b" stroke-width="7"/>
+  <path d="M279 255c116 36 230 36 342 0" fill="none" stroke="#12383f" stroke-width="8"/>
+  <path d="M345 352h210v210H345z" fill="#031014" stroke="#37ff9a" stroke-opacity=".36" stroke-width="6"/>
+  <path d="M450 388c30 0 67 39 83 83 14 40 8 86-17 121-19 27-41 40-66 40s-47-13-66-40c-25-35-31-81-17-121 16-44 53-83 83-83Z" fill="#37ff9a"/>
+  <path d="M450 412c13 18 20 37 22 58l-22 17-22-17c2-21 9-40 22-58Z" fill="#031014" opacity=".82"/>
+  <path d="M405 481h90M397 514h106M411 548h78" stroke="#031014" stroke-width="13" stroke-linecap="round"/>
+  <path d="M218 318c55 7 93 27 115 60M682 318c-55 7-93 27-115 60" fill="none" stroke="#17a8ff" stroke-width="9" opacity=".72"/>
+  <text x="450" y="802" fill="#ecfffb" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="900" text-anchor="middle">GHOST MESH</text>
+</svg>

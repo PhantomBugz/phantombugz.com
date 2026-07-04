@@ -1,0 +1,20 @@
+{
+  "month": "2026-07",
+  "label": "Bug bounty sprint",
+  "currency": "USD",
+  "sprintStart": "2026-07-04",
+  "deadline": "2026-08-01",
+  "goal": 25000,
+  "submittedPossible": 0,
+  "collected": 0,
+  "lastUpdated": "2026-07-04T17:02:53.2056631-04:00",
+  "activeLaneCount": 7,
+  "readyToSubmitCount": 1,
+  "investigatingCount": 6,
+  "stateCounts": {
+    "investigating": 6,
+    "ready-to-submit": 1
+  },
+  "publicNextAction": "1 report package ready for platform submission",
+  "source": "Public-safe projection of the local BugBounties ledger. Sensitive titles, evidence, hashes, platform URLs, and notes are omitted."
+}

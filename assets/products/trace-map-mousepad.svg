@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Trace Map Mouse Pad mockup</title>
+  <desc id="desc">A PhantomBugz desk mat mockup with signal contours, node traces, and a corner brand mark.</desc>
+  <rect width="900" height="900" fill="#061014"/>
+  <rect x="120" y="235" width="660" height="430" rx="22" fill="#08181d" stroke="#37ff9a" stroke-opacity=".46" stroke-width="8"/>
+  <g fill="none" stroke-width="8" opacity=".62">
+    <path d="M150 340c95-48 182 55 270 0s172-60 270 0" stroke="#17a8ff"/>
+    <path d="M150 440c95-48 182 55 270 0s172-60 270 0" stroke="#37ff9a"/>
+    <path d="M150 540c95-48 182 55 270 0s172-60 270 0" stroke="#17a8ff"/>
+  </g>
+  <g fill="#37ff9a">
+    <circle cx="250" cy="360" r="13"/>
+    <circle cx="482" cy="420" r="13"/>
+    <circle cx="660" cy="528" r="13"/>
+  </g>
+  <path d="M634 571c24 0 54 31 66 66 11 31 6 67-14 95-15 21-33 31-52 31s-37-10-52-31c-20-28-25-64-14-95 12-35 42-66 66-66Z" fill="#37ff9a" transform="translate(-24 -116) scale(.72)"/>
+  <path d="M595 344h140M595 383h140M595 422h92" stroke="#031014" stroke-width="11" stroke-linecap="round" opacity=".78"/>
+  <text x="164" y="612" fill="#ecfffb" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="900">TRACE MAP</text>
+</svg>

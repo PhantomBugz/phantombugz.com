@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Cold Boot Laptop Sleeve mockup</title>
+  <desc id="desc">A PhantomBugz laptop sleeve mockup with angular signal panel, brand mark, and blue-green edge glow.</desc>
+  <rect width="900" height="900" fill="#061014"/>
+  <path d="M160 326 602 210l138 378-442 116L160 326Z" fill="#08191d" stroke="#2c5f66" stroke-width="8"/>
+  <path d="M214 352 584 255l92 254-370 97-92-254Z" fill="#0b2228" stroke="#37ff9a" stroke-opacity=".36" stroke-width="6"/>
+  <path d="M280 414c88-46 166 36 244-10M302 476c88-46 166 36 244-10M324 538c88-46 166 36 244-10" fill="none" stroke="#17a8ff" stroke-width="8" opacity=".7"/>
+  <path d="M496 378c24 0 54 31 66 66 11 31 6 67-14 95-15 21-33 31-52 31s-37-10-52-31c-20-28-25-64-14-95 12-35 42-66 66-66Z" fill="#37ff9a" transform="rotate(-15 496 474) scale(.82) translate(106 86)"/>
+  <path d="M445 454h95M438 490h108M452 526h78" stroke="#031014" stroke-width="12" stroke-linecap="round" transform="rotate(-15 496 474)"/>
+  <text x="450" y="790" fill="#ecfffb" font-family="Segoe UI, Arial, sans-serif" font-size="50" font-weight="900" text-anchor="middle">COLD BOOT</text>
+</svg>

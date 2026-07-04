@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Packet Runner Pack mockup</title>
+  <desc id="desc">A PhantomBugz backpack mockup with reflective signal bands and compact brand mark.</desc>
+  <rect width="900" height="900" fill="#061014"/>
+  <path d="M300 220c0-82 60-145 150-145s150 63 150 145v475c0 58-42 100-100 100H400c-58 0-100-42-100-100V220Z" fill="#08191d" stroke="#2c5f66" stroke-width="8"/>
+  <path d="M336 225c22-58 60-87 114-87s92 29 114 87" fill="none" stroke="#16444b" stroke-width="12" stroke-linecap="round"/>
+  <path d="M300 318h300M300 455h300M300 592h300" stroke="#17a8ff" stroke-width="12" opacity=".78"/>
+  <path d="M336 380h228M336 517h228" stroke="#37ff9a" stroke-width="10" opacity=".72"/>
+  <rect x="366" y="644" width="168" height="94" rx="16" fill="#031014" stroke="#37ff9a" stroke-opacity=".4" stroke-width="6"/>
+  <path d="M450 656c20 0 45 26 55 55 9 26 5 56-12 79-12 18-27 26-43 26s-31-8-43-26c-17-23-21-53-12-79 10-29 35-55 55-55Z" fill="#37ff9a" transform="translate(0 -4) scale(.68) translate(211 193)"/>
+  <path d="M220 288c-58 105-66 208-24 309M680 288c58 105 66 208 24 309" fill="none" stroke="#12383f" stroke-width="28" stroke-linecap="round"/>
+  <text x="450" y="840" fill="#ecfffb" font-family="Segoe UI, Arial, sans-serif" font-size="48" font-weight="900" text-anchor="middle">PACKET RUNNER</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">PhantomBugz one-color mark</title>
+  <desc id="desc">One-color PhantomBugz insect mark for embroidery, stickers, and small icons.</desc>
+  <rect width="512" height="512" rx="84" fill="#031014"/>
+  <path d="M256 88c38 0 84 48 104 104 18 51 10 111-21 155-24 34-52 51-83 51s-59-17-83-51c-31-44-39-104-21-155 20-56 66-104 104-104Z" fill="#37ff9a"/>
+  <path d="M256 118c17 24 27 49 31 76l-31 23-31-23c4-27 14-52 31-76ZM207 217h98M194 256h124M207 295h98M236 168h40v22h-40zM215 335h82v18h-82z" fill="#031014"/>
+  <path d="M180 208c-40-5-75-21-105-47M332 208c40-5 75-21 105-47M181 285c-44 4-83 19-119 45M331 285c44 4 83 19 119 45" fill="none" stroke="#37ff9a" stroke-width="18" stroke-linecap="round"/>
+</svg>

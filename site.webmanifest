@@ -1,11 +1,11 @@
 {
   "name": "PhantomBugz",
   "short_name": "PhantomBugz",
-  "description": "Security research lab, monthly bounty command, and signal-ready gear.",
+  "description": "PhantomBugz bug bounty team, monthly goal ticker, and bug-head brand mark.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#020606",
-  "theme_color": "#031014",
+  "background_color": "#010608",
+  "theme_color": "#020a0d",
   "icons": [
     {
       "src": "/assets/exports/phantombugz-avatar-192.png",

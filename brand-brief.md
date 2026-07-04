@@ -1,76 +1,55 @@
-# PhantomBugz Brand Pass 001
+# PhantomBugz Brand Pass 002
 
-## Current Completion
+## Permanent Identity
 
-The site is not finished yet, but it now has the first usable launch package: founder avatar, primary mark, exported platform assets, WebGL homepage, monthly bug bounty goal ticker, merch section, GitHub profile package, social banner, and layout system.
+The PhantomBugz logo and branding mark is the cyan bug head from the supplied reference image. The full uploaded image is treated as a visual direction reference for atmosphere only. The site does not use the uploaded banner as the page banner.
 
-Approximate completion:
+## Site Direction
 
-- Brand direction: 70%
-- Founder avatar: 70%
-- Primary mark: 65%
-- WebGL homepage shell: 75%
-- Merch shop visual system: 55%
-- Platform export assets: 80%
-- GitHub profile package: 70%
-- Production ecommerce wiring: 10%
-- Copy/content/live integrations: 45%
-
-Overall: about 60-65% toward a polished launch. The public preview is usable, but permanent hosting, DNS, GitHub auth, and real checkout still need to be completed.
-
-## Brand Direction
-
-PhantomBugz should feel like a research-led cyber lab with field gear, not a generic neon hacker template.
+The homepage should feel like the reference: dark center stage, cyan dot-wave fields, faint hex circuitry, and a slight binary swarm in the background. The mark and the monthly bounty console stay readable and centered in the experience.
 
 Core palette:
 
-- Signal green: `#37ff9a`
-- Electric blue: `#17a8ff`
-- Deep black-green: `#020606`
-- Wet graphite: `#061014`
-- Muted operational text: `#90afa8`
+- Phantom cyan: `#00e7ff`
+- Signal green: `#55f6a5`
+- Warning amber: `#ffd166`
+- Deep black-green: `#010608`
+- Operational graphite: `#020a0d`
+- Muted telemetry: `#84a8aa`
 
 Avoid:
 
-- Purple-blue AI startup gradients
-- Fake cyber gibberish text
-- Stock hooded-hacker photography or hooded avatar clichés
-- Over-rounded SaaS cards
-- Random bokeh/orb decorations
+- Full-banner placement as the hero image
+- Purple-blue startup gradients
+- Stock hooded-hacker photography
+- Decorative bokeh orbs
+- Fake cyber gibberish as page copy
 
-## Asset Concepts
+## Asset Exports
 
-Founder avatar:
+All primary platform exports now derive from the bug head:
 
-- Compact bug-helmet visor with small phantom insect cues.
-- Designed to work as GitHub, Discord, HackerOne, Hack The Box, and TryHackMe avatar.
-- Exported at 128, 192, 256, 512, and 1024px.
-- Needs one more pass after real platform upload screenshots, mainly for small-size contrast tuning if needed.
+- `phantombugz-emblem-transparent.png`
+- `phantombugz-avatar-128.png`
+- `phantombugz-avatar-192.png`
+- `phantombugz-avatar-256.png`
+- `phantombugz-avatar-512.png`
+- `phantombugz-avatar-1024.png`
+- `phantombugz-mark-512.png`
+- `favicon-16.png`
+- `favicon-32.png`
+- `apple-touch-icon.png`
+- `phantombugz-og-image.png`
+- `phantombugz-social-banner.png`
 
-Primary brand mark:
+## Bounty Ticker
 
-- Phantom insect signal mark, with full-color, one-color, and favicon variants.
-- Roach/cricket energy without becoming gross or cartoonish.
-- Binary-like wing cuts can be used on hoodies, mouse pads, stickers, and laptop sleeves.
+The public ticker reads from `data/bugbounty-public.json` and shows:
 
-Shop system:
+- Submitted possible
+- Collected received
+- Remaining goal
+- Approval-ready package count
+- Active lanes and deadline
 
-- Ghost Mesh Hoodie
-- Trace Map Mouse Pad
-- Packet Runner Pack
-- Cold Boot Laptop Sleeve
-- Product mockup SVGs are now part of the site and exported with the static package.
-
-Monthly bounty ticker:
-
-- Reads from `data/bugbounty-public.json`, a public-safe projection of the local BugBounties project.
-- Shows the 2026-07 sprint goal, collected amount, submitted possible amount, active lane count, and deadline.
-- Does not publish finding titles, evidence paths, hashes, platform URLs, notes, or target details.
-
-## Next Pass
-
-1. Complete permanent hosting and DNS for `phantombugz.com`.
-2. Authenticate GitHub as PhantomBugz and push the profile README plus `phantombugz.com` site repo.
-3. Add actual Discord/HackerOne/Hack The Box/TryHackMe links after accounts are live.
-4. Wire merch checkout using Shopify, Stripe, or a static preorder form.
-5. Review platform upload screenshots and tune avatar contrast if any platform crops too aggressively.
+Remaining goal is based on collected received. Submitted possible is tracked separately until funds actually arrive.

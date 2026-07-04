@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PhantomBugz</title>
-  <meta name="description" content="PhantomBugz security research lab, monthly bug bounty command, platform identity, and signal-ready gear shop.">
-  <meta name="theme-color" content="#031014">
+  <meta name="description" content="PhantomBugz bug bounty team, monthly bounty goal tracker, responsible disclosure identity, and field gear queue.">
+  <meta name="theme-color" content="#020a0d">
   <link rel="canonical" href="https://phantombugz.com/">
   <meta property="og:title" content="PhantomBugz">
-  <meta property="og:description" content="Security research lab, public-safe bounty telemetry, and signal-ready gear.">
+  <meta property="og:description" content="Bug bounty team, public-safe sprint telemetry, and responsible disclosure identity.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://phantombugz.com/">
-  <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-social-banner.png">
+  <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="PhantomBugz">
-  <meta name="twitter:description" content="Security research lab, public-safe bounty telemetry, and signal-ready gear.">
-  <meta name="twitter:image" content="https://phantombugz.com/assets/exports/phantombugz-social-banner.png">
-  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <meta name="twitter:description" content="Bug bounty team, public-safe sprint telemetry, and responsible disclosure identity.">
+  <meta name="twitter:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
   <link rel="icon" href="./assets/exports/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="./assets/exports/favicon-16.png" sizes="16x16" type="image/png">
   <link rel="apple-touch-icon" href="./assets/exports/apple-touch-icon.png">
   <link rel="manifest" href="./site.webmanifest">
   <link rel="preload" href="./styles.css" as="style">
@@ -39,180 +39,154 @@
 </head>
 <body>
   <canvas id="phantom-field" aria-hidden="true"></canvas>
+  <div id="binary-swarm" class="binary-swarm" aria-hidden="true"></div>
 
   <header class="site-header" aria-label="Primary">
     <a class="brand-lockup" href="#top" aria-label="PhantomBugz home">
-      <img src="./assets/phantombugz-mark.svg" alt="" width="40" height="40">
+      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" width="42" height="42">
       <span>PhantomBugz</span>
     </a>
-    <nav>
-      <a href="#feed">Feed</a>
-      <a href="#shop">Gear</a>
+    <nav class="header-nav">
+      <a href="#sprint">Sprint</a>
       <a href="#identity">Identity</a>
+      <a href="#gear">Gear</a>
       <a href="https://github.com/PhantomBugz">GitHub</a>
       <a href="https://gitlab.com/Phantombugz">GitLab</a>
-      <a href="mailto:founder@phantombugz.com">founder@phantombugz.com</a>
     </nav>
   </header>
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow">Research lab / signal gear / merch drop</p>
-        <h1 id="hero-title">PhantomBugz</h1>
-        <p class="hero-kicker">
-          Security research, public-safe bounty telemetry, and field gear built around a monthly command target.
-        </p>
-        <div class="hero-actions">
-          <a class="button primary" href="#shop">Enter gear shop</a>
-          <a class="button ghost" href="#feed">Watch the feed</a>
-          <a class="button ghost" href="https://github.com/PhantomBugz">Open GitHub</a>
-          <a class="button ghost" href="https://gitlab.com/Phantombugz">Open GitLab</a>
+      <div class="brand-stage">
+        <img class="hero-emblem" src="./assets/exports/phantombugz-emblem-transparent.png" alt="PhantomBugz bug head logo" width="164" height="164">
+        <div class="hero-title-lockup">
+          <h1 id="hero-title">PhantomBugz</h1>
+          <p>Bug Bounty Team</p>
         </div>
+        <div class="credential-line" aria-label="PhantomBugz focus areas">
+          <span>Cybersecurity</span>
+          <span>Ethical Hacking</span>
+          <span>Bug Bounty</span>
+        </div>
+        <a class="site-chip" href="mailto:founder@phantombugz.com">founder@phantombugz.com</a>
       </div>
 
-      <aside class="signal-panel" aria-label="Live operations">
-        <div class="panel-head">
-          <span>Monthly bounty command</span>
+      <aside class="goal-console" aria-label="Monthly bounty goal">
+        <div class="console-topline">
+          <span id="goal-month">2026-07 sprint</span>
           <strong id="signal-clock">00:00:00</strong>
         </div>
-        <div class="goal-readout">
-          <span id="goal-month">2026-07 sprint</span>
+        <div class="console-target">
+          <span>Goal by Aug 1, 2026</span>
           <strong id="goal-total">$25,000</strong>
-          <small id="goal-deadline">Deadline Aug 1, 2026</small>
         </div>
-        <div class="goal-meter" aria-label="Bug bounty monthly goal progress">
-          <span id="goal-meter-fill" style="width: 0%"></span>
+        <div class="goal-meter" aria-label="Monthly bounty goal progress">
+          <span id="goal-meter-collected" class="meter-collected" style="width: 0%"></span>
+          <span id="goal-meter-submitted" class="meter-submitted" style="width: 0%"></span>
         </div>
         <div class="goal-stats">
           <div>
-            <span>Collected</span>
-            <strong id="goal-collected">$0</strong>
-          </div>
-          <div>
-            <span>Submitted</span>
+            <span>Submitted Possible</span>
             <strong id="goal-submitted">$0</strong>
           </div>
           <div>
-            <span>Active lanes</span>
-            <strong id="goal-lanes">7</strong>
+            <span>Collected Received</span>
+            <strong id="goal-collected">$0</strong>
           </div>
           <div>
-            <span>Approval</span>
+            <span>Remaining Goal</span>
+            <strong id="goal-remaining">$25,000</strong>
+          </div>
+          <div>
+            <span>Approval Ready</span>
             <strong id="goal-ready">1</strong>
           </div>
         </div>
-        <div class="signal-bars" aria-hidden="true">
-          <span style="--h: 72%"></span>
-          <span style="--h: 38%"></span>
-          <span style="--h: 84%"></span>
-          <span style="--h: 55%"></span>
-          <span style="--h: 96%"></span>
-          <span style="--h: 46%"></span>
-          <span style="--h: 69%"></span>
-        </div>
-        <ul id="ticker" class="ticker">
-          <li><span>GOAL</span> July bug bounty target: $25,000</li>
-          <li><span>READY</span> 1 report package ready for platform submission</li>
-          <li><span>LANES</span> 7 active research lanes tracked</li>
+        <ul id="ticker" class="ticker" aria-label="Public bounty ticker">
+          <li><span>GOAL</span> 2026-07 target: $25,000</li>
+          <li><span>SUBMITTED</span> $0 possible</li>
+          <li><span>COLLECTED</span> $0 received</li>
         </ul>
       </aside>
     </section>
 
-    <section id="feed" class="band feed-band" aria-labelledby="feed-title">
+    <section id="sprint" class="sprint-band" aria-labelledby="sprint-title">
       <div class="section-heading">
-        <p class="eyebrow">Public pulse</p>
-        <h2 id="feed-title">Live Feed</h2>
+        <p>Monthly Command</p>
+        <h2 id="sprint-title">$25,000 By 8/1/2026</h2>
       </div>
-      <div class="feed-grid">
-        <article class="feed-item">
-          <span>Research</span>
-          <h3>Recon notes packaged for release</h3>
-          <p>Short-form dispatches, lab writeups, and sponsor-safe security notes land here.</p>
-        </article>
-        <article class="feed-item">
-          <span>Build</span>
-          <h3>WebGL shell rendering green-blue signal mesh</h3>
-          <p>Shader-driven background with a restrained cinematic surface instead of stock cyber noise.</p>
-        </article>
-        <article class="feed-item">
-          <span>Drop</span>
-          <h3>Founder kit and stealth desk gear</h3>
-          <p>Merch direction is practical: hoodies, mouse pads, backpacks, laptop sleeves, stickers.</p>
-        </article>
+      <div class="sprint-ledger">
+        <div>
+          <span>Active Lanes</span>
+          <strong id="goal-lanes">7</strong>
+        </div>
+        <div>
+          <span>Investigating</span>
+          <strong id="goal-investigating">6</strong>
+        </div>
+        <div>
+          <span>Ready Package</span>
+          <strong id="goal-ready-secondary">1</strong>
+        </div>
+        <div>
+          <span>Deadline</span>
+          <strong id="goal-deadline">Aug 1, 2026</strong>
+        </div>
       </div>
     </section>
 
-    <section id="shop" class="band shop-band" aria-labelledby="shop-title">
+    <section id="identity" class="identity-band" aria-labelledby="identity-title">
       <div class="section-heading">
-        <p class="eyebrow">Gear shop</p>
-        <h2 id="shop-title">Signal-Ready Merch</h2>
-      </div>
-      <div class="product-grid">
-        <article class="product-card">
-          <img class="product-visual" src="./assets/products/ghost-mesh-hoodie.svg" alt="Ghost Mesh Hoodie mockup">
-          <div class="product-copy">
-            <p>Drop 001</p>
-            <h3>Ghost Mesh Hoodie</h3>
-            <span>$74</span>
-            <a class="mini-button" href="mailto:founder@phantombugz.com?subject=Ghost%20Mesh%20Hoodie%20drop">Join drop</a>
-          </div>
-        </article>
-        <article class="product-card">
-          <img class="product-visual" src="./assets/products/trace-map-mousepad.svg" alt="Trace Map Mouse Pad mockup">
-          <div class="product-copy">
-            <p>Desk Ops</p>
-            <h3>Trace Map Mouse Pad</h3>
-            <span>$32</span>
-            <a class="mini-button" href="mailto:founder@phantombugz.com?subject=Trace%20Map%20Mouse%20Pad%20drop">Join drop</a>
-          </div>
-        </article>
-        <article class="product-card">
-          <img class="product-visual" src="./assets/products/packet-runner-pack.svg" alt="Packet Runner Pack mockup">
-          <div class="product-copy">
-            <p>Field Kit</p>
-            <h3>Packet Runner Pack</h3>
-            <span>$118</span>
-            <a class="mini-button" href="mailto:founder@phantombugz.com?subject=Packet%20Runner%20Pack%20drop">Join drop</a>
-          </div>
-        </article>
-        <article class="product-card">
-          <img class="product-visual" src="./assets/products/cold-boot-sleeve.svg" alt="Cold Boot Laptop Sleeve mockup">
-          <div class="product-copy">
-            <p>Carry</p>
-            <h3>Cold Boot Laptop Sleeve</h3>
-            <span>$46</span>
-            <a class="mini-button" href="mailto:founder@phantombugz.com?subject=Cold%20Boot%20Laptop%20Sleeve%20drop">Join drop</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section id="identity" class="band identity-band" aria-labelledby="identity-title">
-      <div class="section-heading">
-        <p class="eyebrow">Brand system</p>
-        <h2 id="identity-title">Avatar + Mark</h2>
+        <p>Permanent Mark</p>
+        <h2 id="identity-title">Bug Head Logo</h2>
       </div>
       <div class="identity-layout">
-        <article class="identity-piece">
-          <img src="./assets/founder-avatar.svg" alt="Founder avatar concept">
+        <figure class="identity-mark">
+          <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="PhantomBugz bug head logo">
+        </figure>
+        <div class="identity-copy">
+          <p>The PhantomBugz brand mark is now the cyan bug head. GitHub, GitLab, favicons, social cards, and future shop marks all derive from this single emblem.</p>
+          <div class="asset-row" aria-label="Generated platform asset sizes">
+            <span>16</span>
+            <span>32</span>
+            <span>128</span>
+            <span>192</span>
+            <span>256</span>
+            <span>512</span>
+            <span>1024</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gear" class="gear-band" aria-labelledby="gear-title">
+      <div class="section-heading">
+        <p>Shop Queue</p>
+        <h2 id="gear-title">Field Gear</h2>
+      </div>
+      <div class="gear-grid">
+        <article>
+          <img src="./assets/products/ghost-mesh-hoodie.svg" alt="Ghost Mesh Hoodie mockup">
           <div>
-            <h3>Founder Avatar</h3>
-            <p>A compact platform avatar designed to read at small sizes on GitHub, Discord, HackerOne, Hack The Box, and TryHackMe.</p>
+            <span>Drop 001</span>
+            <h3>Ghost Mesh Hoodie</h3>
+            <a href="mailto:founder@phantombugz.com?subject=Ghost%20Mesh%20Hoodie%20drop">Join drop</a>
           </div>
         </article>
-        <article class="identity-piece">
-          <img src="./assets/phantombugz-mark.svg" alt="PhantomBugz brand mark">
+        <article>
+          <img src="./assets/products/trace-map-mousepad.svg" alt="Trace Map Mouse Pad mockup">
           <div>
-            <h3>PhantomBugz Mark</h3>
-            <p>A phantom insect signal mark: roach/cricket energy, binary wing cuts, and enough geometry to work on merch.</p>
+            <span>Desk Ops</span>
+            <h3>Trace Map Mouse Pad</h3>
+            <a href="mailto:founder@phantombugz.com?subject=Trace%20Map%20Mouse%20Pad%20drop">Join drop</a>
           </div>
         </article>
-        <article class="identity-piece banner-piece">
-          <img src="./assets/phantombugz-social-banner.svg" alt="PhantomBugz social banner">
+        <article>
+          <img src="./assets/products/packet-runner-pack.svg" alt="Packet Runner Pack mockup">
           <div>
-            <h3>GitHub + GitLab + Discord Banner</h3>
-            <p>A wide identity banner for GitHub/GitLab profile packages, Discord community header, social cards, and launch announcements.</p>
+            <span>Field Kit</span>
+            <h3>Packet Runner Pack</h3>
+            <a href="mailto:founder@phantombugz.com?subject=Packet%20Runner%20Pack%20drop">Join drop</a>
           </div>
         </article>
       </div>

@@ -3,9 +3,8 @@
 pages:
   stage: deploy
   script:
-    - mkdir public
-    - cp -r assets data index.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects CNAME public/
-  pages: true
+    - mkdir -p public
+    - cp -r assets data index.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
   artifacts:
     paths:
       - public

@@ -187,6 +187,21 @@ a:focus-visible,
   top: 12px;
 }
 
+/* Crawlable copy for search engines: off-screen but readable by bots and screen
+   readers (not display:none, which crawlers discount). Visitors see the gate. */
+.seo-copy {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: -1px;
+}
+
 /* ---------- Sling (corridor releases into the main page) ---------- */
 
 .sling {

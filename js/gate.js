@@ -86,8 +86,7 @@ export function initGate(onEnter) {
   });
 
   let entered = false;
-  function enter(e) {
-    if (e) e.preventDefault();
+  function enter() {
     if (entered) return;
     entered = true;
     running = false;
@@ -116,9 +115,12 @@ export function initGate(onEnter) {
     }
   }
 
-  // pointerup covers mouse + touch reliably (iOS click can be flaky/double-fire).
-  gate.addEventListener("pointerup", enter);
+  // Fire on the first tap/click. Listen to several events (iOS Safari can drop
+  // one or another); the `entered` guard makes extras harmless. No preventDefault
+  // on the pointer events — that interferes with iOS tap recognition.
   gate.addEventListener("click", enter);
+  gate.addEventListener("touchend", enter);
+  gate.addEventListener("pointerup", enter);
   gate.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();

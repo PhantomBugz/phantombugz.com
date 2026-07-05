@@ -828,19 +828,32 @@ a:focus-visible,
     gap: 14px;
     font-size: .66rem;
   }
+  /* Mobile corridor auto-plays (JS-driven dolly), so it is a single non-scroll
+     screen — this sidesteps iOS Safari's broken sticky + 3D + overflow scroll. */
   .corridor {
-    height: 250vh; /* more scroll distance on mobile so the journey reads deliberately */
+    height: 100vh;
+    height: 100dvh;
   }
   .corridor-viewport {
+    position: relative; /* not sticky on mobile; the whole corridor is one screen */
     perspective: 560px;
   }
   .scroll-cue {
     bottom: 40px;
     font-size: .74rem;
   }
+  /* Auto-play: no scroll needed, so drop the "scroll" chevron cue on mobile. */
   .scroll-cue::after {
-    width: 16px;
-    height: 16px;
+    display: none;
+  }
+  .scroll-cue span::after {
+    content: "entering the system";
+  }
+  .scroll-cue span {
+    font-size: 0; /* hide the desktop "scroll into the system" text */
+  }
+  .scroll-cue span::after {
+    font-size: .74rem;
   }
   .vault-grid {
     grid-template-columns: repeat(2, 1fr);

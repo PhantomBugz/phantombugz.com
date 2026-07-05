@@ -1,6 +1,7 @@
-// Binary insect engine. Draws crawling glyph-bugs (centipedes + roaches) made of
-// 1s and 0s onto a 2D canvas. Each bug follows a wandering head; the body trails
-// behind it. Bugs brighten as they pass the emblem's light at the vanishing point.
+// Binary insect engine. Each bug is a recognizable beetle silhouette (head,
+// thorax, abdomen, six legs, antennae) whose body is FILLED with a grid of
+// glowing binary digits, matching the "binary bug" reference art. Bugs crawl
+// with weight and brighten as they near the emblem's light.
 
 export function makeRng(seed) {
   let s = (seed >>> 0) || 1;
@@ -10,7 +11,7 @@ export function makeRng(seed) {
   };
 }
 
-// "Phantom" in hex, revealed by a small fraction of bugs near the emblem.
+// "Phantom" in hex, revealed inside a few bugs near the emblem.
 export const HEX_PHANTOM = ["50", "68", "61", "6e", "74", "6f", "6d"];
 
 const TAU = Math.PI * 2;
@@ -21,150 +22,203 @@ function dist(ax, ay, bx, by) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+// Trace a beetle body into the current path, centered at origin, facing up (-y),
+// sized by `s` (body half-length in px). Shared by clip + outline.
+// Returns nothing; caller fills/clips/strokes.
+function traceBeetle(ctx, s) {
+  const w = s * 0.62; // body half-width
+
+  // Abdomen (large teardrop, rear = +y).
+  ctx.moveTo(0, s * 1.15);
+  ctx.bezierCurveTo(w * 1.15, s * 0.95, w * 1.2, -s * 0.05, w * 0.62, -s * 0.15);
+  ctx.bezierCurveTo(w * 0.2, -s * 0.2, -w * 0.2, -s * 0.2, -w * 0.62, -s * 0.15);
+  ctx.bezierCurveTo(-w * 1.2, -s * 0.05, -w * 1.15, s * 0.95, 0, s * 1.15);
+  ctx.closePath();
+
+  // Thorax (rounded trapezoid).
+  ctx.moveTo(0, -s * 0.1);
+  ctx.bezierCurveTo(w * 0.72, -s * 0.15, w * 0.66, -s * 0.6, w * 0.34, -s * 0.66);
+  ctx.bezierCurveTo(w * 0.12, -s * 0.7, -w * 0.12, -s * 0.7, -w * 0.34, -s * 0.66);
+  ctx.bezierCurveTo(-w * 0.66, -s * 0.6, -w * 0.72, -s * 0.15, 0, -s * 0.1);
+  ctx.closePath();
+
+  // Head (small dome).
+  ctx.moveTo(0, -s * 0.6);
+  ctx.bezierCurveTo(w * 0.34, -s * 0.62, w * 0.36, -s * 0.95, 0, -s * 0.98);
+  ctx.bezierCurveTo(-w * 0.36, -s * 0.95, -w * 0.34, -s * 0.62, 0, -s * 0.6);
+  ctx.closePath();
+}
+
+// Legs + antennae as stroked lines (drawn separately from the glyph fill).
+function drawBeetleLimbs(ctx, s, alpha, phase) {
+  const w = s * 0.62;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "rgba(70, 224, 255, " + alpha.toFixed(3) + ")";
+  ctx.lineWidth = Math.max(1, s * 0.05);
+
+  // Three leg pairs off the thorax/abdomen sides, with a gentle walking wiggle.
+  const pairs = [
+    { y: -s * 0.5, len: s * 0.85, spread: 0.5 },
+    { y: -s * 0.15, len: s * 1.0, spread: 0.15 },
+    { y: s * 0.25, len: s * 0.95, spread: -0.2 },
+  ];
+  for (let i = 0; i < pairs.length; i += 1) {
+    const p = pairs[i];
+    const wig = Math.sin(phase * 2 + i) * 0.12;
+    for (const side of [-1, 1]) {
+      const bx = side * w * 0.6;
+      const midx = side * (w * 0.6 + p.len * 0.55);
+      const midy = p.y - p.len * (0.12 + p.spread) + wig * s;
+      const tipx = side * (w * 0.6 + p.len);
+      const tipy = p.y + p.len * (0.32 - p.spread) - wig * s;
+      ctx.beginPath();
+      ctx.moveTo(bx, p.y);
+      ctx.quadraticCurveTo(midx, midy, tipx, tipy);
+      ctx.stroke();
+    }
+  }
+
+  // Antennae off the head.
+  ctx.lineWidth = Math.max(1, s * 0.04);
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * w * 0.18, -s * 0.92);
+    ctx.quadraticCurveTo(side * w * 0.7, -s * 1.3, side * w * 0.5, -s * 1.6);
+    ctx.stroke();
+  }
+}
+
 export class Bug {
-  // opts: { kind:'centipede'|'roach', x, y, angle, speed, length, scale, rng, bounds:{w,h} }
+  // opts: { kind:'beetle'|'roach', x, y, angle, speed, size, rng, bounds:{w,h} }
   constructor(opts) {
     Object.assign(this, opts);
+    if (!this.size) this.size = 22;
     this.phase = this.rng() * TAU;
     this.wander = this.rng() * TAU;
-    this.trail = [{ x: this.x, y: this.y }];
-    this.segGap = (this.kind === "roach" ? 5 : 9) * this.scale;
-    this.burstTimer = this.rng() * 1.2;
-    this.moving = true;
-    // A few roaches spell hex near the emblem instead of raw bits.
-    this.hex = this.kind === "roach" && this.rng() < 0.16;
-    // Pre-roll each segment's glyph so the body reads as a stable string, not TV static.
-    this.glyphs = [];
-    for (let i = 0; i < this.length; i += 1) {
-      this.glyphs.push(this.rng() > 0.5 ? "1" : "0");
+    this.turnTimer = this.rng() * 1.5;
+    this.hex = this.rng() < 0.16;
+    // Pre-roll a stable binary grid so the body reads as digits, not static.
+    this.cols = 5;
+    this.rows = 9;
+    this.grid = [];
+    for (let i = 0; i < this.cols * this.rows; i += 1) {
+      this.grid.push(this.rng() > 0.5 ? "1" : "0");
     }
-    // Occasional single glyph flip keeps it alive without flickering.
-    this.flipEvery = 0.22 + this.rng() * 0.4;
-    this.flipTimer = this.rng() * this.flipEvery;
+    this.flipTimer = this.rng() * 0.5;
+    // Per-beetle sprite: rendered once, blitted each frame. Re-rendered only when
+    // the binary grid flips (on a slow timer), which keeps the frame loop cheap.
+    this.spriteDirty = true;
+    this._buildSprite();
+  }
+
+  // Render the beetle into its offscreen sprite. The canvas is allocated once;
+  // subsequent rebuilds only clear + redraw (resizing a canvas is expensive).
+  _buildSprite() {
+    const s = this.size;
+    const pad = Math.ceil(s * 0.9);
+    const wpx = Math.ceil(s * 1.3) + pad * 2; // room for legs/antennae
+    const hpx = Math.ceil(s * 2.7) + pad * 2;
+    if (!this.sprite) {
+      this.sprite = (typeof OffscreenCanvas !== "undefined")
+        ? new OffscreenCanvas(wpx, hpx)
+        : Object.assign(document.createElement("canvas"), { width: wpx, height: hpx });
+      this.sprite.width = wpx;
+      this.sprite.height = hpx;
+      this.spriteCX = wpx / 2;
+      this.spriteCY = hpx / 2;
+      this._sctx = this.sprite.getContext("2d");
+    }
+    const c = this._sctx;
+    c.clearRect(0, 0, wpx, hpx);
+    c.save();
+    c.translate(this.spriteCX, this.spriteCY);
+    c.globalCompositeOperation = "lighter";
+
+    drawBeetleLimbs(c, s, 0.85, this.phase);
+
+    c.save();
+    c.beginPath();
+    traceBeetle(c, s);
+    c.fillStyle = "rgba(0, 150, 180, 0.16)";
+    c.fill();
+    c.clip();
+    const fontPx = s * 0.3;
+    c.font = `700 ${fontPx}px "JetBrains Mono", monospace`;
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+    const gx0 = -s * 0.62;
+    const gy0 = -s;
+    const gw = (s * 1.24) / this.cols;
+    const gh = (s * 2.15) / this.rows;
+    for (let r = 0; r < this.rows; r += 1) {
+      for (let cc = 0; cc < this.cols; cc += 1) {
+        const idx = r * this.cols + cc;
+        let g = this.grid[idx];
+        if (this.hex) g = HEX_PHANTOM[idx % HEX_PHANTOM.length][idx % 2];
+        const gxp = gx0 + gw * (cc + 0.5);
+        const gyp = gy0 + gh * (r + 0.5);
+        const a = 0.55 + 0.45 * Math.sin((r / this.rows) * Math.PI);
+        c.fillStyle = "rgba(120, 240, 255, " + a.toFixed(3) + ")";
+        c.fillText(g, gxp, gyp);
+      }
+    }
+    c.restore();
+
+    c.beginPath();
+    traceBeetle(c, s);
+    c.strokeStyle = "rgba(90, 236, 255, 0.9)";
+    c.lineWidth = Math.max(1, s * 0.04);
+    c.stroke();
+    c.restore();
+
+    this.spriteDirty = false;
   }
 
   step(dt, emblem) {
-    // Roaches move in nervous bursts; centipedes flow steadily.
-    if (this.kind === "roach") {
-      this.burstTimer -= dt;
-      if (this.burstTimer <= 0) {
-        this.moving = !this.moving;
-        this.burstTimer = this.moving ? 0.25 + this.rng() * 0.6 : 0.15 + this.rng() * 0.5;
-        if (this.moving) this.wander += (this.rng() - 0.5) * 1.6;
-      }
-    } else {
-      this.moving = true;
+    // Occasional deliberate turns, otherwise a steady crawl.
+    this.turnTimer -= dt;
+    if (this.turnTimer <= 0) {
+      this.turnTimer = 0.8 + this.rng() * 2.2;
+      this.wander += (this.rng() - 0.5) * 1.4;
     }
+    this.angle += Math.sin(this.wander) * 0.5 * dt;
 
-    // Gentle course wander; centipedes curve smoothly, roaches jitter.
-    const wanderRate = this.kind === "roach" ? 3.2 : 0.9;
-    this.wander += (this.rng() - 0.5) * wanderRate * dt;
-    this.angle += Math.sin(this.wander) * (this.kind === "roach" ? 0.9 : 0.4) * dt;
+    this.x += Math.cos(this.angle) * this.speed * dt;
+    this.y += Math.sin(this.angle) * this.speed * dt;
 
-    const v = this.moving ? this.speed : 0;
-    this.x += Math.cos(this.angle) * v * dt;
-    this.y += Math.sin(this.angle) * v * dt;
-
-    // Wrap around the surface so the swarm never depletes.
-    const m = 40 * this.scale;
+    // Wrap so the swarm never depletes.
+    const m = this.size * 2.4;
     if (this.x < -m) this.x = this.bounds.w + m;
     if (this.x > this.bounds.w + m) this.x = -m;
     if (this.y < -m) this.y = this.bounds.h + m;
     if (this.y > this.bounds.h + m) this.y = -m;
 
-    // Record head trail for the body to follow.
-    this.trail.unshift({ x: this.x, y: this.y });
-    const maxTrail = Math.ceil(this.length * this.segGap) + 6;
-    if (this.trail.length > maxTrail) this.trail.length = maxTrail;
-
-    this.phase += dt * (this.kind === "roach" ? 10 : 5);
+    this.phase += dt * 3;
 
     this.flipTimer -= dt;
     if (this.flipTimer <= 0) {
-      this.flipTimer = this.flipEvery;
-      const idx = Math.floor(this.rng() * this.glyphs.length);
-      this.glyphs[idx] = this.glyphs[idx] === "1" ? "0" : "1";
+      // Rebuild the sprite only occasionally; staggered so beetles don't rebuild
+      // in sync. Digit flips are decorative, so a slow cadence is imperceptible.
+      this.flipTimer = 1.6 + this.rng() * 2.4;
+      const idx = Math.floor(this.rng() * this.grid.length);
+      this.grid[idx] = this.grid[idx] === "1" ? "0" : "1";
+      this.spriteDirty = true;
     }
-  }
-
-  // Sample the trail at a given pixel distance back from the head.
-  _sampleTrail(backDist) {
-    let acc = 0;
-    for (let i = 1; i < this.trail.length; i += 1) {
-      const a = this.trail[i - 1];
-      const b = this.trail[i];
-      const d = dist(a.x, a.y, b.x, b.y);
-      if (acc + d >= backDist) {
-        const t = d === 0 ? 0 : (backDist - acc) / d;
-        return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
-      }
-      acc += d;
-    }
-    return this.trail[this.trail.length - 1] || { x: this.x, y: this.y };
   }
 
   draw(ctx, emblem) {
-    const fontPx = (this.kind === "roach" ? 14 : 15) * this.scale;
-    ctx.font = `700 ${fontPx}px "JetBrains Mono", monospace`;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-
-    // Emblem light: bugs near the vanishing point flare brighter.
-    const flareR = emblem.radius;
-    const headDist = dist(this.x, this.y, emblem.x, emblem.y);
-    const flare = Math.max(0, 1 - headDist / flareR);
-
-    // Travel direction, for perpendicular undulation of the body.
-    const px = -Math.sin(this.angle);
-    const py = Math.cos(this.angle);
-
-    // Additive blending makes overlapping glyphs bloom like real light. The
-    // soft halo comes from a CSS blur layer on a second canvas (see corridor.js),
-    // so this hot loop stays free of the very expensive canvas shadowBlur.
+    if (this.spriteDirty) this._buildSprite();
+    const flare = Math.max(0, 1 - dist(this.x, this.y, emblem.x, emblem.y) / emblem.radius);
     const prevOp = ctx.globalCompositeOperation;
+    const prevAlpha = ctx.globalAlpha;
     ctx.globalCompositeOperation = "lighter";
-
-    for (let i = 0; i < this.length; i += 1) {
-      const p = this._sampleTrail(i * this.segGap);
-      const wave = Math.sin(this.phase - i * 0.55) * (this.kind === "roach" ? 1.2 : 2.4) * this.scale;
-      const sx = p.x + px * wave;
-      const sy = p.y + py * wave;
-
-      // Head bright, tail dim.
-      const ramp = 1 - i / this.length;
-      let alpha = 0.34 + ramp * 0.62;
-      alpha = Math.min(1, alpha + flare * 0.5);
-
-      let glyph = this.glyphs[i];
-      if (this.hex && flare > 0.35) {
-        glyph = HEX_PHANTOM[i % HEX_PHANTOM.length];
-      }
-
-      // Head segment leans cyan-white; body is phantom cyan. Brighter near the emblem.
-      if (i === 0) {
-        ctx.fillStyle = "rgba(225, 254, 255, " + Math.min(1, alpha + flare * 0.3).toFixed(3) + ")";
-      } else {
-        ctx.fillStyle = "rgba(70, 224, 255, " + alpha.toFixed(3) + ")";
-      }
-      ctx.fillText(glyph, sx, sy);
-    }
-
-    // Roach antennae: two short strokes off the head.
-    if (this.kind === "roach") {
-      const h = this.trail[0];
-      ctx.strokeStyle = "rgba(120, 245, 255, " + (0.5 + flare * 0.4).toFixed(3) + ")";
-      ctx.lineWidth = 1.2 * this.scale;
-      ctx.beginPath();
-      const a1 = this.angle - 0.5;
-      const a2 = this.angle + 0.5;
-      const al = 8 * this.scale;
-      ctx.moveTo(h.x, h.y);
-      ctx.lineTo(h.x + Math.cos(a1) * al, h.y + Math.sin(a1) * al);
-      ctx.moveTo(h.x, h.y);
-      ctx.lineTo(h.x + Math.cos(a2) * al, h.y + Math.sin(a2) * al);
-      ctx.stroke();
-    }
-
+    ctx.globalAlpha = Math.min(1, 0.72 + flare * 0.28);
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle + Math.PI / 2); // art faces up (-y)
+    ctx.drawImage(this.sprite, -this.spriteCX, -this.spriteCY);
+    ctx.restore();
+    ctx.globalAlpha = prevAlpha;
     ctx.globalCompositeOperation = prevOp;
   }
 }

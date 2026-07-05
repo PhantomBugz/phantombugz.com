@@ -10,41 +10,87 @@ function isMobile() {
   return window.innerWidth < 720;
 }
 
-// Build the swarm for one surface, sized to its canvas. Dense enough to read as
-// an infestation, not scattered specks.
+// Build the swarm for one surface. These are large, detailed binary beetles, so
+// counts are modest; each one has weight and presence.
 function spawnSwarm(canvas, seed) {
   const rng = makeRng(seed);
   const area = canvas.width * canvas.height;
-  // One bug per ~46k px on desktop; sparser on mobile for battery. Tuned so the
-  // swarm reads as an infestation while holding a smooth frame rate.
-  const density = isMobile() ? 90000 : 46000;
-  const count = Math.min(180, Math.max(18, Math.round(area / density)));
+  // One beetle per ~230k px on desktop; sparser on mobile.
+  const density = isMobile() ? 340000 : 230000;
+  const count = Math.min(28, Math.max(4, Math.round(area / density)));
   const bounds = { w: canvas.width, h: canvas.height };
   const bugs = [];
-  const baseScale = isMobile() ? 1 : 1.35;
+  const baseSize = isMobile() ? 20 : 26;
   for (let i = 0; i < count; i += 1) {
-    const kind = rng() < 0.5 ? "centipede" : "roach";
     // Depth: 0 = far (top edge / vanishing point), 1 = near (bottom edge).
-    // Bias slightly toward the far half so the swarm reads as pouring out of
-    // the tunnel toward the viewer, and scale bugs by depth for staging.
+    // Bias toward the far half so beetles read as pouring out of the tunnel,
+    // and scale by depth so far ones are small, near ones large.
     const depth = Math.pow(rng(), 0.8);
     const y = depth * bounds.h;
-    const depthScale = 0.55 + depth * 0.95; // far bugs small, near bugs large
+    const depthSize = 0.5 + depth * 1.1;
     bugs.push(
       new Bug({
-        kind,
+        kind: "beetle",
         x: rng() * bounds.w,
         y,
         angle: rng() * Math.PI * 2,
-        speed: (kind === "roach" ? 40 : 24) + rng() * 20,
-        length: kind === "roach" ? 5 + Math.floor(rng() * 4) : 12 + Math.floor(rng() * 12),
-        scale: baseScale * depthScale * (0.9 + rng() * 0.35),
+        speed: 16 + rng() * 20,
+        size: baseSize * depthSize * (0.85 + rng() * 0.4),
         rng,
         bounds,
       })
     );
   }
   return bugs;
+}
+
+// A faint field of falling binary digits behind the beetles, so the bugs blend
+// into the system but stay readable.
+function makeRain(canvas, seed) {
+  const rng = makeRng(seed);
+  const colW = 18 * (canvas.width > 1600 ? 1.3 : 1);
+  const cols = Math.max(6, Math.floor(canvas.width / colW));
+  const drops = [];
+  for (let c = 0; c < cols; c += 1) {
+    drops.push({
+      x: (c + 0.5) * (canvas.width / cols),
+      y: rng() * canvas.height,
+      speed: 30 + rng() * 70,
+      glyphs: Array.from({ length: 10 + Math.floor(rng() * 14) }, () => (rng() > 0.5 ? "1" : "0")),
+      gap: 15 + rng() * 6,
+      rng,
+    });
+  }
+  return { drops, colW };
+}
+
+function stepRain(rain, dt, h) {
+  for (const d of rain.drops) {
+    d.y += d.speed * dt;
+    if (d.y - d.glyphs.length * d.gap > h) d.y = -d.rng() * h * 0.4;
+    if (d.rng() < 0.04) {
+      const i = Math.floor(d.rng() * d.glyphs.length);
+      d.glyphs[i] = d.glyphs[i] === "1" ? "0" : "1";
+    }
+  }
+}
+
+function drawRain(ctx, rain) {
+  ctx.save();
+  ctx.font = `700 12px "JetBrains Mono", monospace`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (const d of rain.drops) {
+    for (let i = 0; i < d.glyphs.length; i += 1) {
+      const y = d.y - i * d.gap;
+      if (y < -20 || y > ctx.canvas.height + 20) continue;
+      // Head of the column brightest, trailing digits fade out. Kept dim overall.
+      const a = Math.max(0, (1 - i / d.glyphs.length)) * 0.16;
+      ctx.fillStyle = "rgba(0, 231, 255, " + a.toFixed(3) + ")";
+      ctx.fillText(d.glyphs[i], d.x, y);
+    }
+  }
+  ctx.restore();
 }
 
 export function initCorridor(root) {
@@ -67,6 +113,7 @@ export function initCorridor(root) {
       s.canvas.width = w;
       s.canvas.height = h;
       s.bugs = spawnSwarm(s.canvas, s.seed);
+      s.rain = makeRain(s.canvas, s.seed + 7);
     }
   }
 
@@ -95,6 +142,7 @@ export function initCorridor(root) {
       const { ctx, canvas } = s;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const em = emblemFor(canvas);
+      if (s.rain) drawRain(ctx, s.rain); // faint rain behind the beetles
       for (const bug of s.bugs) bug.draw(ctx, em);
     }
   }
@@ -102,6 +150,7 @@ export function initCorridor(root) {
   function stepFrame(dt) {
     for (const s of surfaces) {
       const em = emblemFor(s.canvas);
+      if (s.rain) stepRain(s.rain, dt, s.canvas.height);
       for (const bug of s.bugs) bug.step(dt, em);
     }
   }

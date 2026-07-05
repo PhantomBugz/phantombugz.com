@@ -39,6 +39,127 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* While the gate is up, lock scroll behind it. */
+body.gate-open {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ---------- Enter gate ---------- */
+
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 46%, #04171c 0%, #010608 60%, #000 100%);
+  cursor: pointer;
+  overflow: hidden;
+  transition: opacity .9s ease, transform .9s cubic-bezier(.7, 0, .84, 0), filter .9s ease;
+}
+
+#gate-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gate-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.gate-emblem {
+  width: clamp(110px, 16vw, 170px);
+  height: clamp(110px, 16vw, 170px);
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(0, 231, 255, .9)) drop-shadow(0 0 42px rgba(0, 231, 255, .45));
+  animation: gatePulse 3.4s ease-in-out infinite;
+}
+
+.gate-name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(.8rem, 2.2vw, 1.05rem);
+  letter-spacing: .6em;
+  text-indent: .6em;
+  color: var(--cyan);
+}
+
+.gate-enter {
+  margin: 6px 0 0;
+  font-size: .72rem;
+  letter-spacing: .4em;
+  text-indent: .4em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.gate-enter span {
+  display: inline-block;
+  padding: 10px 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  animation: gateBreath 2.4s ease-in-out infinite;
+}
+
+.gate:hover .gate-enter span,
+.gate:focus-visible .gate-enter span {
+  color: var(--ink);
+  border-color: var(--cyan);
+  box-shadow: 0 0 26px rgba(0, 231, 255, .3);
+}
+
+@keyframes gatePulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 14px rgba(0, 231, 255, .8)) drop-shadow(0 0 42px rgba(0, 231, 255, .4)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 22px rgba(0, 231, 255, 1)) drop-shadow(0 0 64px rgba(0, 231, 255, .6)); }
+}
+
+@keyframes gateBreath {
+  0%, 100% { opacity: .55; }
+  50% { opacity: 1; }
+}
+
+/* Forceful exit: the gate rushes at the viewer and whites out to cyan. */
+.gate.entering {
+  opacity: 0;
+  transform: scale(2.6);
+  filter: brightness(2.4) blur(6px);
+  pointer-events: none;
+}
+
+.gate.gone {
+  display: none;
+}
+
+/* Cyan flash that floods the screen at the moment of entry. */
+.gate-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: radial-gradient(circle at 50% 46%, rgba(120, 244, 255, .9), rgba(0, 231, 255, .5) 40%, transparent 72%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gate-flash.fire {
+  animation: gateFlash 1s ease-out forwards;
+}
+
+@keyframes gateFlash {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 a {
   color: inherit;
   text-decoration: none;

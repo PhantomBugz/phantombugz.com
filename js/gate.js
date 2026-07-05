@@ -86,7 +86,8 @@ export function initGate(onEnter) {
   });
 
   let entered = false;
-  function enter() {
+  function enter(e) {
+    if (e) e.preventDefault();
     if (entered) return;
     entered = true;
     running = false;
@@ -100,6 +101,7 @@ export function initGate(onEnter) {
     flash.classList.add("fire");
 
     gate.classList.add("entering");
+    gate.style.pointerEvents = "none"; // stop any further taps immediately
     document.body.classList.remove("gate-open");
     if (onEnter) onEnter();
 
@@ -114,6 +116,8 @@ export function initGate(onEnter) {
     }
   }
 
+  // pointerup covers mouse + touch reliably (iOS click can be flaky/double-fire).
+  gate.addEventListener("pointerup", enter);
   gate.addEventListener("click", enter);
   gate.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {

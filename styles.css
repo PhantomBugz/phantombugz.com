@@ -43,6 +43,7 @@ body {
 body.gate-open {
   overflow: hidden;
   height: 100vh;
+  height: 100dvh;
 }
 
 /* ---------- Enter gate ---------- */
@@ -318,6 +319,7 @@ a:focus-visible,
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh; /* track the mobile URL bar so the sticky stage matches the viewport */
   overflow: hidden;
   perspective: 900px;
   perspective-origin: 50% 44%;
@@ -431,12 +433,28 @@ a:focus-visible,
   bottom: 26px;
   transform: translateX(-50%);
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   font-size: .68rem;
   letter-spacing: .34em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(0, 231, 255, .5);
   opacity: calc(1 - var(--approach) * 2.4);
   pointer-events: none;
+}
+
+/* Animated down-chevron so the scroll affordance is unmistakable (esp. on mobile). */
+.scroll-cue::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid var(--cyan);
+  border-bottom: 2px solid var(--cyan);
+  transform: rotate(45deg);
+  animation: cueChevron 1.8s ease-in-out infinite;
 }
 
 .scroll-cue span {
@@ -445,8 +463,13 @@ a:focus-visible,
 }
 
 @keyframes cuePulse {
-  0%, 100% { opacity: .45; transform: translateY(0); }
-  50% { opacity: 1; transform: translateY(4px); }
+  0%, 100% { opacity: .5; }
+  50% { opacity: 1; }
+}
+
+@keyframes cueChevron {
+  0%, 100% { opacity: .4; transform: rotate(45deg) translate(-2px, -2px); }
+  50% { opacity: 1; transform: rotate(45deg) translate(2px, 2px); }
 }
 
 /* ---------- Arrival ---------- */
@@ -806,10 +829,18 @@ a:focus-visible,
     font-size: .66rem;
   }
   .corridor {
-    height: 200vh;
+    height: 250vh; /* more scroll distance on mobile so the journey reads deliberately */
   }
   .corridor-viewport {
     perspective: 560px;
+  }
+  .scroll-cue {
+    bottom: 40px;
+    font-size: .74rem;
+  }
+  .scroll-cue::after {
+    width: 16px;
+    height: 16px;
   }
   .vault-grid {
     grid-template-columns: repeat(2, 1fr);

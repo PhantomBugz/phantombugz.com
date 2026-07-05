@@ -36,14 +36,29 @@ function watchForSling() {
     }, 720);
   }
 
-  window.addEventListener(
-    "scroll",
-    () => {
-      const scrollable = corridor.offsetHeight - window.innerHeight;
-      const scrolled = Math.min(Math.max(-corridor.getBoundingClientRect().top, 0), Math.max(scrollable, 1));
-      const progress = scrollable > 0 ? scrolled / scrollable : 0;
-      if (progress >= 0.985) fireSling();
-    },
-    { passive: true }
-  );
+  // Mobile-safe progress: measure against the real scrollable range using
+  // documentElement, not vh math (which breaks with the mobile URL bar). Require
+  // the visitor to actually reach the very bottom so a flick can't skip through.
+  function progress() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0) return 0;
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    return Math.min(Math.max(y / max, 0), 1);
+  }
+
+  // Only sling once the user is essentially at the bottom AND has actually
+  // scrolled a meaningful distance (guards against instant-fire on load/flick).
+  let maxSeen = 0;
+  function check() {
+    const p = progress();
+    if (p > maxSeen) maxSeen = p;
+    if (p >= 0.995 && maxSeen >= 0.995) fireSling();
+  }
+
+  window.addEventListener("scroll", check, { passive: true });
+  window.addEventListener("resize", check, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", check, { passive: true });
+    window.visualViewport.addEventListener("scroll", check, { passive: true });
+  }
 }

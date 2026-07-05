@@ -176,25 +176,25 @@ function random() {
 
 function populateBinarySwarm() {
   if (!swarm) return;
-  const count = window.innerWidth < 720 ? 44 : 92;
+  const count = window.innerWidth < 720 ? 110 : 240;
   const fragments = document.createDocumentFragment();
   swarm.replaceChildren();
 
   for (let i = 0; i < count; i += 1) {
     const bit = document.createElement("span");
-    bit.textContent = random() > .5 ? "1" : "0";
-    const edgeBias = random();
-    const x = edgeBias < .38 ? random() * 34 : edgeBias > .74 ? 64 + random() * 34 : 28 + random() * 44;
-    const y = random() * 96;
+    const length = 3 + Math.floor(random() * 3);
+    bit.textContent = Array.from({ length }, () => (random() > .5 ? "1" : "0")).join("");
+    const x = random() * 100;
+    const y = random() * 100;
     bit.style.setProperty("--x", `${x.toFixed(2)}vw`);
     bit.style.setProperty("--y", `${y.toFixed(2)}vh`);
-    bit.style.setProperty("--delay", `${(-random() * 70).toFixed(2)}s`);
-    bit.style.setProperty("--duration", `${(52 + random() * 54).toFixed(2)}s`);
-    bit.style.setProperty("--size", `${(8 + random() * 6).toFixed(2)}px`);
-    bit.style.setProperty("--opacity", `${(.06 + random() * .18).toFixed(2)}`);
-    bit.style.setProperty("--drift-x", `${(-2 + random() * 4).toFixed(2)}px`);
-    bit.style.setProperty("--drift-y", `${(-2 + random() * 4).toFixed(2)}px`);
-    bit.style.setProperty("--turn", `${(-1.5 + random() * 3).toFixed(2)}deg`);
+    bit.style.setProperty("--delay", `${(-random() * 110).toFixed(2)}s`);
+    bit.style.setProperty("--duration", `${(78 + random() * 74).toFixed(2)}s`);
+    bit.style.setProperty("--size", `${(8 + random() * 4).toFixed(2)}px`);
+    bit.style.setProperty("--opacity", `${(.06 + random() * .12).toFixed(2)}`);
+    bit.style.setProperty("--drift-x", `${(-10 + random() * 20).toFixed(2)}px`);
+    bit.style.setProperty("--drift-y", `${(-5 + random() * 10).toFixed(2)}px`);
+    bit.style.setProperty("--turn", `${(-.8 + random() * 1.6).toFixed(2)}deg`);
     fragments.append(bit);
   }
 
@@ -225,10 +225,9 @@ const bountyUi = {
 };
 
 let feed = [
-  ["GOAL", "2026-07 target: $25,000"],
-  ["SUBMITTED", "$0 possible"],
-  ["COLLECTED", "$0 received"],
-  ["REMAINING", "$25,000"]
+  ["SUBMITTED", "$0 potential"],
+  ["ACCEPTED", "unknown"],
+  ["LIFETIME", "$0 made since launch"]
 ];
 let tickerIndex = 3;
 
@@ -244,10 +243,11 @@ function formatDate(value) {
   return date.toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" });
 }
 
-function remainingLabel(goal, collected) {
-  const remaining = goal - collected;
-  if (remaining >= 0) return money.format(remaining);
-  return `+${money.format(Math.abs(remaining))} over`;
+function formatMonthLabel(value) {
+  if (!value) return "Current month";
+  const date = new Date(`${value}-01T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString([], { month: "long", year: "numeric" });
 }
 
 function setText(node, value) {
@@ -255,32 +255,33 @@ function setText(node, value) {
 }
 
 function applyBountyStatus(status) {
-  const goal = Number(status.goal || 0);
-  const collected = Number(status.collected || 0);
-  const submitted = Number(status.submittedPossible || 0);
-  const collectedPercent = goal > 0 ? Math.min((collected / goal) * 100, 100) : 0;
-  const submittedPercent = goal > 0 ? Math.min(((collected + submitted) / goal) * 100, 100) : 0;
+  const submitted = Number(status.submittedThisMonthUsd || status.submittedPossible || 0);
+  const lastMonthMade = Number(status.lastMonthMadeUsd || 0);
+  const totalMade = Number(status.totalMadeSinceLaunchUsd || 0);
+  const submittedReports = Number(status.submittedReportCount || 0);
+  const acceptedPublic = status.currentAcceptedPublicLabel || "Unknown";
+  const submittedPercent = submitted > 0 ? 100 : 0;
   const monthLabel = status.month ? `${status.month} sprint` : status.label || "Monthly sprint";
-  const deadline = formatDate(status.deadline);
+  const cycleLabel = formatMonthLabel(status.month);
 
   setText(bountyUi.month, monthLabel);
-  setText(bountyUi.total, money.format(goal));
-  setText(bountyUi.deadline, deadline);
-  setText(bountyUi.collected, money.format(collected));
+  setText(bountyUi.total, money.format(submitted));
+  setText(bountyUi.deadline, cycleLabel);
+  setText(bountyUi.collected, acceptedPublic);
   setText(bountyUi.submitted, money.format(submitted));
-  setText(bountyUi.remaining, remainingLabel(goal, collected));
+  setText(bountyUi.remaining, money.format(lastMonthMade));
   setText(bountyUi.lanes, String(status.activeLaneCount || 0));
   setText(bountyUi.investigating, String(status.investigatingCount || 0));
-  setText(bountyUi.ready, String(status.readyToSubmitCount || 0));
-  setText(bountyUi.readySecondary, String(status.readyToSubmitCount || 0));
-  bountyUi.collectedMeter.style.width = `${collectedPercent}%`;
+  setText(bountyUi.ready, money.format(totalMade));
+  setText(bountyUi.readySecondary, String(submittedReports));
+  bountyUi.collectedMeter.style.width = "0%";
   bountyUi.submittedMeter.style.width = `${submittedPercent}%`;
 
   feed = [
-    ["GOAL", `${monthLabel} target: ${money.format(goal)} by ${deadline}`],
-    ["SUBMITTED", `${money.format(submitted)} possible`],
-    ["COLLECTED", `${money.format(collected)} received`],
-    ["REMAINING", `${remainingLabel(goal, collected)} remaining`],
+    ["SUBMITTED", `${money.format(submitted)} potential this month`],
+    ["ACCEPTED", acceptedPublic.toLowerCase()],
+    ["LAST MONTH", `${money.format(lastMonthMade)} made`],
+    ["LIFETIME", `${money.format(totalMade)} made since launch`],
     ["READY", status.publicNextAction || `${status.readyToSubmitCount || 0} report package ready`]
   ];
 

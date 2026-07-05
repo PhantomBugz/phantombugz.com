@@ -1,11 +1,7 @@
 import { initGate } from "./js/gate.js";
 import { initCorridor } from "./js/corridor.js";
-import { initTelemetry } from "./js/telemetry.js";
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-// Telemetry can load immediately (it's below the fold).
-initTelemetry(document.getElementById("signal"));
 
 // The corridor is built once, when the visitor crosses the gate.
 let corridorStarted = false;
@@ -13,26 +9,41 @@ function startCorridor() {
   if (corridorStarted) return;
   corridorStarted = true;
   initCorridor(document.getElementById("corridor"));
+  watchForSling();
 }
 
-// The gate owns the first screen; entering starts the corridor and reveals the site.
+// The gate owns the first screen; entering starts the corridor.
 initGate(startCorridor);
 
-// Reveal sections as they enter view. Reduced motion shows them immediately.
-const reveals = document.querySelectorAll("[data-reveal]");
-if (reduced.matches || !("IntersectionObserver" in window)) {
-  reveals.forEach((el) => el.classList.add("in"));
-} else {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          observer.unobserve(entry.target);
-        }
-      }
+// When the dolly reaches the end of the corridor, sling into the main page.
+function watchForSling() {
+  const corridor = document.getElementById("corridor");
+  const sling = document.getElementById("sling");
+  if (!corridor) return;
+  let slung = false;
+
+  function fireSling() {
+    if (slung) return;
+    slung = true;
+    if (reduced.matches) {
+      window.location.href = "./enter.html";
+      return;
+    }
+    if (sling) sling.classList.add("fire");
+    // Let the cyan flood + forward rush play, then hand off to the main page.
+    setTimeout(() => {
+      window.location.href = "./enter.html";
+    }, 720);
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const scrollable = corridor.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-corridor.getBoundingClientRect().top, 0), Math.max(scrollable, 1));
+      const progress = scrollable > 0 ? scrolled / scrollable : 0;
+      if (progress >= 0.985) fireSling();
     },
-    { threshold: 0.25 }
+    { passive: true }
   );
-  reveals.forEach((el) => observer.observe(el));
 }

@@ -187,6 +187,74 @@ a:focus-visible,
   top: 12px;
 }
 
+/* ---------- Sling (corridor releases into the main page) ---------- */
+
+.sling {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: radial-gradient(circle at 50% 44%, rgba(150, 248, 255, .95), rgba(0, 231, 255, .55) 38%, transparent 74%);
+  opacity: 0;
+  transform: scale(.2);
+  pointer-events: none;
+}
+
+.sling.fire {
+  animation: slingRush .72s cubic-bezier(.6, 0, .3, 1) forwards;
+}
+
+@keyframes slingRush {
+  0% { opacity: 0; transform: scale(.2); }
+  40% { opacity: 1; transform: scale(1.4); }
+  100% { opacity: 1; transform: scale(3.4); }
+}
+
+/* ---------- Roaming beetles on the main page ---------- */
+
+.roam {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px rgba(0, 231, 255, .8)) drop-shadow(0 0 7px rgba(0, 231, 255, .32));
+}
+
+.main-page main,
+.main-page .site-header,
+.main-page .site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Let the roaming beetles show through the section backgrounds on the main page. */
+.main-page {
+  background: var(--base);
+}
+
+.main-page .arrival {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(0, 231, 255, .06), transparent 52%),
+    linear-gradient(to bottom, rgba(1, 6, 8, .72), rgba(1, 8, 10, .6) 60%, rgba(1, 6, 8, .72));
+}
+
+.main-page .vault {
+  background: linear-gradient(to bottom, rgba(1, 8, 10, .55), rgba(1, 6, 8, .72));
+}
+
+.main-page .signal {
+  background: rgba(2, 10, 13, .82);
+}
+
+/* Alcoves stay readable over the roamers with an opaque-ish base (no
+   backdrop-filter: blurring behind an animating canvas tanks the frame rate). */
+.main-page .alcove {
+  background:
+    radial-gradient(ellipse at 50% 118%, rgba(0, 231, 255, .07), transparent 62%),
+    linear-gradient(to bottom, #01090b, #020a0d);
+}
+
 /* ---------- Header ---------- */
 
 .site-header {

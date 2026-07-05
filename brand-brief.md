@@ -8,6 +8,8 @@ The PhantomBugz logo and branding mark is the cyan bug head from the supplied re
 
 The homepage should feel like the reference: dark center stage, cyan dot-wave fields, faint hex circuitry, and a slight binary swarm in the background. The mark and the monthly bounty console stay readable and centered in the experience.
 
+The public page should not repeat the emblem in every section. Use the bug head as the hero mark and platform/profile asset. Header/footer may use the PhantomBugz wordmark without another emblem.
+
 Core palette:
 
 - Phantom cyan: `#00e7ff`
@@ -20,10 +22,12 @@ Core palette:
 Avoid:
 
 - Full-banner placement as the hero image
+- Repeating the bug-head emblem throughout the page
 - Purple-blue startup gradients
 - Stock hooded-hacker photography
 - Decorative bokeh orbs
 - Fake cyber gibberish as page copy
+- Placeholder merch mockup art on the public page
 
 ## Asset Exports
 
@@ -41,6 +45,8 @@ All primary platform exports now derive from the bug head:
 - `apple-touch-icon.png`
 - `phantombugz-og-image.png`
 - `phantombugz-social-banner.png`
+
+The avatar exports are centered from the visible cyan bounds so GitHub/GitLab circular crops do not push the mark right or low.
 
 ## Bounty Ticker
 

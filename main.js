@@ -35,6 +35,13 @@ float dotWave(vec2 uv, float scale, float wave, float speed) {
   return smoothstep(.105, .025, d);
 }
 
+float flowLine(vec2 uv, float frequency, float speed) {
+  float bend = sin(uv.x * 8.0 + time * speed) * .038;
+  bend += noise(uv * 4.0 + vec2(time * .012, 0.0)) * .045;
+  float ridge = abs(sin((uv.y + bend) * frequency));
+  return smoothstep(.992, 1.0, ridge);
+}
+
 float hexLines(vec2 p) {
   p.x *= 1.1547;
   vec2 a = abs(fract(p * 11.0) - .5);
@@ -48,7 +55,7 @@ void main() {
   vec2 uv = gl_FragCoord.xy / resolution.xy;
   vec2 p = (gl_FragCoord.xy - .5 * resolution.xy) / resolution.y;
 
-  float t = time;
+  float t = time * .28;
   float centerShade = smoothstep(.18, .72, length(p));
   float vignette = smoothstep(1.1, .1, length(p));
 
@@ -66,6 +73,10 @@ void main() {
     dotWave(uv + vec2(.18, .0), 64.0, 4.3, -.5) * topRight +
     dotWave(uv + vec2(.0, .26), 62.0, 3.2, .46) * bottomLeft;
 
+  float flowing =
+    flowLine(uv + vec2(t * .012, .0), 72.0, .62) * left * (top + bottom * .88) +
+    flowLine(uv.yx + vec2(.12, t * .009), 58.0, -.44) * topRight * .72;
+
   float hex = hexLines(uv + vec2(t * .014, sin(t * .11) * .012)) * rightHex;
   float mist = noise(uv * 5.0 + vec2(0.0, t * .025)) * .16;
   float scan = smoothstep(.996, 1.0, sin((uv.y + t * .032) * 220.0)) * .11;
@@ -75,7 +86,8 @@ void main() {
   vec3 green = vec3(.26, .96, .64);
   vec3 amber = vec3(.92, .58, .18);
   vec3 color = deep;
-  color += cyan * waves * 1.18;
+  color += cyan * waves * 1.08;
+  color += cyan * flowing * .86;
   color += cyan * hex * .6;
   color += green * hex * .14;
   color += amber * hex * .04;
@@ -164,7 +176,7 @@ function random() {
 
 function populateBinarySwarm() {
   if (!swarm) return;
-  const count = window.innerWidth < 720 ? 58 : 118;
+  const count = window.innerWidth < 720 ? 44 : 92;
   const fragments = document.createDocumentFragment();
   swarm.replaceChildren();
 
@@ -176,13 +188,13 @@ function populateBinarySwarm() {
     const y = random() * 96;
     bit.style.setProperty("--x", `${x.toFixed(2)}vw`);
     bit.style.setProperty("--y", `${y.toFixed(2)}vh`);
-    bit.style.setProperty("--delay", `${(-random() * 9).toFixed(2)}s`);
-    bit.style.setProperty("--duration", `${(7 + random() * 8).toFixed(2)}s`);
-    bit.style.setProperty("--size", `${(9 + random() * 8).toFixed(2)}px`);
-    bit.style.setProperty("--opacity", `${(.12 + random() * .42).toFixed(2)}`);
-    bit.style.setProperty("--drift-x", `${(-9 + random() * 18).toFixed(2)}px`);
-    bit.style.setProperty("--drift-y", `${(-7 + random() * 14).toFixed(2)}px`);
-    bit.style.setProperty("--turn", `${(-10 + random() * 20).toFixed(2)}deg`);
+    bit.style.setProperty("--delay", `${(-random() * 70).toFixed(2)}s`);
+    bit.style.setProperty("--duration", `${(52 + random() * 54).toFixed(2)}s`);
+    bit.style.setProperty("--size", `${(8 + random() * 6).toFixed(2)}px`);
+    bit.style.setProperty("--opacity", `${(.06 + random() * .18).toFixed(2)}`);
+    bit.style.setProperty("--drift-x", `${(-2 + random() * 4).toFixed(2)}px`);
+    bit.style.setProperty("--drift-y", `${(-2 + random() * 4).toFixed(2)}px`);
+    bit.style.setProperty("--turn", `${(-1.5 + random() * 3).toFixed(2)}deg`);
     fragments.append(bit);
   }
 

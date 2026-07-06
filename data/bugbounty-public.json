@@ -2,7 +2,7 @@
   "month": "2026-07",
   "label": "Bug bounty sprint",
   "currency": "USD",
-  "sprintStart": "2026-07-04",
+  "sprintStart": "2026-07-01",
   "submittedThisMonthUsd": 0,
   "submittedReportCount": 0,
   "currentAcceptedPublicLabel": "Unknown",
@@ -10,14 +10,15 @@
   "previousMonth": "2026-06",
   "lastMonthMadeUsd": 0,
   "totalMadeSinceLaunchUsd": 0,
-  "lastUpdated": "2026-07-04T17:02:53.2056631-04:00",
-  "activeLaneCount": 7,
-  "readyToSubmitCount": 1,
-  "investigatingCount": 6,
+  "lastUpdated": "2026-07-05T15:37:53.1760153-04:00",
+  "activeLaneCount": 35,
+  "readyToSubmitCount": 6,
+  "investigatingCount": 24,
   "stateCounts": {
-    "investigating": 6,
-    "ready-to-submit": 1
+    "investigating": 24,
+    "ready-to-submit": 6,
+    "killed": 5
   },
-  "publicNextAction": "1 report package ready for platform submission",
+  "publicNextAction": "6 report packages ready for platform submission",
   "source": "Public-safe projection of the local BugBounties ledger. Current accepted, approved, paid, finding titles, evidence, hashes, platform URLs, notes, and credentials are omitted."
 }

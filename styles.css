@@ -735,6 +735,256 @@ a:focus-visible,
   border-color: var(--cyan-2);
 }
 
+/* button reset for the register-interest buttons (were <a>, now <button>) */
+button.request {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+
+/* "Preorder — Coming Soon" tag on each piece */
+.status-tag {
+  margin: 14px 0 0;
+  display: inline-block;
+  align-self: start;
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  border: 1px solid rgba(255, 209, 102, .4);
+  border-radius: 3px;
+  padding: 3px 8px;
+}
+
+/* ---------- How Ghost Series works (spec + presets) ---------- */
+
+.spec {
+  max-width: 1180px;
+  margin: clamp(48px, 8vh, 90px) auto 0;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 34px;
+  align-items: start;
+}
+
+.spec-layers {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.spec-layers li {
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.5;
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+}
+
+.spec-layers strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.spec-presets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.preset {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.preset span {
+  display: block;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: .04em;
+  margin-bottom: 5px;
+}
+
+.preset p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+/* ---------- Preorder interest form ---------- */
+
+.interest {
+  max-width: 720px;
+  margin: clamp(50px, 9vh, 100px) auto 0;
+  padding: clamp(24px, 4vw, 40px);
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0, 231, 255, .06), transparent 60%),
+    var(--surface);
+  box-shadow: 0 0 50px rgba(0, 231, 255, .1);
+}
+
+.interest-head {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.interest-head h3 {
+  margin: 6px 0 10px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+
+.interest-sub {
+  margin: 0 auto;
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
+.interest-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.field span {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field em {
+  font-style: normal;
+  opacity: .7;
+}
+
+.interest input[type="text"],
+.interest input[type="email"],
+.interest textarea {
+  width: 100%;
+  padding: 11px 13px;
+  background: #01090b;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: .92rem;
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.interest input:focus,
+.interest textarea:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0, 231, 255, .16);
+}
+
+.pieces {
+  margin: 18px 0 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.pieces legend {
+  padding: 0 8px;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pieces label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 4px 16px 4px 0;
+  font-size: .88rem;
+  cursor: pointer;
+}
+
+.pieces input {
+  accent-color: var(--cyan);
+  width: 16px;
+  height: 16px;
+}
+
+/* honeypot — visually hidden, off-screen, not display:none (bots skip those) */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.interest-submit {
+  margin-top: 22px;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(180deg, rgba(0, 231, 255, .18), rgba(0, 231, 255, .08));
+  border: 1px solid var(--cyan);
+  border-radius: 8px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: box-shadow .3s ease, background .3s ease;
+}
+
+.interest-submit:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(0, 231, 255, .3), rgba(0, 231, 255, .14));
+  box-shadow: 0 0 30px rgba(0, 231, 255, .35);
+}
+
+.interest-submit:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+.interest-status {
+  margin: 14px 0 0;
+  min-height: 1.2em;
+  text-align: center;
+  font-size: .86rem;
+}
+
+.interest-status.ok {
+  color: var(--green);
+}
+
+.interest-status.err {
+  color: var(--amber);
+}
+
+.interest-status a {
+  color: var(--cyan);
+  border-bottom: 1px solid var(--line-strong);
+}
+
 /* ---------- Ghost Series in motion (video showcase) ---------- */
 
 .motion {
@@ -1015,6 +1265,13 @@ a:focus-visible,
   }
   .signal-row {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .spec {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .interest-grid {
+    grid-template-columns: 1fr;
   }
   .site-footer {
     justify-content: flex-start;

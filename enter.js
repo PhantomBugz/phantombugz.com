@@ -74,6 +74,75 @@ if (motionStage) {
   });
 }
 
+// Preorder interest form → Cloudflare Worker → Resend email.
+// ENDPOINT is set to the deployed Worker URL. Until it is deployed the form
+// falls back to a mailto so no interest is ever lost.
+const INTEREST_ENDPOINT = "https://phantombugz-preorder.blackops-97e.workers.dev";
+
+const interestForm = document.getElementById("interest");
+if (interestForm) {
+  const statusEl = interestForm.querySelector(".interest-status");
+  const submitBtn = interestForm.querySelector(".interest-submit");
+
+  // "Register interest" buttons on each piece: focus the form + preselect piece.
+  document.querySelectorAll(".vault-piece .request[data-piece]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const piece = btn.getAttribute("data-piece");
+      const box = interestForm.querySelector(`input[name="pieces"][value="${piece}"]`);
+      if (box) box.checked = true;
+      interestForm.scrollIntoView({ behavior: reduced.matches ? "auto" : "smooth", block: "center" });
+      const nameField = interestForm.querySelector('input[name="name"]');
+      if (nameField) setTimeout(() => nameField.focus(), reduced.matches ? 0 : 400);
+    });
+  });
+
+  interestForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = interestForm.name.value.trim();
+    const email = interestForm.email.value.trim();
+    const note = interestForm.note.value.trim();
+    const pieces = Array.from(interestForm.querySelectorAll('input[name="pieces"]:checked')).map((c) => c.value);
+    const company = interestForm.company.value; // honeypot
+
+    if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      statusEl.textContent = "Please enter your name and a valid email.";
+      statusEl.className = "interest-status err";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    statusEl.textContent = "Sending…";
+    statusEl.className = "interest-status";
+
+    try {
+      const res = await fetch(INTEREST_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, note, pieces, company }),
+      });
+      if (!res.ok) throw new Error("bad status " + res.status);
+      interestForm.reset();
+      statusEl.textContent = "You're on the list. We reach out to selected members directly.";
+      statusEl.className = "interest-status ok";
+    } catch (err) {
+      // Never lose an interested person: fall back to a prefilled email.
+      // Built with DOM methods (no innerHTML) so user input can't inject markup.
+      const subject = encodeURIComponent("Ghost Series preorder interest");
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nPieces: ${pieces.join(", ") || "(any)"}\nNote: ${note}`
+      );
+      statusEl.textContent = "Couldn't submit automatically. ";
+      const link = document.createElement("a");
+      link.href = `mailto:founder@phantombugz.com?subject=${subject}&body=${body}`;
+      link.textContent = "Send it as an email instead";
+      statusEl.appendChild(link);
+      statusEl.className = "interest-status err";
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+}
+
 // Reveal sections as they enter view. Reduced motion shows them immediately.
 const reveals = document.querySelectorAll("[data-reveal]");
 if (reduced.matches || !("IntersectionObserver" in window)) {

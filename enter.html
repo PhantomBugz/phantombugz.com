@@ -105,9 +105,10 @@
             </picture>
             <span class="alcove-label" aria-hidden="true">01</span>
           </div>
+          <p class="status-tag">Preorder — Coming Soon</p>
           <h3>Ghost Hat</h3>
-          <p>Low-crown cap. Concealed activation stitched into the band. USB-C charge in the seam.</p>
-          <a class="request" href="mailto:founder@phantombugz.com?subject=Ghost%20Hat%20access">Request access</a>
+          <p>Structured fitted cap. 3D raised emblem over a side-emitting fiber-optic core. Digital Rain cascades all six panels. USB-C hidden in the sweatband.</p>
+          <button class="request" type="button" data-piece="Hat">Register interest</button>
         </article>
         <article class="vault-piece" data-reveal>
           <div class="alcove">
@@ -117,9 +118,10 @@
             </picture>
             <span class="alcove-label" aria-hidden="true">02</span>
           </div>
+          <p class="status-tag">Preorder — Coming Soon</p>
           <h3>Ghost Hoodie</h3>
-          <p>Heavyweight black. The mark wakes only when you do; bugs crawl the weave.</p>
-          <a class="request" href="mailto:founder@phantombugz.com?subject=Ghost%20Hoodie%20access">Request access</a>
+          <p>Limited "Crawler" spec. Binary Bugz crawl the sleeves, hood, and torso like digital insects. Oversized back emblem. Wireless collar + USB-C passthrough.</p>
+          <button class="request" type="button" data-piece="Hoodie">Register interest</button>
         </article>
         <article class="vault-piece" data-reveal>
           <div class="alcove">
@@ -129,9 +131,10 @@
             </picture>
             <span class="alcove-label" aria-hidden="true">03</span>
           </div>
+          <p class="status-tag">Preorder — Coming Soon</p>
           <h3>Ghost Jacket</h3>
-          <p>Structured shell. Hidden USB-C run along the interior seam. System sealed.</p>
-          <a class="request" href="mailto:founder@phantombugz.com?subject=Ghost%20Jacket%20access">Request access</a>
+          <p>Limited "Crawler" spec structured shell. Binary Crawl across the panels, chest emblem, and accent strips. Wireless charging collar with USB-C passthrough.</p>
+          <button class="request" type="button" data-piece="Jacket">Register interest</button>
         </article>
         <article class="vault-piece" data-reveal>
           <div class="alcove">
@@ -141,9 +144,10 @@
             </picture>
             <span class="alcove-label" aria-hidden="true">04</span>
           </div>
+          <p class="status-tag">Preorder — Coming Soon</p>
           <h3>Ghost Backpack</h3>
-          <p>Low-profile carry with custom wireless charging. Field kit that never announces itself.</p>
-          <a class="request" href="mailto:founder@phantombugz.com?subject=Ghost%20Backpack%20access">Request access</a>
+          <p>Smart tactical shell. 360° Digital Rain, dominant front emblem, internal battery bank. Qi wireless coil in the base — charges the pack and your devices.</p>
+          <button class="request" type="button" data-piece="Backpack">Register interest</button>
         </article>
         <article class="vault-piece" data-reveal>
           <div class="alcove">
@@ -153,11 +157,66 @@
             </picture>
             <span class="alcove-label" aria-hidden="true">05</span>
           </div>
+          <p class="status-tag">Preorder — Coming Soon</p>
           <h3>Ghost Beanie</h3>
-          <p>Ribbed knit. The mark surfaces through the weave in low light. USB-C charge, 5V.</p>
-          <a class="request" href="mailto:founder@phantombugz.com?subject=Ghost%20Beanie%20access">Request access</a>
+          <p>Ribbed knit with a fiber-optic loom woven inside. Cascading Digital Rain from crown to cuff, emblem on the front cuff. USB-C hidden in the rear seam.</p>
+          <button class="request" type="button" data-piece="Beanie">Register interest</button>
         </article>
       </div>
+
+      <!-- How it works: the tech + animation presets, straight from the spec. -->
+      <div class="spec" data-reveal>
+        <div class="spec-tech">
+          <p class="eyebrow">How Ghost Series works</p>
+          <ul class="spec-layers">
+            <li><strong>Outer shell</strong> — heavyweight matte-black textile. Water &amp; abrasion resistant.</li>
+            <li><strong>Optical matrix core</strong> — side-emitting PMMA fiber-optic grid, LED-driven for uniform light.</li>
+            <li><strong>Silhouette masking</strong> — a laser-etched layer reveals light only through programmed openings, forming the binary patterns.</li>
+            <li><strong>Charging</strong> — USB-C universal, Qi wireless on bag &amp; collar, app control for patterns. Limited &amp; individually numbered.</li>
+          </ul>
+        </div>
+        <div class="spec-presets">
+          <div class="preset"><span>Stealth</span><p>0% illumination. Reads as high-end black gear.</p></div>
+          <div class="preset"><span>Boot Sequence</span><p>Emblem breathes to life, then a rolling wave.</p></div>
+          <div class="preset"><span>Digital Rain</span><p>Top-down binary cascade. Hat / Beanie / Bag.</p></div>
+          <div class="preset"><span>Binary Crawl</span><p>Bugz swarm across the surface. Jacket / Hoodie.</p></div>
+        </div>
+      </div>
+
+      <!-- Preorder interest capture -->
+      <form id="interest" class="interest" data-reveal novalidate>
+        <div class="interest-head">
+          <p class="eyebrow">Preorder — Coming Soon</p>
+          <h3>Register your interest</h3>
+          <p class="interest-sub">Ghost Series is a strictly limited, individually numbered drop. Preorders open to selected members only. Leave your details and we will reach out to those we bring in.</p>
+        </div>
+        <div class="interest-grid">
+          <label class="field">
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" required maxlength="120">
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required maxlength="200">
+          </label>
+        </div>
+        <fieldset class="pieces">
+          <legend>Pieces you want</legend>
+          <label><input type="checkbox" name="pieces" value="Hat"> Hat</label>
+          <label><input type="checkbox" name="pieces" value="Hoodie"> Hoodie</label>
+          <label><input type="checkbox" name="pieces" value="Jacket"> Jacket</label>
+          <label><input type="checkbox" name="pieces" value="Backpack"> Backpack</label>
+          <label><input type="checkbox" name="pieces" value="Beanie"> Beanie</label>
+        </fieldset>
+        <label class="field">
+          <span>Anything else <em>(optional)</em></span>
+          <textarea name="note" rows="2" maxlength="1000"></textarea>
+        </label>
+        <!-- Honeypot: hidden from humans, bots fill it. -->
+        <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="interest-submit" type="submit">Request preorder access</button>
+        <p class="interest-status" role="status" aria-live="polite"></p>
+      </form>
     </section>
 
     <section id="signal" class="signal" aria-label="Public bounty signal">

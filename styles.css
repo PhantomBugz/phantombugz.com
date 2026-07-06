@@ -638,6 +638,32 @@ a:focus-visible,
   transition: opacity .55s ease, filter .55s ease, transform .55s ease;
 }
 
+/* Photo alcoves: the render is the surface, so drop the faux binary text overlay. */
+.alcove:has(.shot)::before {
+  display: none;
+}
+
+/* Product photo fills the alcove; dark and mysterious at rest, wakes on hover. */
+.alcove .shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .5;
+  filter: brightness(.62) contrast(1.02) saturate(.9);
+  transform: scale(1.02);
+  transition: opacity .55s ease, filter .55s ease, transform .6s ease;
+}
+
+.vault-piece:hover .shot,
+.vault-piece:focus-within .shot {
+  opacity: 1;
+  filter: brightness(1.05) contrast(1.05) saturate(1.15)
+    drop-shadow(0 0 18px rgba(0, 231, 255, .5));
+  transform: scale(1.06);
+}
+
 .alcove-label {
   position: absolute;
   left: 16px;
@@ -707,6 +733,135 @@ a:focus-visible,
 .request:hover {
   color: var(--cyan-2);
   border-color: var(--cyan-2);
+}
+
+/* ---------- Ghost Series in motion (video showcase) ---------- */
+
+.motion {
+  position: relative;
+  z-index: 2;
+  padding: clamp(60px, 10vh, 120px) clamp(20px, 5vw, 64px) clamp(30px, 5vh, 56px);
+  background: linear-gradient(to bottom, var(--base), #01080a);
+}
+
+.motion-head {
+  max-width: 1180px;
+  margin: 0 auto 28px;
+}
+
+.motion-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .015em;
+}
+
+.motion-stage {
+  display: block;
+  position: relative;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  box-shadow: 0 0 60px rgba(0, 231, 255, .16), inset 0 0 0 1px rgba(0, 231, 255, .06);
+  transition: box-shadow .4s ease, border-color .4s ease;
+}
+
+.motion-stage:hover,
+.motion-stage:focus-visible {
+  border-color: var(--cyan-2);
+  box-shadow: 0 0 80px rgba(0, 231, 255, .32), inset 0 0 0 1px rgba(0, 231, 255, .1);
+}
+
+.motion-poster {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  transition: transform .5s ease, filter .5s ease;
+}
+
+.motion-stage:hover .motion-poster,
+.motion-stage:focus-visible .motion-poster {
+  transform: scale(1.03);
+  filter: brightness(1.08);
+}
+
+/* Play button in the center. */
+.motion-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 84px;
+  height: 84px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(1, 8, 10, .55);
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 30px rgba(0, 231, 255, .5);
+  backdrop-filter: blur(2px);
+  transition: transform .3s ease, background .3s ease, box-shadow .3s ease;
+}
+
+.motion-play::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 15px 0 15px 26px;
+  border-color: transparent transparent transparent var(--cyan);
+}
+
+.motion-stage:hover .motion-play,
+.motion-stage:focus-visible .motion-play {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: rgba(0, 231, 255, .18);
+  box-shadow: 0 0 46px rgba(0, 231, 255, .7);
+}
+
+.motion-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(0, 231, 255, .5);
+  pointer-events: none;
+}
+
+/* Subtle cyan edge vignette so the poster seats into the page. */
+.motion-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 90px rgba(1, 6, 8, .7);
+}
+
+/* Fullscreen playback element (appended to body on click). */
+.motion-fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  object-fit: contain;
+  z-index: 200;
 }
 
 /* ---------- Signal ---------- */

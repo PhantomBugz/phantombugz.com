@@ -181,6 +181,9 @@
           <div class="preset"><span>Digital Rain</span><p>Top-down binary cascade. Hat / Beanie / Bag.</p></div>
           <div class="preset"><span>Binary Crawl</span><p>Bugz swarm across the surface. Jacket / Hoodie.</p></div>
         </div>
+        <button id="spec-open" class="spec-link" type="button" aria-haspopup="dialog">
+          View technical spec
+        </button>
       </div>
 
       <!-- Preorder interest capture -->
@@ -234,6 +237,18 @@
       </div>
     </section>
   </main>
+
+  <!-- Technical spec lightbox -->
+  <div id="spec-modal" class="spec-modal" role="dialog" aria-modal="true" aria-label="Ghost Series technical specification" hidden>
+    <button class="spec-close" type="button" aria-label="Close">&times;</button>
+    <div class="spec-modal-inner">
+      <picture>
+        <source srcset="./assets/products/ghost/ghost-series-spec.webp" type="image/webp">
+        <img src="./assets/products/ghost/ghost-series-spec.jpg" alt="PhantomBugz Ghost Series — technical design and customization specification">
+      </picture>
+    </div>
+    <a class="spec-download" href="./assets/products/ghost/ghost-series-spec.png" download>Download full spec (PNG)</a>
+  </div>
 
   <footer class="site-footer">
     <a class="foot-mark" href="#arrival" aria-label="PhantomBugz">

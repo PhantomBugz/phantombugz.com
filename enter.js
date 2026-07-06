@@ -143,6 +143,34 @@ if (interestForm) {
   });
 }
 
+// Technical spec lightbox.
+const specOpen = document.getElementById("spec-open");
+const specModal = document.getElementById("spec-modal");
+if (specOpen && specModal) {
+  const specClose = specModal.querySelector(".spec-close");
+  let lastFocus = null;
+  const open = () => {
+    lastFocus = document.activeElement;
+    specModal.hidden = false;
+    document.body.style.overflow = "hidden";
+    specClose.focus();
+  };
+  const close = () => {
+    specModal.hidden = true;
+    document.body.style.overflow = "";
+    if (lastFocus) lastFocus.focus();
+  };
+  specOpen.addEventListener("click", open);
+  specClose.addEventListener("click", close);
+  specModal.addEventListener("click", (e) => {
+    // Click on the backdrop (not the image/inner) closes.
+    if (e.target === specModal) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !specModal.hidden) close();
+  });
+}
+
 // Reveal sections as they enter view. Reduced motion shows them immediately.
 const reveals = document.querySelectorAll("[data-reveal]");
 if (reduced.matches || !("IntersectionObserver" in window)) {

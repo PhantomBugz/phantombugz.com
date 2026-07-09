@@ -3,18 +3,16 @@ import { initCorridor } from "./js/corridor.js";
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-// Entering ALWAYS navigates to the main page. The corridor is optional eye-candy that
-// plays during the brief flash; it must never be able to block or delay entry. This is
-// the bulletproof entry path: click -> short flash -> enter.html, no scroll/timer race.
-const ENTER_FLASH_MS = 650; // matches the gate's cyan flash so the transition feels intentional
-
+// Entering ALWAYS navigates to the main page, immediately, on click. The gate's own
+// cyan flash (in gate.js) fires on the same click for the visual transition; navigation
+// does not wait on it. No scroll, no timer, no corridor dependency can block entry.
 let navigating = false;
 function enterSite() {
   if (navigating) return;
   navigating = true;
-  window.setTimeout(() => {
-    window.location.href = "./enter.html";
-  }, reduced.matches ? 0 : ENTER_FLASH_MS);
+  // Navigate immediately — do NOT depend on a setTimeout firing (some environments
+  // throttle/defer timers, which would leave the visitor stuck on the gate).
+  window.location.href = "./enter.html";
 }
 
 let corridorStarted = false;

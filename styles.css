@@ -172,6 +172,13 @@ a:focus-visible,
   outline-offset: 3px;
 }
 
+/* The skip-link target receives programmatic focus (tabindex="-1"); don't draw a
+   focus ring around the whole content section when it does. */
+#arrival:focus,
+#arrival:focus-visible {
+  outline: none;
+}
+
 .skip-link {
   position: fixed;
   top: -100px;

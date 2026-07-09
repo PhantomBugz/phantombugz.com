@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Shop — PhantomBugz Ghost Series</title>
+  <meta name="description" content="The PhantomBugz Ghost Series store. Strictly limited ethical-hacker apparel. All proceeds support the nonprofit.">
+  <link rel="canonical" href="https://phantombugz.com/shop.html">
+  <meta property="og:title" content="Shop — PhantomBugz Ghost Series">
+  <meta property="og:description" content="Strictly limited Ghost Series gear. All proceeds support the nonprofit.">
+  <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-avatar-1024.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="./assets/exports/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/exports/apple-touch-icon.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <link rel="preload" href="./assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./assets/fonts/fonts.css">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./shop.css">
+</head>
+<body class="shop-page">
+  <a class="skip-link" href="#shop">Skip to content</a>
+
+  <header class="site-header" aria-label="Primary">
+    <a class="brand-lockup" href="./enter.html" aria-label="PhantomBugz home">
+      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" width="34" height="34">
+      <span>PHANTOMBUGZ</span>
+    </a>
+    <nav class="header-nav" aria-label="Sections">
+      <a href="./enter.html#vault">Ghost Series</a>
+      <a href="./shop.html" aria-current="page">Shop</a>
+    </nav>
+  </header>
+
+  <main class="shop-main">
+    <section class="shop-hero">
+      <img class="shop-hero-mark" src="./assets/exports/phantombugz-emblem-transparent.png" alt="" width="72" height="72">
+      <p class="eyebrow">The Vault — Store</p>
+      <h1>Ghost Series</h1>
+      <p class="shop-hero-sub">Strictly limited. Hidden in plain sight. All proceeds support the nonprofit.</p>
+    </section>
+
+    <section id="shop" class="shop-layout" aria-label="Products">
+      <div id="shop-grid" class="shop-grid" aria-live="polite">
+        <p class="shop-loading">Loading the vault…</p>
+      </div>
+
+      <aside class="cart" aria-label="Your cart">
+        <h2 class="cart-title">Cart <span class="cart-badge" id="cart-count">0</span></h2>
+        <p id="cart-empty" class="cart-empty">Your cart is empty.</p>
+        <ul id="cart-lines" class="cart-lines"></ul>
+        <div class="cart-foot">
+          <div class="cart-total-row"><span>Total</span><span id="cart-total">$0.00</span></div>
+          <label class="cart-email-label" for="cart-email">Email for receipt</label>
+          <input id="cart-email" type="email" inputmode="email" autocomplete="email"
+                 placeholder="you@example.com" class="cart-email">
+          <p id="checkout-error" class="checkout-error" role="alert"></p>
+          <button id="cart-checkout" class="cart-checkout" type="button" disabled>Checkout</button>
+          <p class="cart-note">Secure checkout by Stripe. Cards, Apple Pay &amp; Google Pay supported.</p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="shop-footer">
+    <p>PhantomBugz — a team strong enough to destroy. We choose to protect.</p>
+    <p><a href="./enter.html">Back to PhantomBugz</a></p>
+  </footer>
+
+  <script type="module" src="./shop.js"></script>
+</body>
+</html>

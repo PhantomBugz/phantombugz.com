@@ -16,7 +16,7 @@ if (motionStage) {
     video.className = "motion-fullscreen";
     video.setAttribute("playsinline", "");
     video.controls = true;
-    video.loop = true;
+    video.loop = false; // play once, then forward on (no endless replay)
     video.preload = "auto";
     const webm = motionStage.getAttribute("data-video-webm");
     const mp4 = motionStage.getAttribute("data-video-mp4");
@@ -34,11 +34,25 @@ if (motionStage) {
     }
     document.body.appendChild(video);
 
+    let done = false;
     const cleanup = () => {
+      if (done) return;
+      done = true;
       try { video.pause(); } catch (e) {}
+      // If still in fullscreen (e.g. video ended while fullscreen), exit it.
+      try {
+        if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
+      } catch (e) {}
       video.remove();
       document.removeEventListener("fullscreenchange", onFsChange);
       document.removeEventListener("webkitfullscreenchange", onFsChange);
+      // Forward on: return the visitor to the main content (they're already on the
+      // main page; dismiss the overlay and bring the vault/section back into view).
+      const target = document.getElementById("vault") || document.getElementById("arrival");
+      if (target && target.scrollIntoView) {
+        target.scrollIntoView({ behavior: reduced.matches ? "auto" : "smooth", block: "start" });
+      }
     };
     const onFsChange = () => {
       if (!document.fullscreenElement && !document.webkitFullscreenElement) cleanup();
@@ -70,7 +84,8 @@ if (motionStage) {
     }
     // iOS <video> exits fullscreen via its own event.
     video.addEventListener("webkitendfullscreen", cleanup);
-    video.addEventListener("ended", () => { if (!video.loop) cleanup(); });
+    // Play-once: when it finishes, forward on (cleanup handles exit + scroll).
+    video.addEventListener("ended", cleanup);
   });
 }
 

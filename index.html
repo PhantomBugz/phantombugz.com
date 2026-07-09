@@ -49,14 +49,16 @@
 <body>
   <a class="skip-link" href="./enter.html">Skip intro</a>
 
-  <div id="gate" class="gate" role="button" tabindex="0" aria-label="Enter PhantomBugz">
+  <!-- The gate is a REAL link so entering works even if JS never runs. The JS enhances
+       it with a cyan flash + corridor, but navigation never depends on JS. -->
+  <a id="gate" class="gate" href="./enter.html" aria-label="Enter PhantomBugz">
     <canvas id="gate-canvas" aria-hidden="true"></canvas>
     <div class="gate-inner">
       <img class="gate-emblem" src="./assets/exports/phantombugz-emblem-transparent.png" alt="PhantomBugz" width="150" height="150">
       <p class="gate-name">PHANTOMBUGZ</p>
       <p class="gate-enter"><span>Click to enter</span></p>
     </div>
-  </div>
+  </a>
 
   <header class="site-header" aria-label="Primary">
     <a class="brand-lockup" href="./enter.html" aria-label="PhantomBugz">

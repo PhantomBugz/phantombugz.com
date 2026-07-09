@@ -85,46 +85,34 @@ export function initGate(onEnter) {
     if (running) size();
   });
 
+  // The gate is a REAL <a href="./enter.html">. The browser navigates natively on
+  // click/tap/Enter — that ALWAYS works, even if this JS breaks. enter() only adds the
+  // cyan-flash flourish; it never calls preventDefault and never controls navigation,
+  // so nothing here can strand a visitor on the gate.
   let entered = false;
   function enter() {
     if (entered) return;
     entered = true;
     running = false;
 
-    // Cyan flash flood.
+    // Cyan flash flood (visual only; the native link navigation is already in flight).
     const flash = document.createElement("div");
     flash.className = "gate-flash";
     document.body.appendChild(flash);
-    // reflow then fire the animation
-    void flash.offsetWidth;
+    void flash.offsetWidth; // reflow then fire the animation
     flash.classList.add("fire");
 
     gate.classList.add("entering");
-    gate.style.pointerEvents = "none"; // stop any further taps immediately
     document.body.classList.remove("gate-open");
-    if (onEnter) onEnter();
-
-    const cleanup = () => {
-      gate.classList.add("gone");
-      flash.remove();
-    };
-    if (REDUCED.matches) {
-      cleanup();
-    } else {
-      setTimeout(cleanup, 1000);
+    if (onEnter) {
+      try { onEnter(); } catch (e) { /* corridor is decorative; never block entry */ }
     }
   }
 
-  // Fire on the first tap/click. Listen to several events (iOS Safari can drop
-  // one or another); the `entered` guard makes extras harmless. No preventDefault
-  // on the pointer events — that interferes with iOS tap recognition.
+  // Fire the flash on tap/click. We do NOT preventDefault, so the anchor's native
+  // navigation to enter.html proceeds regardless. The `entered` guard makes extra
+  // events harmless. Enter/Space on a focused anchor already navigates natively.
   gate.addEventListener("click", enter);
   gate.addEventListener("touchend", enter);
   gate.addEventListener("pointerup", enter);
-  gate.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      enter();
-    }
-  });
 }

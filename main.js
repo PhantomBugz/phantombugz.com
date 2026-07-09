@@ -20,7 +20,12 @@ function startCorridor() {
 // The gate owns the first screen; entering starts the corridor.
 initGate(startCorridor);
 
+// Single guard so no path (scroll-sling, auto-dolly, or backstop timeout) can
+// navigate twice or fight another in-flight transition.
+let navigating = false;
 function goToMain(sling) {
+  if (navigating) return;
+  navigating = true;
   if (reduced.matches) {
     window.location.href = "./enter.html";
     return;
@@ -33,11 +38,12 @@ function goToMain(sling) {
 
 // MOBILE: fly the camera down the corridor automatically, then sling to main.
 function autoDolly() {
+  if (navigating) return;
   const corridor = document.getElementById("corridor");
   const space = corridor && corridor.querySelector(".corridor-space");
   const sling = document.getElementById("sling");
   if (!corridor || !space) {
-    window.location.href = "./enter.html";
+    goToMain(null);
     return;
   }
   if (reduced.matches) {
@@ -93,9 +99,25 @@ function watchForSling() {
     if (p >= 0.995 && maxSeen >= 0.995) fireSling();
   }
 
+  // Check immediately (next frame) to catch non-scrollable pages.
+  requestAnimationFrame(check);
+
   window.addEventListener("scroll", check, { passive: true });
   window.addEventListener("resize", check, { passive: true });
   if (window.visualViewport) {
     window.visualViewport.addEventListener("resize", check, { passive: true });
   }
+
+  // If the visitor hasn't started scrolling shortly after entering, play the same
+  // cinematic dolly the mobile path uses, then navigate — so a desktop user who never
+  // scrolls gets an intentional fly-through instead of a stuck-looking corridor.
+  // Scrolling before then cancels the auto-dolly (the scroll-sling takes over).
+  const AUTO_DOLLY_AFTER = 1500; // ms of "did they scroll?" grace
+  setTimeout(() => {
+    if (slung || maxSeen > 0.02) return; // user is scrolling — let them drive
+    autoDolly();
+  }, AUTO_DOLLY_AFTER);
+
+  // Absolute backstop: never let a visitor hang on the corridor.
+  setTimeout(fireSling, 8000);
 }

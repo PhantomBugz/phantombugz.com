@@ -1706,9 +1706,64 @@ button.request {
 }
 
 @media (max-width: 420px) {
-  .zk-hero,
-  .zk-hero-copy {
+  body:not(.main-page):not(.zk-page):not(.shop-page) .site-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    justify-items: start;
     min-width: 0;
+    gap: 8px;
+  }
+  body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+  body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav a {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .zk-hero,
+  .zk-hero-copy,
+  .zk-console,
+  .zk-status,
+  .zk-actions,
+  .zk-capability-grid,
+  .zk-capability-grid article,
+  .zk-platform-list,
+  .zk-release {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .zk-console,
+  .zk-capability-grid article {
+    padding: clamp(12px, 5vw, 20px);
+  }
+  .zk-status,
+  .zk-actions,
+  .zk-capability-grid {
+    gap: clamp(6px, 4vw, 12px);
+  }
+  .zk-console p {
+    grid-template-columns: minmax(0, 3ch) minmax(0, 1fr);
+    column-gap: 6px;
+  }
+  .zk-console > *,
+  .zk-capability-grid > *,
+  .zk-platform-list > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .zk-status span,
+  .zk-cta,
+  .zk-text-link {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   .zk-hero h1 {
     max-width: 100%;

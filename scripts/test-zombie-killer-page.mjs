@@ -755,12 +755,92 @@ assert.match(
 const compactBlocks = extractCssAtRuleBlocks(css, /^@media\s*\(\s*max-width\s*:\s*420px\s*\)$/);
 assert.equal(compactBlocks.length, 1, "styles.css must define exactly one real 420px compact media block");
 const compactRules = extractTopLevelCssRules(compactBlocks[0]);
-const compactHeroRule = requireCssRule(
+const compactIndexHeaderRule = requireCssRule(
   compactRules,
-  [".zk-hero", ".zk-hero-copy"],
-  "the 420px block must allow the Zombie Killer hero and copy to shrink",
+  ["body:not(.main-page):not(.zk-page):not(.shop-page) .site-header"],
+  "the 420px block must stack the runtime-class-safe index header",
 );
-assert.match(compactHeroRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactIndexHeaderRule.body, /(?:^|;)\s*display\s*:\s*grid\s*(?:;|$)/);
+assert.match(
+  compactIndexHeaderRule.body,
+  /(?:^|;)\s*grid-template-columns\s*:\s*minmax\(\s*0\s*,\s*1fr\s*\)\s*(?:;|$)/,
+);
+assert.match(compactIndexHeaderRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+
+const compactIndexNavRule = requireCssRule(
+  compactRules,
+  ["body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav"],
+  "the 420px block must contain and wrap the runtime-class-safe index navigation",
+);
+assert.match(compactIndexNavRule.body, /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactIndexNavRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactIndexNavRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactIndexNavRule.body, /(?:^|;)\s*flex-wrap\s*:\s*wrap\s*(?:;|$)/);
+
+const compactIndexNavLinkRule = requireCssRule(
+  compactRules,
+  ["body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav a"],
+  "the 420px block must let each index navigation link shrink and wrap",
+);
+assert.match(compactIndexNavLinkRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactIndexNavLinkRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactIndexNavLinkRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+
+const compactContainmentRule = requireCssRule(
+  compactRules,
+  [
+    ".zk-hero",
+    ".zk-hero-copy",
+    ".zk-console",
+    ".zk-status",
+    ".zk-actions",
+    ".zk-capability-grid",
+    ".zk-capability-grid article",
+    ".zk-platform-list",
+    ".zk-release",
+  ],
+  "the 420px block must contain every Zombie Killer reflow surface",
+);
+assert.match(compactContainmentRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactContainmentRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+
+const compactSurfaceSpacingRule = requireCssRule(
+  compactRules,
+  [".zk-console", ".zk-capability-grid article"],
+  "the 420px block must reduce console and capability-card padding",
+);
+assert.match(
+  compactSurfaceSpacingRule.body,
+  /(?:^|;)\s*padding\s*:\s*clamp\(\s*12px\s*,\s*5vw\s*,\s*20px\s*\)\s*(?:;|$)/,
+);
+
+const compactConsoleRowRule = requireCssRule(
+  compactRules,
+  [".zk-console p"],
+  "the 420px block must use shrinkable console grid tracks",
+);
+assert.match(
+  compactConsoleRowRule.body,
+  /(?:^|;)\s*grid-template-columns\s*:\s*minmax\(\s*0\s*,\s*3ch\s*\)\s+minmax\(\s*0\s*,\s*1fr\s*\)\s*(?:;|$)/,
+);
+assert.match(compactConsoleRowRule.body, /(?:^|;)\s*column-gap\s*:\s*6px\s*(?:;|$)/);
+
+const compactGridChildRule = requireCssRule(
+  compactRules,
+  [".zk-console > *", ".zk-capability-grid > *", ".zk-platform-list > *"],
+  "the 420px block must let Zombie Killer grid children shrink below min-content width",
+);
+assert.match(compactGridChildRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactGridChildRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+
+const compactActionTextRule = requireCssRule(
+  compactRules,
+  [".zk-status span", ".zk-cta", ".zk-text-link"],
+  "the 420px block must contain status chips and hero actions",
+);
+assert.match(compactActionTextRule.body, /(?:^|;)\s*box-sizing\s*:\s*border-box\s*(?:;|$)/);
+assert.match(compactActionTextRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactActionTextRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
 const compactTitleRule = requireCssRule(
   compactRules,
   [".zk-hero h1"],

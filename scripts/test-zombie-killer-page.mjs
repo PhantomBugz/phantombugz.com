@@ -1035,7 +1035,52 @@ assert.strictEqual(
   ".gitlab-ci.yml must exactly match the site-only GitLab Pages release policy",
 );
 
-const visibleReadme = readme.replace(/<!--[\s\S]*?-->/g, "");
+const stripBalancedHtmlComments = (source) => {
+  let visible = "";
+  let cursor = 0;
+
+  while (cursor < source.length) {
+    const commentStart = source.indexOf("<!--", cursor);
+    const commentEnd = source.indexOf("-->", cursor);
+    if (commentEnd >= 0 && (commentStart < 0 || commentEnd < commentStart)) {
+      throw new Error("README.md contains a stray HTML comment closer");
+    }
+    if (commentStart < 0) {
+      visible += source.slice(cursor);
+      break;
+    }
+
+    visible += source.slice(cursor, commentStart);
+    const closingIndex = source.indexOf("-->", commentStart + 4);
+    if (closingIndex < 0) {
+      throw new Error("README.md contains an unterminated HTML comment");
+    }
+    const nestedStart = source.indexOf("<!--", commentStart + 4);
+    if (nestedStart >= 0 && nestedStart < closingIndex) {
+      throw new Error("README.md contains an unmatched HTML comment opener");
+    }
+    cursor = closingIndex + 3;
+  }
+
+  return visible;
+};
+assert.equal(
+  stripBalancedHtmlComments("visible<!-- hidden -->text"),
+  "visibletext",
+  "README visibility scanning must remove balanced HTML comments",
+);
+assert.throws(
+  () => stripBalancedHtmlComments("<!-- hidden"),
+  /unterminated HTML comment/,
+  "README visibility scanning must reject an unterminated HTML comment",
+);
+assert.throws(
+  () => stripBalancedHtmlComments("visible --> hidden"),
+  /stray HTML comment closer/,
+  "README visibility scanning must reject a stray HTML comment closer",
+);
+
+const visibleReadme = stripBalancedHtmlComments(readme);
 const readmeCommandsHeading = /^## Commands[ \t]*$/m.exec(visibleReadme);
 assert.ok(readmeCommandsHeading, "README.md must retain its Commands section");
 const readmeAfterCommandsHeading = visibleReadme.slice(

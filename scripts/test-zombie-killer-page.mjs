@@ -827,6 +827,25 @@ assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)
 assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
 assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
 
+const compactMainFieldsetRule = requireCssRule(
+  compactRules,
+  [".main-page .pieces"],
+  "the 420px block must let the main-page interest fieldset shrink below its intrinsic minimum",
+);
+assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*box-sizing\s*:\s*border-box\s*(?:;|$)/);
+assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+
+const compactMainFieldsetChildRule = requireCssRule(
+  compactRules,
+  [".main-page .pieces legend", ".main-page .pieces label"],
+  "the 420px block must wrap the main-page interest fieldset labels",
+);
+assert.match(compactMainFieldsetChildRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactMainFieldsetChildRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainFieldsetChildRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+
 const compactMainSurfaceChildRule = requireCssRule(
   compactRules,
   [

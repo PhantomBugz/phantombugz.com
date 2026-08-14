@@ -1754,6 +1754,18 @@ button.request {
     max-width: 100%;
     overflow-wrap: anywhere;
   }
+  .main-page .pieces {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .main-page .pieces legend,
+  .main-page .pieces label {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
   .main-page .manifesto .line,
   .main-page .spec-layers > *,
   .main-page .preset > *,

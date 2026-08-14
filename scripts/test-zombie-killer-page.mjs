@@ -247,6 +247,11 @@ assert.match(mainText, /pidfd/, "the Linux capability must mention pidfd");
 assert.match(mainText, /macOS/, "the standalone page must describe macOS support");
 assert.match(mainText, /scan and inspect only/i, "the macOS capability must state its initial safety boundary");
 assert.match(mainText, /auditable receipts/i, "the standalone page must describe auditable receipts");
+assert.match(
+  mainText,
+  /The source release candidate is prepared\. Public source will follow completed hosted verification and a verified release tag\. Signed installers will follow human-controlled platform signing; macOS installers also require notarization and stapling\./,
+  "the release copy must separate public source verification from installer signing gates",
+);
 assert.ok(
   !pageTags.some((tag) => getAttribute(tag, "data-reveal")),
   "standalone page must remain visible without JavaScript",
@@ -337,6 +342,39 @@ for (const selector of [".zk-feature", ".zk-page", ".zk-hero", ".zk-capability-g
   assert.match(css, selectorRule, `styles.css must define ${selector} in a real selector rule`);
 }
 
+const topLevelRules = extractTopLevelCssRules(css);
+const headerTargetRule = requireCssRule(
+  topLevelRules,
+  [".main-page .header-nav a", ".zk-page .header-nav a"],
+  "main and Zombie Killer header links must share an accessible target-size rule",
+);
+assert.match(
+  headerTargetRule.body,
+  /(?:^|;)\s*min-width\s*:\s*44px\s*(?:;|$)/,
+  "main and Zombie Killer header links must be at least 44px wide",
+);
+assert.match(
+  headerTargetRule.body,
+  /(?:^|;)\s*min-height\s*:\s*44px\s*(?:;|$)/,
+  "main and Zombie Killer header links must be at least 44px tall",
+);
+
+const ctaTargetRule = requireCssRule(
+  topLevelRules,
+  [".zk-cta"],
+  "Zombie Killer calls to action must define an accessible target size",
+);
+assert.match(
+  ctaTargetRule.body,
+  /(?:^|;)\s*min-width\s*:\s*44px\s*(?:;|$)/,
+  "Zombie Killer calls to action must be at least 44px wide",
+);
+assert.match(
+  ctaTargetRule.body,
+  /(?:^|;)\s*min-height\s*:\s*44px\s*(?:;|$)/,
+  "Zombie Killer calls to action must be at least 44px tall",
+);
+
 const mobileBlocks = extractCssAtRuleBlocks(css, /^@media\s*\(\s*max-width\s*:\s*720px\s*\)$/);
 assert.equal(mobileBlocks.length, 1, "styles.css must define exactly one real 720px mobile media block");
 const mobileRules = extractTopLevelCssRules(mobileBlocks[0]);
@@ -361,6 +399,107 @@ assert.match(
   mobileNavigationRule.body,
   /(?:^|;)\s*flex-wrap\s*:\s*wrap\s*(?:;|$)/,
   "the mobile header-nav rule must wrap navigation links",
+);
+
+const mobileShopHeaderRule = requireCssRule(
+  mobileRules,
+  [".shop-page .site-header", "body:not([class]) .site-header"],
+  "the 720px block must preserve the shop and index header spacing without the icon-only grid",
+);
+assert.match(
+  mobileShopHeaderRule.body,
+  /(?:^|;)\s*padding\s*:\s*12px\s+18px\s*(?:;|$)/,
+  "the mobile shop and index headers must retain their compact padding",
+);
+assert.doesNotMatch(
+  mobileShopHeaderRule.body,
+  /(?:^|;)\s*(?:display\s*:\s*grid|grid-template-columns\s*:)/,
+  "the text-bearing shop brand must not be forced into the icon-only grid",
+);
+
+const mobileShopNavigationRule = requireCssRule(
+  mobileRules,
+  [".shop-page .header-nav", "body:not([class]) .header-nav"],
+  "the 720px block must preserve the shop and index navigation spacing",
+);
+assert.match(
+  mobileShopNavigationRule.body,
+  /(?:^|;)\s*gap\s*:\s*14px\s*(?:;|$)/,
+  "the mobile shop and index navigation must retain the 14px gap",
+);
+assert.match(
+  mobileShopNavigationRule.body,
+  /(?:^|;)\s*font-size\s*:\s*\.66rem\s*(?:;|$)/,
+  "the mobile shop and index navigation must retain the compact font size",
+);
+assert.match(
+  mobileShopNavigationRule.body,
+  /(?:^|;)\s*letter-spacing\s*:\s*\.16em\s*(?:;|$)/,
+  "the mobile shop and index navigation must retain readable letter spacing",
+);
+
+const mobileFooterNavigationRule = requireCssRule(
+  mobileRules,
+  [".main-page .site-footer nav", ".zk-page .site-footer nav"],
+  "the 720px block must wrap the main and Zombie Killer footer navigation",
+);
+assert.match(
+  mobileFooterNavigationRule.body,
+  /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/,
+  "mobile main and Zombie Killer footer navigation must fit its container",
+);
+assert.match(
+  mobileFooterNavigationRule.body,
+  /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/,
+  "mobile main and Zombie Killer footer navigation must be shrinkable",
+);
+assert.match(
+  mobileFooterNavigationRule.body,
+  /(?:^|;)\s*flex-wrap\s*:\s*wrap\s*(?:;|$)/,
+  "mobile main and Zombie Killer footer navigation must wrap",
+);
+
+const mobileBrandTargetRule = requireCssRule(
+  mobileRules,
+  [".main-page .brand-lockup", ".zk-page .brand-lockup"],
+  "the 720px block must size main and Zombie Killer brand links as accessible targets",
+);
+assert.match(
+  mobileBrandTargetRule.body,
+  /(?:^|;)\s*min-width\s*:\s*44px\s*(?:;|$)/,
+  "mobile main and Zombie Killer brand links must be at least 44px wide",
+);
+assert.match(
+  mobileBrandTargetRule.body,
+  /(?:^|;)\s*min-height\s*:\s*44px\s*(?:;|$)/,
+  "mobile main and Zombie Killer brand links must be at least 44px tall",
+);
+
+const mobileTextTargetRule = requireCssRule(
+  mobileRules,
+  [
+    ".main-page .foot-mark",
+    ".zk-page .foot-mark",
+    ".main-page .site-footer nav a",
+    ".zk-page .site-footer nav a",
+    ".zk-page .zk-text-link",
+  ],
+  "the 720px block must size footer and back links as accessible targets",
+);
+assert.match(
+  mobileTextTargetRule.body,
+  /(?:^|;)\s*min-width\s*:\s*44px\s*(?:;|$)/,
+  "mobile footer and back links must be at least 44px wide",
+);
+assert.match(
+  mobileTextTargetRule.body,
+  /(?:^|;)\s*min-height\s*:\s*44px\s*(?:;|$)/,
+  "mobile footer and back links must be at least 44px tall",
+);
+assert.match(
+  mobileTextTargetRule.body,
+  /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/,
+  "mobile footer and back link text must be allowed to wrap",
 );
 
 const featureGridRule = requireCssRule(

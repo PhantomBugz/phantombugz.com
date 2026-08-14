@@ -1224,6 +1224,7 @@ button.request {
 .zk-page .header-nav a {
   display: inline-flex;
   align-items: center;
+  min-width: 44px;
   min-height: 44px;
 }
 
@@ -1298,6 +1299,7 @@ button.request {
   align-items: center;
   justify-content: center;
   gap: 12px;
+  min-width: 44px;
   min-height: 44px;
   padding: 12px 18px;
   border: 1px solid var(--cyan);
@@ -1595,6 +1597,24 @@ button.request {
     font-size: .62rem;
     letter-spacing: .08em;
   }
+  .main-page .brand-lockup,
+  .zk-page .brand-lockup {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .shop-page .site-header,
+  body:not([class]) .site-header {
+    padding: 12px 18px;
+  }
+  .shop-page .header-nav,
+  body:not([class]) .header-nav {
+    gap: 14px;
+    font-size: .66rem;
+    letter-spacing: .16em;
+  }
   .zk-feature-grid,
   .zk-hero {
     grid-template-columns: 1fr;
@@ -1613,10 +1633,24 @@ button.request {
     grid-template-columns: 1fr;
     gap: 6px;
   }
+  .main-page .site-footer nav,
   .zk-page .site-footer nav {
+    width: 100%;
     min-width: 0;
     flex-wrap: wrap;
     gap: 12px 18px;
+  }
+  .main-page .foot-mark,
+  .zk-page .foot-mark,
+  .main-page .site-footer nav a,
+  .zk-page .site-footer nav a,
+  .zk-page .zk-text-link {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   /* Mobile corridor auto-plays (JS-driven dolly), so it is a single non-scroll
      screen — this sidesteps iOS Safari's broken sticky + 3D + overflow scroll. */

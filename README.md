@@ -4,6 +4,20 @@ This folder is the imported PhantomBugz public site prototype and public monthly
 
 ## Commands
 
+Verify the Zombie Killer landing-page contract:
+
+```powershell
+node .\scripts\test-zombie-killer-page.mjs
+```
+
+Preview the static site from the repository root:
+
+```powershell
+python -m http.server 4173 --bind 127.0.0.1
+```
+
+Open http://127.0.0.1:4173/zombie-killer.html.
+
 Refresh the public-safe bounty ticker data:
 
 ```powershell

@@ -264,6 +264,9 @@ const enterScript = read("enter.js");
 const page = read("zombie-killer.html");
 const styles = read("styles.css");
 const sitemap = read("sitemap.xml");
+const githubPagesWorkflow = read(".github/workflows/pages.yml");
+const gitlabPipeline = read(".gitlab-ci.yml");
+const readme = read("README.md");
 
 const enterMarkup = sanitizeMarkup(enter);
 const pageMarkup = sanitizeMarkup(page);
@@ -938,6 +941,270 @@ assert.equal(
   sitemapLocations.filter((location) => location === "https://phantombugz.com/zombie-killer.html").length,
   1,
   "sitemap.xml must include exactly one real Zombie Killer <url><loc> entry",
+);
+
+const stripYamlComments = (source) =>
+  source
+    .replace(/^\uFEFF/, "")
+    .split(/\r?\n/)
+    .map((line) => {
+      let quote = null;
+      let escaped = false;
+      for (let index = 0; index < line.length; index += 1) {
+        const character = line[index];
+        if (quote) {
+          if (escaped) escaped = false;
+          else if (character === "\\" && quote === '"') escaped = true;
+          else if (character === quote) quote = null;
+          continue;
+        }
+        if (character === '"' || character === "'") quote = character;
+        else if (character === "#" && (index === 0 || /\s/.test(line[index - 1]))) {
+          return line.slice(0, index).trimEnd();
+        }
+      }
+      return line.trimEnd();
+    })
+    .join("\n");
+
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const extractYamlBlock = (source, key, indentation) => {
+  const lines = source.split(/\r?\n/);
+  const prefix = " ".repeat(indentation);
+  const keyPattern = new RegExp(`^${prefix}${escapeRegExp(key)}:\\s*$`);
+  const startIndex = lines.findIndex((line) => keyPattern.test(line));
+  assert.ok(startIndex >= 0, `YAML must define ${key} at indentation ${indentation}`);
+
+  let endIndex = lines.length;
+  for (let index = startIndex + 1; index < lines.length; index += 1) {
+    if (!lines[index].trim()) continue;
+    const currentIndentation = lines[index].match(/^ */)[0].length;
+    if (currentIndentation <= indentation) {
+      endIndex = index;
+      break;
+    }
+  }
+
+  return lines.slice(startIndex + 1, endIndex).join("\n");
+};
+
+const uncommentedGithubWorkflow = stripYamlComments(githubPagesWorkflow);
+assert.match(
+  uncommentedGithubWorkflow,
+  /^name: Deploy GitHub Pages$/m,
+  "the GitHub Pages workflow must retain its deployment name",
+);
+
+const githubPushTrigger = extractYamlBlock(uncommentedGithubWorkflow, "push", 2);
+assert.match(githubPushTrigger, /^ {4}branches: \[main\]$/m, "GitHub Pages pushes must target main");
+const githubPullRequestTrigger = extractYamlBlock(uncommentedGithubWorkflow, "pull_request", 2);
+assert.match(
+  githubPullRequestTrigger,
+  /^ {4}branches: \[main\]$/m,
+  "GitHub Pages pull requests must verify changes targeting main",
+);
+assert.match(
+  uncommentedGithubWorkflow,
+  /^ {2}workflow_dispatch:\s*$/m,
+  "the GitHub Pages workflow must remain manually dispatchable",
+);
+
+const githubTopLevelPermissions = extractYamlBlock(uncommentedGithubWorkflow, "permissions", 0);
+assert.equal(
+  githubTopLevelPermissions.trim(),
+  "contents: read",
+  "top-level GitHub permissions must be limited to read-only repository contents",
+);
+
+const githubConcurrency = extractYamlBlock(uncommentedGithubWorkflow, "concurrency", 0);
+assert.match(
+  githubConcurrency,
+  /^ {2}group: pages-\$\{\{ github\.ref \}\}$/m,
+  "GitHub Pages concurrency must be isolated by github.ref",
+);
+assert.match(
+  githubConcurrency,
+  /^ {2}cancel-in-progress: true$/m,
+  "GitHub Pages must cancel superseded runs on the same ref",
+);
+
+const githubVerifyJob = extractYamlBlock(uncommentedGithubWorkflow, "verify", 2);
+assert.match(githubVerifyJob, /^ {4}runs-on: ubuntu-latest$/m, "the verify job must run on Ubuntu");
+assert.match(
+  githubVerifyJob,
+  /^ {6}- uses: actions\/checkout@v4$/m,
+  "the verify job must check out the repository with actions/checkout@v4",
+);
+assert.match(
+  githubVerifyJob,
+  /^ {6}- uses: actions\/setup-node@v4\s*\n {8}with:\s*\n {10}node-version: 24$/m,
+  "the verify job must install Node 24 with actions/setup-node@v4",
+);
+assert.match(
+  githubVerifyJob,
+  /^ {6}- run: node scripts\/test-zombie-killer-page\.mjs$/m,
+  "the verify job must run the dependency-free Zombie Killer contract",
+);
+
+const githubDeployJob = extractYamlBlock(uncommentedGithubWorkflow, "deploy", 2);
+assert.match(
+  githubDeployJob,
+  /^ {4}needs: verify$/m,
+  "the deploy job must wait for the verify job",
+);
+assert.match(
+  githubDeployJob,
+  /^ {4}if: github\.event_name != 'pull_request'$/m,
+  "the deploy job must not run for pull requests",
+);
+assert.match(
+  githubDeployJob,
+  /^ {6}contents: read\s*\n {6}pages: write\s*\n {6}id-token: write$/m,
+  "only the deploy job must receive the permissions required by GitHub Pages",
+);
+assert.match(
+  githubDeployJob,
+  /^ {6}name: github-pages\s*\n {6}url: \$\{\{ steps\.deployment\.outputs\.page_url \}\}$/m,
+  "the deploy job must publish its github-pages environment URL",
+);
+assert.match(githubDeployJob, /^ {4}runs-on: ubuntu-latest$/m, "the deploy job must run on Ubuntu");
+for (const action of [
+  "actions/checkout@v4",
+  "actions/configure-pages@v5",
+  "actions/upload-pages-artifact@v3",
+  "actions/deploy-pages@v4",
+]) {
+  const actionPattern =
+    action === "actions/deploy-pages@v4"
+      ? new RegExp(`^ {6}- id: deployment\\s*\\n {8}uses: ${escapeRegExp(action)}$`, "m")
+      : new RegExp(`^ {6}- uses: ${escapeRegExp(action)}$`, "m");
+  assert.match(
+    githubDeployJob,
+    actionPattern,
+    `the deploy job must use ${action}`,
+  );
+}
+assert.match(
+  githubDeployJob,
+  /^ {6}- uses: actions\/upload-pages-artifact@v3\s*\n {8}with:\s*\n {10}path: \.$/m,
+  "the deploy job must upload the static-site root",
+);
+
+assert.equal(
+  (uncommentedGithubWorkflow.match(/^\s+pages: write$/gm) ?? []).length,
+  1,
+  "GitHub Pages write permission must appear only once, inside deploy",
+);
+assert.equal(
+  (uncommentedGithubWorkflow.match(/^\s+id-token: write$/gm) ?? []).length,
+  1,
+  "GitHub identity-token write permission must appear only once, inside deploy",
+);
+const githubVerificationIndex = uncommentedGithubWorkflow.indexOf(
+  "run: node scripts/test-zombie-killer-page.mjs",
+);
+const githubArtifactUploadIndex = uncommentedGithubWorkflow.indexOf("uses: actions/upload-pages-artifact@v3");
+assert.ok(
+  githubVerificationIndex >= 0 &&
+    githubArtifactUploadIndex >= 0 &&
+    githubVerificationIndex < githubArtifactUploadIndex,
+  "GitHub verification must be declared before the Pages artifact upload",
+);
+
+const uncommentedGitlabPipeline = stripYamlComments(gitlabPipeline);
+assert.match(
+  uncommentedGitlabPipeline,
+  /^image: node:24-alpine$/m,
+  "GitLab Pages must use the Node 24 Alpine image",
+);
+const gitlabPagesJob = extractYamlBlock(uncommentedGitlabPipeline, "pages", 0);
+assert.match(gitlabPagesJob, /^ {2}stage: deploy$/m, "the GitLab pages job must use the deploy stage");
+const gitlabScript = extractYamlBlock(uncommentedGitlabPipeline, "script", 2);
+const gitlabCommands = Array.from(gitlabScript.matchAll(/^\s*-\s+(.+)$/gm), (match) => match[1].trim());
+assert.equal(
+  gitlabCommands[0],
+  "node scripts/test-zombie-killer-page.mjs",
+  "GitLab must run the Zombie Killer contract before assembling the Pages artifact",
+);
+const gitlabMkdirIndex = gitlabCommands.indexOf("mkdir -p public");
+const gitlabCopyIndex = gitlabCommands.findIndex((command) => command.startsWith("cp "));
+assert.ok(gitlabMkdirIndex > 0, "GitLab must create the public artifact directory after verification");
+assert.ok(
+  gitlabCopyIndex > gitlabMkdirIndex,
+  "GitLab must copy the explicit artifact allowlist only after verification and directory creation",
+);
+
+const gitlabCopyTokens = gitlabCommands[gitlabCopyIndex].split(/\s+/);
+assert.equal(gitlabCopyTokens[0], "cp", "GitLab artifact assembly must use an explicit cp command");
+assert.equal(gitlabCopyTokens.at(-1), "public/", "GitLab must copy the allowlist into public/");
+const gitlabCopySources = gitlabCopyTokens.slice(1, -1).filter((token) => !token.startsWith("-"));
+assert.ok(
+  gitlabCopySources.every((source) => !/[?*\[\]{}]/.test(source)),
+  "GitLab artifact sources must be explicit paths without glob expansion",
+);
+for (const artifactPath of [
+  "assets",
+  "data",
+  "js",
+  "index.html",
+  "enter.html",
+  "enter.js",
+  "zombie-killer.html",
+  "shop.html",
+  "shop.css",
+  "shop.js",
+  "main.js",
+  "styles.css",
+  "site.webmanifest",
+  "robots.txt",
+  "sitemap.xml",
+  "_headers",
+  "_redirects",
+]) {
+  assert.ok(gitlabCopySources.includes(artifactPath), `GitLab Pages must publish ${artifactPath}`);
+}
+const gitlabArtifacts = extractYamlBlock(uncommentedGitlabPipeline, "artifacts", 2);
+assert.match(
+  gitlabArtifacts,
+  /^ {4}paths:\s*\n {6}- public$/m,
+  "GitLab Pages must retain public as its artifact directory",
+);
+const gitlabRules = extractYamlBlock(uncommentedGitlabPipeline, "rules", 2);
+assert.match(
+  gitlabRules,
+  /^ {4}- if: '\$CI_COMMIT_BRANCH == \$CI_DEFAULT_BRANCH'$/m,
+  "GitLab Pages must deploy only from the default branch",
+);
+
+const readmeCommandsHeading = /^## Commands[ \t]*$/m.exec(readme);
+assert.ok(readmeCommandsHeading, "README.md must retain its Commands section");
+const readmeAfterCommandsHeading = readme.slice(readmeCommandsHeading.index + readmeCommandsHeading[0].length);
+const readmeNextHeadingIndex = readmeAfterCommandsHeading.search(/^##[ \t]+/m);
+const readmeCommands =
+  readmeNextHeadingIndex >= 0
+    ? readmeAfterCommandsHeading.slice(0, readmeNextHeadingIndex)
+    : readmeAfterCommandsHeading;
+assert.match(
+  readmeCommands,
+  /Verify the Zombie Killer landing-page contract:/,
+  "README.md must label the Zombie Killer verification command",
+);
+const powershellBlocks = Array.from(
+  readmeCommands.matchAll(/```powershell\s*\r?\n([\s\S]*?)```/g),
+  (match) => match[1].trim(),
+);
+assert.ok(
+  powershellBlocks.includes("node .\\scripts\\test-zombie-killer-page.mjs"),
+  "README.md must document the root-level PowerShell verification command",
+);
+assert.ok(
+  powershellBlocks.includes("python -m http.server 4173 --bind 127.0.0.1"),
+  "README.md must document the local root preview command",
+);
+assert.match(
+  readmeCommands,
+  /http:\/\/127\.0\.0\.1:4173\/zombie-killer\.html/,
+  "README.md must document the local Zombie Killer preview URL",
 );
 
 console.log("Zombie Killer public-page contract passed.");

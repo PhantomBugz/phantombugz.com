@@ -1,6 +1,6 @@
 # Zombie Killer Site Link Design
 
-Date: 2026-08-14  
+Date: 2026-08-14
 Status: Approved direction; implementation pending specification review
 
 ## Purpose

@@ -1727,6 +1727,65 @@ button.request {
     max-width: 100%;
     overflow-wrap: anywhere;
   }
+  .main-page .arrival,
+  .main-page .vault,
+  .main-page .zk-feature,
+  .main-page .signal {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    padding-inline: clamp(12px, 5vw, 20px);
+  }
+  .main-page .arrival-name,
+  .main-page .manifesto,
+  .main-page .arrival-sub,
+  .main-page .spec,
+  .main-page .spec-tech,
+  .main-page .spec-presets,
+  .main-page .spec-layers,
+  .main-page .preset,
+  .main-page .signal-row,
+  .main-page .signal-cell,
+  .main-page .zk-feature-grid,
+  .main-page .zk-feature-copy,
+  .main-page .zk-process-map,
+  .main-page .zk-feature-meta {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .main-page .manifesto .line,
+  .main-page .spec-layers > *,
+  .main-page .preset > *,
+  .main-page .signal-cell > *,
+  .main-page .zk-feature-copy > *,
+  .main-page .zk-process-map > *,
+  .main-page .zk-feature-meta > * {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .main-page .spec,
+  .main-page .spec-presets,
+  .main-page .zk-feature-grid,
+  .main-page .signal-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .main-page .spec-link {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .main-page .zk-feature-meta span,
+  .main-page .zk-cta {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
   .zk-hero,
   .zk-hero-copy,
   .zk-console,

@@ -789,6 +789,93 @@ assert.match(compactIndexNavLinkRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$
 assert.match(compactIndexNavLinkRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
 assert.match(compactIndexNavLinkRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
 
+const compactMainSectionRule = requireCssRule(
+  compactRules,
+  [
+    ".main-page .arrival",
+    ".main-page .vault",
+    ".main-page .zk-feature",
+    ".main-page .signal",
+  ],
+  "the 420px block must bound the main-page sections at extreme text zoom",
+);
+assert.match(compactMainSectionRule.body, /(?:^|;)\s*box-sizing\s*:\s*border-box\s*(?:;|$)/);
+assert.match(compactMainSectionRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactMainSectionRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+
+const compactMainSurfaceRule = requireCssRule(
+  compactRules,
+  [
+    ".main-page .arrival-name",
+    ".main-page .manifesto",
+    ".main-page .arrival-sub",
+    ".main-page .spec",
+    ".main-page .spec-tech",
+    ".main-page .spec-presets",
+    ".main-page .spec-layers",
+    ".main-page .preset",
+    ".main-page .signal-row",
+    ".main-page .signal-cell",
+    ".main-page .zk-feature-grid",
+    ".main-page .zk-feature-copy",
+    ".main-page .zk-process-map",
+    ".main-page .zk-feature-meta",
+  ],
+  "the 420px block must let every main-page min-content surface shrink and wrap",
+);
+assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+
+const compactMainSurfaceChildRule = requireCssRule(
+  compactRules,
+  [
+    ".main-page .manifesto .line",
+    ".main-page .spec-layers > *",
+    ".main-page .preset > *",
+    ".main-page .signal-cell > *",
+    ".main-page .zk-feature-copy > *",
+    ".main-page .zk-process-map > *",
+    ".main-page .zk-feature-meta > *",
+  ],
+  "the 420px block must let main-page grid and text children shrink and wrap",
+);
+assert.match(compactMainSurfaceChildRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactMainSurfaceChildRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainSurfaceChildRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+
+const compactMainGridRule = requireCssRule(
+  compactRules,
+  [".main-page .spec", ".main-page .spec-presets", ".main-page .zk-feature-grid", ".main-page .signal-row"],
+  "the 420px block must collapse main-page grids onto one shrinkable column",
+);
+assert.match(
+  compactMainGridRule.body,
+  /(?:^|;)\s*grid-template-columns\s*:\s*minmax\(\s*0\s*,\s*1fr\s*\)\s*(?:;|$)/,
+);
+
+const compactMainSpecLinkRule = requireCssRule(
+  compactRules,
+  [".main-page .spec-link"],
+  "the 420px block must bound the main-page technical-spec control",
+);
+assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*box-sizing\s*:\s*border-box\s*(?:;|$)/);
+assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+
+const compactMainFeatureControlRule = requireCssRule(
+  compactRules,
+  [".main-page .zk-feature-meta span", ".main-page .zk-cta"],
+  "the 420px block must bound the main-page feature status and call to action",
+);
+assert.match(compactMainFeatureControlRule.body, /(?:^|;)\s*box-sizing\s*:\s*border-box\s*(?:;|$)/);
+assert.match(compactMainFeatureControlRule.body, /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainFeatureControlRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactMainFeatureControlRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+assert.match(compactMainFeatureControlRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+
 const compactContainmentRule = requireCssRule(
   compactRules,
   [

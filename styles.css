@@ -1218,6 +1218,253 @@ button.request {
   z-index: 200;
 }
 
+/* ---------- Zombie Killer ---------- */
+
+.main-page .header-nav a,
+.zk-page .header-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.main-page .zk-feature {
+  background: linear-gradient(135deg, rgba(2, 16, 20, .9), rgba(1, 6, 8, .78));
+}
+
+.zk-feature {
+  position: relative;
+  z-index: 2;
+  padding: clamp(64px, 11vh, 124px) clamp(20px, 5vw, 64px);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.zk-feature-grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+  gap: clamp(36px, 7vw, 96px);
+  align-items: center;
+}
+
+.zk-feature h2,
+.zk-capabilities h2,
+.zk-platforms h2,
+.zk-release h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 5.6rem);
+  line-height: .95;
+  text-transform: uppercase;
+}
+
+.zk-feature-lead,
+.zk-lead {
+  color: var(--cyan-2);
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+}
+
+.zk-feature-text,
+.zk-intro,
+.zk-release > p,
+.zk-platform-list dd,
+.zk-capability-grid article > p:last-child {
+  color: var(--muted);
+}
+
+.zk-feature-meta,
+.zk-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.zk-feature-meta span,
+.zk-status span {
+  padding: 7px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--cyan-2);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.zk-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 12px 18px;
+  border: 1px solid var(--cyan);
+  border-radius: 7px;
+  background: rgba(0, 231, 255, .1);
+  color: var(--ink);
+  font-size: .74rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.zk-cta:hover {
+  background: rgba(0, 231, 255, .2);
+  box-shadow: var(--glow);
+}
+
+.zk-process-map,
+.zk-console {
+  padding: clamp(22px, 5vw, 42px);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: rgba(1, 8, 10, .92);
+  box-shadow: inset 0 0 42px rgba(0, 231, 255, .05), 0 0 48px rgba(0, 231, 255, .08);
+}
+
+.zk-process-map {
+  display: grid;
+  gap: 15px;
+}
+
+.zk-process-map span {
+  color: var(--cyan-2);
+  letter-spacing: .18em;
+}
+
+.zk-process-map i {
+  width: 1px;
+  height: 20px;
+  margin-left: 7px;
+  background: linear-gradient(var(--cyan), transparent);
+}
+
+.zk-page {
+  background: radial-gradient(circle at 72% 18%, rgba(0, 231, 255, .1), transparent 34%), linear-gradient(160deg, #010608, #020d10 52%, #010608);
+}
+
+.zk-page .site-header {
+  background: rgba(1, 6, 8, .86);
+  border-bottom: 1px solid var(--line);
+}
+
+.zk-shell {
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.zk-shell:focus,
+.zk-shell:focus-visible {
+  outline: none;
+}
+
+.zk-hero,
+.zk-capabilities,
+.zk-platforms,
+.zk-release {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(64px, 10vh, 112px) clamp(20px, 5vw, 64px);
+}
+
+.zk-hero {
+  min-height: calc(100vh - 80px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  gap: clamp(38px, 7vw, 94px);
+  align-items: center;
+}
+
+.zk-hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 400;
+  line-height: .82;
+  text-transform: uppercase;
+  text-shadow: 0 0 42px rgba(0, 231, 255, .28);
+}
+
+.zk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+}
+
+.zk-text-link {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.zk-console p {
+  display: grid;
+  grid-template-columns: 3ch 1fr;
+  gap: 10px;
+  margin: 0;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--cyan-2);
+}
+
+.zk-console p:last-child { border-bottom: 0; }
+.zk-console span { color: var(--green); }
+.zk-console b { grid-column: 2; color: var(--muted); font-size: .72rem; font-weight: 400; }
+
+.zk-feature-text,
+.zk-intro,
+.zk-console b,
+.zk-capability-grid p,
+.zk-platform-list dd,
+.zk-release p {
+  overflow-wrap: anywhere;
+}
+
+.zk-capabilities,
+.zk-platforms,
+.zk-release {
+  border-top: 1px solid var(--line);
+}
+
+.zk-capability-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 42px;
+}
+
+.zk-capability-grid article {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+}
+
+.zk-card-number { color: var(--green); }
+
+.zk-platform-list {
+  margin: 42px 0 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.zk-platform-list > div {
+  display: grid;
+  grid-template-columns: minmax(100px, .28fr) 1fr;
+  gap: 24px;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(2, 12, 15, .68);
+}
+
+.zk-platform-list > div:last-child { border-bottom: 0; }
+.zk-platform-list dt { color: var(--cyan-2); font-weight: 700; }
+.zk-platform-list dd { margin: 0; }
+.zk-release { margin-bottom: clamp(40px, 8vh, 90px); }
+
 /* ---------- Signal ---------- */
 
 .signal {
@@ -1330,12 +1577,46 @@ button.request {
 }
 
 @media (max-width: 720px) {
-  .site-header {
+  .main-page .site-header,
+  .zk-page .site-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
     padding: 12px 18px;
   }
-  .header-nav {
-    gap: 14px;
-    font-size: .66rem;
+  .main-page .header-nav,
+  .zk-page .header-nav {
+    min-width: 0;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-size: .62rem;
+    letter-spacing: .08em;
+  }
+  .zk-feature-grid,
+  .zk-hero {
+    grid-template-columns: 1fr;
+  }
+  .zk-hero {
+    min-height: auto;
+    padding-top: 84px;
+  }
+  .zk-shell {
+    padding-top: 0;
+  }
+  .zk-capability-grid {
+    grid-template-columns: 1fr;
+  }
+  .zk-platform-list > div {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .zk-page .site-footer nav {
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 12px 18px;
   }
   /* Mobile corridor auto-plays (JS-driven dolly), so it is a single non-scroll
      screen — this sidesteps iOS Safari's broken sticky + 3D + overflow scroll. */
@@ -1385,6 +1666,16 @@ button.request {
 @media (max-width: 420px) {
   .vault-grid {
     grid-template-columns: 1fr;
+  }
+  .zk-feature-meta span,
+  .zk-status span,
+  .zk-actions,
+  .zk-cta {
+    width: 100%;
+  }
+  .zk-feature-meta span,
+  .zk-status span {
+    text-align: center;
   }
 }
 

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zombie Killer — Local-First AI-Agent Process Safety | PhantomBugz</title>
+  <meta name="description" content="Meet Zombie Killer, an Apache-2.0 local-first desktop tool for detecting, reviewing, and safely containing abandoned or runaway AI-agent processes.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#010608">
+  <link rel="canonical" href="https://phantombugz.com/zombie-killer.html">
+  <meta property="og:site_name" content="PhantomBugz">
+  <meta property="og:title" content="Zombie Killer — Local-First AI-Agent Process Safety">
+  <meta property="og:description" content="Detect, verify, contain, and record abandoned or runaway AI-agent processes. v0.1.0-alpha.1 is coming soon.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phantombugz.com/zombie-killer.html">
+  <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="800">
+  <meta property="og:image:height" content="420">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Zombie Killer — PhantomBugz">
+  <meta name="twitter:description" content="Local-first process safety for AI-agent workloads. Coming soon under Apache-2.0.">
+  <meta name="twitter:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
+  <link rel="icon" href="./assets/exports/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="./assets/exports/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/exports/apple-touch-icon.png">
+  <link rel="preload" href="./assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./assets/fonts/fonts.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Zombie Killer",
+      "applicationCategory": "SecurityApplication",
+      "softwareVersion": "0.1.0-alpha.1",
+      "operatingSystem": "Windows, Linux, macOS",
+      "license": "https://spdx.org/licenses/Apache-2.0.html",
+      "url": "https://phantombugz.com/zombie-killer.html",
+      "author": { "@type": "Organization", "name": "PhantomBugz", "url": "https://phantombugz.com/" }
+    }
+  </script>
+</head>
+<body class="zk-page">
+  <a class="skip-link" href="#zk-main">Skip to Zombie Killer</a>
+  <header class="site-header" aria-label="Primary">
+    <a class="brand-lockup" href="./enter.html#arrival" aria-label="PhantomBugz home">
+      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true" width="34" height="34">
+    </a>
+    <nav class="header-nav" aria-label="Sections">
+      <a href="./enter.html">PhantomBugz</a>
+      <a href="https://github.com/PhantomBugz">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="zk-main" class="zk-shell" tabindex="-1">
+    <section class="zk-hero" aria-labelledby="zk-title">
+      <div class="zk-hero-copy">
+        <p class="eyebrow">Open source / alpha</p>
+        <h1 id="zk-title">Zombie Killer</h1>
+        <p class="zk-lead">Local-first process safety for AI-agent workloads.</p>
+        <p class="zk-intro">Detect, inspect, and safely contain abandoned, runaway, or unresponsive agent processes without trusting a PID alone.</p>
+        <p class="zk-status" aria-label="Version 0.1.0 alpha 1, coming soon, Apache 2.0"><span>v0.1.0-alpha.1</span><span>Coming Soon</span><span>Apache-2.0</span></p>
+        <div class="zk-actions">
+          <a class="zk-cta" href="https://github.com/PhantomBugz">Follow PhantomBugz on GitHub</a>
+          <a class="zk-text-link" href="./enter.html">Back to PhantomBugz</a>
+        </div>
+      </div>
+      <div class="zk-console" aria-hidden="true">
+        <p><span>01</span> DETECT <b>candidate process tree</b></p>
+        <p><span>02</span> VERIFY <b>exact process identity</b></p>
+        <p><span>03</span> CONTAIN <b>capability-bound action</b></p>
+        <p><span>04</span> RECEIPT <b>local auditable result</b></p>
+      </div>
+    </section>
+
+    <section class="zk-capabilities" aria-labelledby="zk-capabilities-title">
+      <p class="eyebrow">What it does</p>
+      <h2 id="zk-capabilities-title">Observe first. Act with proof.</h2>
+      <div class="zk-capability-grid">
+        <article><p class="zk-card-number">01</p><h3>Local-first detection</h3><p>Inspect likely AI-agent processes and their evidence without sending process data to a remote control plane.</p></article>
+        <article><p class="zk-card-number">02</p><h3>Identity-bound containment</h3><p>Bind actions to the reviewed process instance so PID reuse or identity drift fails closed, then record truthful local auditable receipts.</p></article>
+        <article><p class="zk-card-number">03</p><h3>Capability-aware platforms</h3><p>Use reviewed actions on Windows and supported Linux systems with pidfd; use scan and inspect only on macOS in this alpha.</p></article>
+      </div>
+    </section>
+
+    <section class="zk-platforms" aria-labelledby="zk-platforms-title">
+      <p class="eyebrow">Alpha platform boundary</p>
+      <h2 id="zk-platforms-title">Capability checked at runtime</h2>
+      <dl class="zk-platform-list">
+        <div><dt>Windows</dt><dd>Reviewed stop actions are available after the stable-binding capability probe succeeds.</dd></div>
+        <div><dt>Linux</dt><dd>Stop actions require pidfd support and a successful runtime capability probe.</dd></div>
+        <div><dt>macOS</dt><dd>Zombie Killer can scan and inspect only in this alpha; process actions remain unavailable.</dd></div>
+      </dl>
+    </section>
+
+    <section class="zk-release" aria-labelledby="zk-release-title">
+      <p class="eyebrow">Release status</p>
+      <h2 id="zk-release-title">Coming soon, after the evidence is complete.</h2>
+      <p>The reviewed source candidate is prepared. Public source and signed downloads will appear only after hosted verification, platform signing, and macOS notarization gates complete.</p>
+      <p>Zombie Killer software is licensed under Apache-2.0. Bundled artwork, fonts, and third-party components retain their own notices and licenses.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="foot-mark" href="./enter.html" aria-label="PhantomBugz home">
+      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true" width="26" height="26">
+      <span>PhantomBugz</span>
+    </a>
+    <nav aria-label="Footer">
+      <a href="./enter.html">Home</a>
+      <a href="https://github.com/PhantomBugz">GitHub</a>
+      <a href="mailto:founder@phantombugz.com">founder@phantombugz.com</a>
+    </nav>
+  </footer>
+</body>
+</html>

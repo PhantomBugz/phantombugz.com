@@ -181,7 +181,86 @@ const requireCssRule = (rules, expectedSelectors, message) => {
   return rule;
 };
 
+const validateXmlDocument = (source) => {
+  assert.doesNotMatch(source, /<!DOCTYPE\b/i, "XML must not contain a document type declaration");
+  assert.doesNotMatch(source, /<!ENTITY\b/i, "XML must not contain entity declarations");
+
+  const tokens = /<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<!\[CDATA\[[\s\S]*?\]\]>|<[^>]*>/g;
+  const stack = [];
+  let cursor = 0;
+  let rootCount = 0;
+  let declarationSeen = false;
+
+  const validateText = (text, outsideRoot) => {
+    assert.doesNotMatch(text, /</, "XML text must not contain an unmatched opening bracket");
+    assert.doesNotMatch(text, /&/, "XML entities are not accepted in the sitemap contract");
+    if (outsideRoot) assert.match(text, /^\s*$/, "XML may contain only whitespace outside its root element");
+  };
+
+  for (const match of source.matchAll(tokens)) {
+    validateText(source.slice(cursor, match.index), stack.length === 0);
+    const token = match[0];
+
+    if (token.startsWith("<!--")) {
+      assert.doesNotMatch(token.slice(4, -3), /--/, "XML comments must not contain a double hyphen");
+    } else if (token.startsWith("<?")) {
+      assert.equal(stack.length, 0, "XML declarations must appear outside elements");
+      assert.equal(rootCount, 0, "XML declarations must appear before the root element");
+      assert.equal(declarationSeen, false, "XML may contain only one declaration");
+      assert.match(
+        token,
+        /^<\?xml\s+version=(?:"1\.0"|'1\.0')(?:\s+encoding=(?:"UTF-8"|'UTF-8'))?\s*\?>$/i,
+        "Only a valid XML declaration is permitted",
+      );
+      declarationSeen = true;
+    } else if (token.startsWith("<![CDATA[")) {
+      assert.ok(stack.length > 0, "CDATA must appear inside the root element");
+    } else if (token.startsWith("<!")) {
+      assert.fail("Unsupported XML declaration");
+    } else if (token.startsWith("</")) {
+      const closing = token.match(/^<\/([A-Za-z_][\w:.-]*)\s*>$/);
+      assert.ok(closing, `Malformed XML closing tag: ${token}`);
+      const expected = stack.pop();
+      assert.equal(closing[1], expected, `Mismatched XML closing tag: ${token}`);
+    } else {
+      const opening = token.match(
+        /^<([A-Za-z_][\w:.-]*)(?:\s+[A-Za-z_][\w:.-]*\s*=\s*(?:"[^"<&]*"|'[^'<&]*'))*\s*\/?>$/,
+      );
+      assert.ok(opening, `Malformed XML opening tag: ${token}`);
+      if (stack.length === 0) {
+        rootCount += 1;
+        assert.equal(rootCount, 1, "XML must contain exactly one root element");
+      }
+      if (!/\/\s*>$/.test(token)) stack.push(opening[1]);
+    }
+
+    cursor = match.index + token.length;
+  }
+
+  validateText(source.slice(cursor), stack.length === 0);
+  assert.equal(stack.length, 0, `Unclosed XML element: ${stack.at(-1) ?? "unknown"}`);
+  assert.equal(rootCount, 1, "XML must contain exactly one root element");
+  return true;
+};
+
+assert.throws(
+  () => validateXmlDocument("<urlset><url></urlset>"),
+  /Mismatched XML closing tag/,
+  "the XML validator must reject mismatched tags",
+);
+assert.throws(
+  () => validateXmlDocument("<!DOCTYPE urlset><urlset></urlset>"),
+  /document type declaration/,
+  "the XML validator must reject doctypes",
+);
+assert.throws(
+  () => validateXmlDocument("<urlset><url></url>"),
+  /Unclosed XML element/,
+  "the XML validator must reject unclosed elements",
+);
+
 const enter = read("enter.html");
+const enterScript = read("enter.js");
 const page = read("zombie-killer.html");
 const styles = read("styles.css");
 const sitemap = read("sitemap.xml");
@@ -217,6 +296,15 @@ const featureCta = extractPairedElements(featureSection.inner, "a").find(
     normalizedText(anchor).startsWith("Meet Zombie Killer"),
 );
 assert.ok(featureCta, "the Zombie Killer feature must link to its standalone page");
+const featureCopy = extractOpeningTags(featureSection.inner).find(
+  (element) => element.name === "div" && hasClass(element, "zk-feature-copy"),
+);
+assert.ok(featureCopy, "the Zombie Killer feature must retain its copy container");
+assert.equal(
+  getAttribute(featureCopy, "data-reveal"),
+  undefined,
+  "the Zombie Killer CTA container must never be hidden while its link remains focusable",
+);
 
 const vaultSection = enterSections.find((section) => attributeValue(section, "id") === "vault");
 const signalSection = enterSections.find((section) => attributeValue(section, "id") === "signal");
@@ -257,6 +345,19 @@ assert.ok(
   "standalone page must remain visible without JavaScript",
 );
 
+const status = extractPairedElements(main.inner, "p").find((paragraph) => hasClass(paragraph, "zk-status"));
+assert.ok(status, "the standalone page must retain its visible release status");
+assert.equal(
+  getAttribute(status, "aria-label"),
+  undefined,
+  "the visible release status must not be replaced by a redundant aria-label",
+);
+assert.deepEqual(
+  extractPairedElements(status.inner, "span").map(normalizedText),
+  ["v0.1.0-alpha.1", "Coming Soon", "Apache-2.0"],
+  "the release status must keep its visible version, availability, and license text",
+);
+
 const canonicalLink = pageTags.find(
   (tag) =>
     tag.name === "link" &&
@@ -275,6 +376,42 @@ const openGraphUrl = pageTags.find(
     attributeValue(tag, "content") === "https://phantombugz.com/zombie-killer.html",
 );
 assert.ok(openGraphUrl, "the standalone page must publish its Open Graph URL");
+
+for (const [property, expected] of [
+  ["og:image:width", "1200"],
+  ["og:image:height", "630"],
+]) {
+  const meta = pageTags.find(
+    (tag) =>
+      tag.name === "meta" &&
+      attributeValue(tag, "property") === property &&
+      attributeValue(tag, "content") === expected,
+  );
+  assert.ok(meta, `${property} must match the actual social image dimension ${expected}`);
+}
+
+const jsonLdScripts = extractPairedElements(page, "script").filter(
+  (script) => (attributeValue(script, "type") ?? "").toLowerCase() === "application/ld+json",
+);
+assert.equal(jsonLdScripts.length, 1, "the standalone page must contain exactly one application/ld+json block");
+let softwareMetadata;
+assert.doesNotThrow(() => {
+  softwareMetadata = JSON.parse(jsonLdScripts[0].inner);
+}, "the SoftwareApplication structured data must be valid JSON");
+assert.equal(softwareMetadata["@type"], "SoftwareApplication", "JSON-LD must describe a SoftwareApplication");
+assert.equal(softwareMetadata.name, "Zombie Killer", "JSON-LD must name Zombie Killer");
+assert.equal(softwareMetadata.softwareVersion, "0.1.0-alpha.1", "JSON-LD must publish the alpha version");
+assert.equal(
+  softwareMetadata.license,
+  "https://spdx.org/licenses/Apache-2.0.html",
+  "JSON-LD must publish the Apache-2.0 SPDX license",
+);
+assert.equal(
+  softwareMetadata.url,
+  "https://phantombugz.com/zombie-killer.html",
+  "JSON-LD must publish the canonical application URL",
+);
+assert.equal(softwareMetadata.operatingSystem, "Windows, Linux, macOS", "JSON-LD must state the supported OS set");
 
 const githubAnchor = pageAnchors.find(
   (anchor) =>
@@ -343,6 +480,56 @@ for (const selector of [".zk-feature", ".zk-page", ".zk-hero", ".zk-capability-g
 }
 
 const topLevelRules = extractTopLevelCssRules(css);
+const skipLinkRule = requireCssRule(topLevelRules, [".skip-link"], "skip links must define an accessible target size");
+assert.match(
+  skipLinkRule.body,
+  /(?:^|;)\s*min-height\s*:\s*44px\s*(?:;|$)/,
+  "skip links must be at least 44px tall",
+);
+
+const mutedCopyRule = requireCssRule(
+  topLevelRules,
+  [
+    ".zk-feature-text",
+    ".zk-intro",
+    ".zk-release > p:not(.eyebrow)",
+    ".zk-platform-list dd",
+    ".zk-capability-grid article > p:last-child",
+  ],
+  "muted Zombie Killer copy must exclude the release eyebrow",
+);
+assert.match(mutedCopyRule.body, /(?:^|;)\s*color\s*:\s*var\(--muted\)\s*(?:;|$)/);
+
+const defaultRevealRule = requireCssRule(
+  topLevelRules,
+  ["[data-reveal]"],
+  "reveal-marked content must be visible by default without JavaScript",
+);
+assert.match(defaultRevealRule.body, /(?:^|;)\s*opacity\s*:\s*1\s*(?:;|$)/);
+assert.match(defaultRevealRule.body, /(?:^|;)\s*transform\s*:\s*none\s*(?:;|$)/);
+const enhancedRevealRule = requireCssRule(
+  topLevelRules,
+  [".js [data-reveal]"],
+  "JavaScript enhancement must explicitly opt reveal-marked content into hiding",
+);
+assert.match(enhancedRevealRule.body, /(?:^|;)\s*opacity\s*:\s*0\s*(?:;|$)/);
+assert.match(enhancedRevealRule.body, /(?:^|;)\s*transform\s*:\s*translateY\(18px\)\s*(?:;|$)/);
+const enhancedVisibleRule = requireCssRule(
+  topLevelRules,
+  [".js [data-reveal].in"],
+  "revealed JavaScript-enhanced content must become visible",
+);
+assert.match(enhancedVisibleRule.body, /(?:^|;)\s*opacity\s*:\s*1\s*(?:;|$)/);
+assert.match(enhancedVisibleRule.body, /(?:^|;)\s*transform\s*:\s*none\s*(?:;|$)/);
+
+const jsClassIndex = enterScript.indexOf('document.documentElement.classList.add("js")');
+const revealSetupIndex = enterScript.indexOf('document.querySelectorAll("[data-reveal]")');
+assert.ok(jsClassIndex >= 0, "enter.js must opt the document into JavaScript-enhanced reveal styling");
+assert.ok(
+  revealSetupIndex >= 0 && jsClassIndex < revealSetupIndex,
+  "enter.js must add the JavaScript class before configuring reveal behavior",
+);
+
 const headerTargetRule = requireCssRule(
   topLevelRules,
   [".main-page .header-nav a", ".zk-page .header-nav a"],
@@ -403,7 +590,10 @@ assert.match(
 
 const mobileShopHeaderRule = requireCssRule(
   mobileRules,
-  [".shop-page .site-header", "body:not([class]) .site-header"],
+  [
+    ".shop-page .site-header",
+    "body:not(.main-page):not(.zk-page):not(.shop-page) .site-header",
+  ],
   "the 720px block must preserve the shop and index header spacing without the icon-only grid",
 );
 assert.match(
@@ -419,7 +609,10 @@ assert.doesNotMatch(
 
 const mobileShopNavigationRule = requireCssRule(
   mobileRules,
-  [".shop-page .header-nav", "body:not([class]) .header-nav"],
+  [
+    ".shop-page .header-nav",
+    "body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav",
+  ],
   "the 720px block must preserve the shop and index navigation spacing",
 );
 assert.match(
@@ -559,6 +752,40 @@ assert.match(
   "mobile platform rows must use the compact six-pixel gap",
 );
 
+const compactBlocks = extractCssAtRuleBlocks(css, /^@media\s*\(\s*max-width\s*:\s*420px\s*\)$/);
+assert.equal(compactBlocks.length, 1, "styles.css must define exactly one real 420px compact media block");
+const compactRules = extractTopLevelCssRules(compactBlocks[0]);
+const compactHeroRule = requireCssRule(
+  compactRules,
+  [".zk-hero", ".zk-hero-copy"],
+  "the 420px block must allow the Zombie Killer hero and copy to shrink",
+);
+assert.match(compactHeroRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
+const compactTitleRule = requireCssRule(
+  compactRules,
+  [".zk-hero h1"],
+  "the 420px block must bound and wrap the Zombie Killer title",
+);
+assert.match(compactTitleRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactTitleRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+assert.match(
+  compactTitleRule.body,
+  /(?:^|;)\s*font-size\s*:\s*clamp\(\s*2\.5rem\s*,\s*18vw\s*,\s*4rem\s*\)\s*(?:;|$)/,
+  "the compact Zombie Killer title must use the bounded small-screen font scale",
+);
+const compactSectionTitleRule = requireCssRule(
+  compactRules,
+  [".zk-capabilities h2", ".zk-platforms h2", ".zk-release h2"],
+  "the 420px block must bound and wrap Zombie Killer section headings",
+);
+assert.match(compactSectionTitleRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
+assert.match(compactSectionTitleRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
+assert.match(
+  compactSectionTitleRule.body,
+  /(?:^|;)\s*font-size\s*:\s*clamp\(\s*1\.75rem\s*,\s*10vw\s*,\s*2\.5rem\s*\)\s*(?:;|$)/,
+  "compact Zombie Killer section headings must use a bounded font scale",
+);
+
 const reducedMotionBlocks = extractCssAtRuleBlocks(
   css,
   /^@media\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)$/,
@@ -610,8 +837,15 @@ assert.match(
   /(?:^|;)\s*transform\s*:\s*none\s*(?:;|$)/,
   "the reduced-motion block must remove reveal transforms",
 );
+const reducedEnhancedRevealRule = requireCssRule(
+  reducedMotionRules,
+  [".js [data-reveal]"],
+  "the reduced-motion block must override JavaScript-enhanced reveal hiding",
+);
+assert.match(reducedEnhancedRevealRule.body, /(?:^|;)\s*opacity\s*:\s*1\s*(?:;|$)/);
+assert.match(reducedEnhancedRevealRule.body, /(?:^|;)\s*transform\s*:\s*none\s*(?:;|$)/);
 
-assert.doesNotMatch(sitemapMarkup, /<!DOCTYPE\b/i, "sitemap.xml must not use a document type declaration");
+assert.equal(validateXmlDocument(sitemap), true, "sitemap.xml must be a well-formed, entity-free XML document");
 const sitemapLocations = Array.from(
   sitemapMarkup.matchAll(/<url(?:\s[^>]*)?>([\s\S]*?)<\/url\s*>/g),
   (urlMatch) =>

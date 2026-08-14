@@ -1,6 +1,8 @@
 import { initRoam } from "./js/roam.js";
 import { initTelemetry } from "./js/telemetry.js";
 
+document.documentElement.classList.add("js");
+
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 initRoam(document.getElementById("roam"));

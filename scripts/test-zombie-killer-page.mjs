@@ -280,6 +280,11 @@ assert.ok(
 );
 const revealRegistrationIndex = enterScript.indexOf("reveals.forEach((el) => observer.observe(el));");
 const revealFallbackClearIndex = enterScript.indexOf("window.clearTimeout(window.__phantombugzRevealFallback);");
+assert.doesNotMatch(
+  enterScript,
+  /document\.documentElement\.classList\.add\("js"\)/,
+  "enter.js must not re-hide content after the head fallback has fired",
+);
 assert.ok(
   revealRegistrationIndex >= 0 && revealRegistrationIndex < revealFallbackClearIndex,
   "enter.js must clear the reveal fallback only after the reveal behavior is installed",
@@ -539,12 +544,10 @@ const enhancedVisibleRule = requireCssRule(
 assert.match(enhancedVisibleRule.body, /(?:^|;)\s*opacity\s*:\s*1\s*(?:;|$)/);
 assert.match(enhancedVisibleRule.body, /(?:^|;)\s*transform\s*:\s*none\s*(?:;|$)/);
 
-const jsClassIndex = enterScript.indexOf('document.documentElement.classList.add("js")');
 const revealSetupIndex = enterScript.indexOf('document.querySelectorAll("[data-reveal]")');
-assert.ok(jsClassIndex >= 0, "enter.js must opt the document into JavaScript-enhanced reveal styling");
 assert.ok(
-  revealSetupIndex >= 0 && jsClassIndex < revealSetupIndex,
-  "enter.js must add the JavaScript class before configuring reveal behavior",
+  revealSetupIndex >= 0,
+  "enter.js must configure reveal behavior after the document head opts into enhancement",
 );
 
 const headerTargetRule = requireCssRule(

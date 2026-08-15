@@ -178,8 +178,8 @@ Create `zombie-killer.html` from the following exact head and body blocks. Canon
 <meta property="og:url" content="https://phantombugz.com/zombie-killer.html">
 <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
 <meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="420">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zombie Killer — PhantomBugz">
 <meta name="twitter:description" content="Local-first process safety for AI-agent workloads. Coming soon under Apache-2.0.">
@@ -647,7 +647,7 @@ assert.match(workflow, /node-version:\s*24/);
 assert.match(workflow, /run: node scripts\/test-zombie-killer-page\.mjs/);
 assert.match(workflow, /pull_request:/);
 assert.match(workflow, /needs:\s*verify/);
-assert.match(workflow, /if:\s*github\.event_name != 'pull_request'/);
+assert.match(workflow, /if:\s*github\.ref == 'refs\/heads\/main'/);
 assert.ok(
   workflow.indexOf("node scripts/test-zombie-killer-page.mjs") < workflow.indexOf("actions/upload-pages-artifact@v3"),
   "static contract must run before the Pages artifact is uploaded",
@@ -707,7 +707,7 @@ jobs:
         run: node scripts/test-zombie-killer-page.mjs
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main'
     needs: verify
     permissions:
       contents: read
@@ -719,10 +719,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: mkdir -p public
+      - run: cp -r assets data js index.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: public
       - id: deployment
         uses: actions/deploy-pages@v4
 ```

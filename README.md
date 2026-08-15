@@ -18,35 +18,7 @@ python -m http.server 4173 --bind 127.0.0.1
 
 Open http://127.0.0.1:4173/zombie-killer.html.
 
-Refresh the public-safe bounty ticker data:
-
-```powershell
-node .\phantombugz-site\scripts\sync-bugbounty-public.mjs
-```
-
-Export avatar, banner, Open Graph, and GitHub profile PNG assets:
-
-```powershell
-node .\phantombugz-site\scripts\export-brand-assets.mjs
-```
-
-Preview locally:
-
-```powershell
-node .\phantombugz-site\scripts\serve-phantombugz-site.mjs
-```
-
-Verify desktop/mobile layout and WebGL rendering:
-
-```powershell
-node .\phantombugz-site\scripts\verify-phantombugz-site.mjs
-```
-
-Build a static deployment ZIP from the repository root:
-
-```powershell
-Compress-Archive -Path .\phantombugz-site\* -DestinationPath .\deploy\phantombugz-site.zip -Force
-```
+GitHub and GitLab Pages run the same contract and publish only the reviewed static-site allowlist assembled under `public/`.
 
 ## Data Boundary
 

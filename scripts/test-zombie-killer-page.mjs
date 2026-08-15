@@ -267,9 +267,20 @@ const sitemap = read("sitemap.xml");
 const githubPagesWorkflow = read(".github/workflows/pages.yml");
 const gitlabPipeline = read(".gitlab-ci.yml");
 const readme = read("README.md");
+const implementationPlan = read("docs/superpowers/plans/2026-08-14-zombie-killer-site-link.md");
 
 const enterMarkup = sanitizeMarkup(enter);
 const pageMarkup = sanitizeMarkup(page);
+
+const earlyJsClassScript = '<script>document.documentElement.classList.add("js");</script>';
+assert.ok(
+  enter.includes(earlyJsClassScript),
+  "enter.html must set the progressive-enhancement class synchronously in the document head",
+);
+assert.ok(
+  enter.indexOf(earlyJsClassScript) < enter.indexOf('<link rel="stylesheet" href="./styles.css">'),
+  "enter.html must set the progressive-enhancement class before the main stylesheet loads",
+);
 const css = styles.replace(/\/\*[\s\S]*?\*\//g, "");
 const sitemapMarkup = sitemap
   .replace(/<!--[\s\S]*?-->/g, "")
@@ -1093,7 +1104,7 @@ jobs:
       - run: node scripts/test-zombie-killer-page.mjs
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main'
     needs: verify
     permissions:
       contents: read
@@ -1139,6 +1150,16 @@ assert.strictEqual(
   normalizeCanonicalFile(gitlabPipeline),
   expectedGitlabPipeline,
   ".gitlab-ci.yml must exactly match the site-only GitLab Pages release policy",
+);
+assert.match(
+  implementationPlan,
+  /<meta property="og:image:width" content="1200">[\s\S]*?<meta property="og:image:height" content="630">/,
+  "the implementation plan must document the reviewed 1200 by 630 social image",
+);
+assert.match(
+  implementationPlan,
+  /deploy:[\s\S]*?if: github\.ref == 'refs\/heads\/main'[\s\S]*?- run: mkdir -p public[\s\S]*?- run: cp -r [^\r\n]+ public\/[\s\S]*?path: public/,
+  "the implementation plan must document main-only deployment of the site-only public artifact",
 );
 
 const stripBalancedHtmlComments = (source) => {
@@ -1218,6 +1239,11 @@ assert.match(
   readmeCommands,
   /http:\/\/127\.0\.0\.1:4173\/zombie-killer\.html/,
   "README.md must document the local Zombie Killer preview URL",
+);
+assert.doesNotMatch(
+  readmeCommands,
+  /\\phantombugz-site\\/i,
+  "README.md commands must use paths that exist from the repository root",
 );
 
 console.log("Zombie Killer public-page contract passed.");

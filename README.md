@@ -26,7 +26,7 @@ GitHub and GitLab Pages run the same contract and publish only the reviewed stat
 
 Do not add finding titles, evidence paths, hashes, platform URLs, credentials, current accepted amounts, current approved amounts, or current payout details to public site files.
 
-The current-month submitted number resets by calendar month from real `submitted_at` timestamps recorded in the internal ledger. Real platform events refresh the public JSON through `tools\record-bounty-platform-event.ps1`.
+The current-month submitted number resets by calendar month from real `submitted_at` timestamps recorded in the internal ledger. Real platform events must refresh the public JSON through an internal, privacy-reviewed process that is not part of this public repository.
 
 ## Launch Notes
 

@@ -676,7 +676,7 @@ Expected: exit code `1` because the GitHub workflow has no Node verification ste
 
 - [ ] **Step 3: Split GitHub verification from deployment**
 
-Replace `.github/workflows/pages.yml` with this complete workflow. Pull requests receive a required verification result, while only main-branch/manual runs can deploy:
+Replace `.github/workflows/pages.yml` with this complete workflow. Pull requests receive a required verification result, while deployment is limited to `refs/heads/main`, including manual dispatches explicitly run from main:
 
 ```yaml
 name: Deploy GitHub Pages

@@ -272,14 +272,17 @@ const implementationPlan = read("docs/superpowers/plans/2026-08-14-zombie-killer
 const enterMarkup = sanitizeMarkup(enter);
 const pageMarkup = sanitizeMarkup(page);
 
-const earlyJsClassScript = '<script>document.documentElement.classList.add("js");</script>';
+const earlyJsClassScript = /<script>\s*document\.documentElement\.classList\.add\("js"\);\s*window\.__phantombugzRevealFallback = window\.setTimeout\(\(\) => \{\s*document\.documentElement\.classList\.remove\("js"\);\s*\}, 3000\);\s*<\/script>/m.exec(enter);
+assert.ok(earlyJsClassScript, "enter.html must set and fail-safe the enhancement class in the document head");
 assert.ok(
-  enter.includes(earlyJsClassScript),
-  "enter.html must set the progressive-enhancement class synchronously in the document head",
-);
-assert.ok(
-  enter.indexOf(earlyJsClassScript) < enter.indexOf('<link rel="stylesheet" href="./styles.css">'),
+  earlyJsClassScript.index < enter.indexOf('<link rel="stylesheet" href="./styles.css">'),
   "enter.html must set the progressive-enhancement class before the main stylesheet loads",
+);
+const revealRegistrationIndex = enterScript.indexOf("reveals.forEach((el) => observer.observe(el));");
+const revealFallbackClearIndex = enterScript.indexOf("window.clearTimeout(window.__phantombugzRevealFallback);");
+assert.ok(
+  revealRegistrationIndex >= 0 && revealRegistrationIndex < revealFallbackClearIndex,
+  "enter.js must clear the reveal fallback only after the reveal behavior is installed",
 );
 const css = styles.replace(/\/\*[\s\S]*?\*\//g, "");
 const sitemapMarkup = sitemap
@@ -1161,6 +1164,16 @@ assert.match(
   /deploy:[\s\S]*?if: github\.ref == 'refs\/heads\/main'[\s\S]*?- run: mkdir -p public[\s\S]*?- run: cp -r [^\r\n]+ public\/[\s\S]*?path: public/,
   "the implementation plan must document main-only deployment of the site-only public artifact",
 );
+assert.doesNotMatch(
+  implementationPlan,
+  /only main-branch\/manual runs can deploy/i,
+  "the implementation plan must not imply that a manual dispatch from any ref can deploy",
+);
+assert.match(
+  implementationPlan,
+  /manual dispatches[^\r\n]*main/i,
+  "the implementation plan must state that manual deployments are restricted to main",
+);
 
 const stripBalancedHtmlComments = (source) => {
   let visible = "";
@@ -1244,6 +1257,11 @@ assert.doesNotMatch(
   readmeCommands,
   /\\phantombugz-site\\/i,
   "README.md commands must use paths that exist from the repository root",
+);
+assert.doesNotMatch(
+  visibleReadme,
+  /tools\\record-bounty-platform-event\.ps1/i,
+  "README.md must not direct maintainers to a missing internal tool",
 );
 
 console.log("Zombie Killer public-page contract passed.");

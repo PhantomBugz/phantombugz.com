@@ -206,3 +206,6 @@ if (reduced.matches || !("IntersectionObserver" in window)) {
   );
   reveals.forEach((el) => observer.observe(el));
 }
+
+window.clearTimeout(window.__phantombugzRevealFallback);
+delete window.__phantombugzRevealFallback;

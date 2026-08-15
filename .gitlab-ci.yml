@@ -1,10 +1,11 @@
-﻿image: alpine:latest
+﻿image: node:24-alpine
 
 pages:
   stage: deploy
   script:
+    - node scripts/test-zombie-killer-page.mjs
     - mkdir -p public
-    - cp -r assets data index.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
+    - cp -r assets data js index.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
   artifacts:
     paths:
       - public

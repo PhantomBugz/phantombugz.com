@@ -4,35 +4,21 @@ This folder is the imported PhantomBugz public site prototype and public monthly
 
 ## Commands
 
-Refresh the public-safe bounty ticker data:
+Verify the Zombie Killer landing-page contract:
 
 ```powershell
-node .\phantombugz-site\scripts\sync-bugbounty-public.mjs
+node .\scripts\test-zombie-killer-page.mjs
 ```
 
-Export avatar, banner, Open Graph, and GitHub profile PNG assets:
+Preview the static site from the repository root:
 
 ```powershell
-node .\phantombugz-site\scripts\export-brand-assets.mjs
+python -m http.server 4173 --bind 127.0.0.1
 ```
 
-Preview locally:
+Open http://127.0.0.1:4173/zombie-killer.html.
 
-```powershell
-node .\phantombugz-site\scripts\serve-phantombugz-site.mjs
-```
-
-Verify desktop/mobile layout and WebGL rendering:
-
-```powershell
-node .\phantombugz-site\scripts\verify-phantombugz-site.mjs
-```
-
-Build a static deployment ZIP from the repository root:
-
-```powershell
-Compress-Archive -Path .\phantombugz-site\* -DestinationPath .\deploy\phantombugz-site.zip -Force
-```
+GitHub and GitLab Pages run the same contract and publish only the reviewed static-site allowlist assembled under `public/`.
 
 ## Data Boundary
 
@@ -40,7 +26,7 @@ Compress-Archive -Path .\phantombugz-site\* -DestinationPath .\deploy\phantombug
 
 Do not add finding titles, evidence paths, hashes, platform URLs, credentials, current accepted amounts, current approved amounts, or current payout details to public site files.
 
-The current-month submitted number resets by calendar month from real `submitted_at` timestamps recorded in the internal ledger. Real platform events refresh the public JSON through `tools\record-bounty-platform-event.ps1`.
+The current-month submitted number resets by calendar month from real `submitted_at` timestamps recorded in the internal ledger. Real platform events must refresh the public JSON through an internal, privacy-reviewed process that is not part of this public repository.
 
 ## Launch Notes
 

@@ -6,7 +6,7 @@ The PhantomBugz logo and branding mark is the cyan bug head from the supplied re
 
 ## Site Direction
 
-The homepage should feel like the reference: dark center stage, cyan dot-wave fields, faint hex circuitry, and a slight binary swarm in the background. The mark and the monthly bounty console stay readable and centered in the experience.
+The homepage should feel like the reference: dark center stage, cyan dot-wave fields, faint hex circuitry, and a slight binary swarm in the background. The mark and the bounty signal stay readable and centered in the experience.
 
 The public page should not repeat the emblem in every section. Use the bug head as the hero mark, compact header logo, and platform/profile asset.
 
@@ -48,15 +48,11 @@ All primary platform exports now derive from the bug head:
 
 The avatar exports are centered from the visible cyan bounds so GitHub/GitLab circular crops do not push the mark right or low.
 
-## Bounty Ticker
+## Bounty Signal
 
-The public ticker reads from `data/bugbounty-public.json` and shows:
+The public signal reads from `data/bugbounty-public.json` and shows:
 
-- Submitted potential for the current month
-- Current accepted status as `Unknown`
-- Last month made
-- Total made since launch
-- Ready package count
-- Active lanes and current cycle
+- All-time submitted reports (`allTimeReports`)
+- All-time counts by severity: critical, high, medium, low (`allTimeBySeverity`)
 
-The public site must not show a monthly goal, remaining goal, current accepted dollar amount, current approved dollar amount, or current payout amount. Current submitted resets by calendar month. Historical made rollups come from paid records and are intentionally public.
+The public site shows no dollar amounts: no bounty potential, goals, accepted, approved, or paid amounts, and no program names or finding details.

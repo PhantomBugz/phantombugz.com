@@ -1,6 +1,6 @@
 # PhantomBugz Site
 
-This folder is the imported PhantomBugz public site prototype and public monthly bug bounty ticker.
+This folder is the imported PhantomBugz public site prototype and public bug bounty signal (all-time report counts by severity).
 
 ## Commands
 
@@ -22,11 +22,11 @@ GitHub and GitLab Pages run the same contract and publish only the reviewed stat
 
 ## Data Boundary
 
-`data\bugbounty-public.json` is intentionally public-safe. The public headline is submitted bounty potential for the current month. Current accepted, approved, and paid amounts stay internal and must not be exported. Historical public rollups may show last-month made and total made since launch when those fields are intentionally generated from paid records.
+`data\bugbounty-public.json` is intentionally public-safe. The public signal is the all-time count of submitted reports and the breakdown by severity (critical / high / medium / low). No dollar amounts of any kind are published.
 
-Do not add finding titles, evidence paths, hashes, platform URLs, credentials, current accepted amounts, current approved amounts, or current payout details to public site files.
+Do not add dollar amounts, program names, finding titles, evidence paths, hashes, platform URLs, or credentials to public site files.
 
-The current-month submitted number resets by calendar month from real `submitted_at` timestamps recorded in the internal ledger. Real platform events must refresh the public JSON through an internal, privacy-reviewed process that is not part of this public repository.
+The all-time counts come from the internal ledger. Real platform events must refresh the public JSON through an internal, privacy-reviewed process that is not part of this public repository.
 
 ## Launch Notes
 

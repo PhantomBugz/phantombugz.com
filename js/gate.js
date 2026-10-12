@@ -59,7 +59,7 @@ export function initGate(onEnter) {
   let running = true;
   let last = 0;
   function loop(now) {
-    if (!running) return;
+    if (!running || REDUCED.matches) return;
     const dt = last ? Math.min((now - last) / 1000, 0.05) : 0.016;
     last = now;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -71,18 +71,28 @@ export function initGate(onEnter) {
     requestAnimationFrame(loop);
   }
 
-  size();
-  if (REDUCED.matches) {
+  // Reduced motion: draw a single static frame, never start the rAF loop.
+  function drawStatic() {
     for (const b of bugs) {
       b.step(0.3, emblem());
       b.draw(ctx, emblem());
     }
-  } else {
-    requestAnimationFrame(loop);
   }
 
+  size();
+  if (REDUCED.matches) drawStatic();
+  else requestAnimationFrame(loop);
+
+  REDUCED.addEventListener?.("change", () => {
+    if (!running) return;
+    if (REDUCED.matches) drawStatic(); // loop stops itself on its next frame
+    else { last = 0; requestAnimationFrame(loop); }
+  });
+
   window.addEventListener("resize", () => {
-    if (running) size();
+    if (!running) return;
+    size();
+    if (REDUCED.matches) drawStatic();
   });
 
   // The gate is a REAL <a href="./enter.html">. The browser navigates natively on

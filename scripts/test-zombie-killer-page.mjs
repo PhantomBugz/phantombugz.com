@@ -328,11 +328,11 @@ assert.equal(
   "the Zombie Killer CTA container must never be hidden while its link remains focusable",
 );
 
-const vaultSection = enterSections.find((section) => attributeValue(section, "id") === "vault");
+const hofSection = enterSections.find((section) => attributeValue(section, "id") === "hall-of-fame");
 const signalSection = enterSections.find((section) => attributeValue(section, "id") === "signal");
 assert.ok(
-  vaultSection && signalSection && vaultSection.index < featureSection.index && featureSection.index < signalSection.index,
-  "Zombie Killer feature must appear between the vault and signal",
+  hofSection && signalSection && hofSection.index < featureSection.index && featureSection.index < signalSection.index,
+  "Zombie Killer feature must appear between the Hall of Fame and signal",
 );
 
 const main = extractPairedElements(pageMarkup, "main").find((element) => attributeValue(element, "id") === "zk-main");
@@ -611,44 +611,44 @@ assert.match(
 const mobileShopHeaderRule = requireCssRule(
   mobileRules,
   [
-    ".shop-page .site-header",
-    "body:not(.main-page):not(.zk-page):not(.shop-page) .site-header",
+    ".hof-page .site-header",
+    "body:not(.main-page):not(.zk-page):not(.hof-page) .site-header",
   ],
-  "the 720px block must preserve the shop and index header spacing without the icon-only grid",
+  "the 720px block must preserve the Hall of Fame and index header spacing without the icon-only grid",
 );
 assert.match(
   mobileShopHeaderRule.body,
   /(?:^|;)\s*padding\s*:\s*12px\s+18px\s*(?:;|$)/,
-  "the mobile shop and index headers must retain their compact padding",
+  "the mobile Hall of Fame and index headers must retain their compact padding",
 );
 assert.doesNotMatch(
   mobileShopHeaderRule.body,
   /(?:^|;)\s*(?:display\s*:\s*grid|grid-template-columns\s*:)/,
-  "the text-bearing shop brand must not be forced into the icon-only grid",
+  "the Hall of Fame header must not be forced into the icon-only grid",
 );
 
 const mobileShopNavigationRule = requireCssRule(
   mobileRules,
   [
-    ".shop-page .header-nav",
-    "body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav",
+    ".hof-page .header-nav",
+    "body:not(.main-page):not(.zk-page):not(.hof-page) .header-nav",
   ],
-  "the 720px block must preserve the shop and index navigation spacing",
+  "the 720px block must preserve the Hall of Fame and index navigation spacing",
 );
 assert.match(
   mobileShopNavigationRule.body,
   /(?:^|;)\s*gap\s*:\s*14px\s*(?:;|$)/,
-  "the mobile shop and index navigation must retain the 14px gap",
+  "the mobile Hall of Fame and index navigation must retain the 14px gap",
 );
 assert.match(
   mobileShopNavigationRule.body,
   /(?:^|;)\s*font-size\s*:\s*\.66rem\s*(?:;|$)/,
-  "the mobile shop and index navigation must retain the compact font size",
+  "the mobile Hall of Fame and index navigation must retain the compact font size",
 );
 assert.match(
   mobileShopNavigationRule.body,
   /(?:^|;)\s*letter-spacing\s*:\s*\.16em\s*(?:;|$)/,
-  "the mobile shop and index navigation must retain readable letter spacing",
+  "the mobile Hall of Fame and index navigation must retain readable letter spacing",
 );
 
 const mobileFooterNavigationRule = requireCssRule(
@@ -777,7 +777,7 @@ assert.equal(compactBlocks.length, 1, "styles.css must define exactly one real 4
 const compactRules = extractTopLevelCssRules(compactBlocks[0]);
 const compactIndexHeaderRule = requireCssRule(
   compactRules,
-  ["body:not(.main-page):not(.zk-page):not(.shop-page) .site-header"],
+  ["body:not(.main-page):not(.zk-page):not(.hof-page) .site-header"],
   "the 420px block must stack the runtime-class-safe index header",
 );
 assert.match(compactIndexHeaderRule.body, /(?:^|;)\s*display\s*:\s*grid\s*(?:;|$)/);
@@ -789,7 +789,7 @@ assert.match(compactIndexHeaderRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)
 
 const compactIndexNavRule = requireCssRule(
   compactRules,
-  ["body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav"],
+  ["body:not(.main-page):not(.zk-page):not(.hof-page) .header-nav"],
   "the 420px block must contain and wrap the runtime-class-safe index navigation",
 );
 assert.match(compactIndexNavRule.body, /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/);
@@ -799,7 +799,7 @@ assert.match(compactIndexNavRule.body, /(?:^|;)\s*flex-wrap\s*:\s*wrap\s*(?:;|$)
 
 const compactIndexNavLinkRule = requireCssRule(
   compactRules,
-  ["body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav a"],
+  ["body:not(.main-page):not(.zk-page):not(.hof-page) .header-nav a"],
   "the 420px block must let each index navigation link shrink and wrap",
 );
 assert.match(compactIndexNavLinkRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
@@ -810,7 +810,7 @@ const compactMainSectionRule = requireCssRule(
   compactRules,
   [
     ".main-page .arrival",
-    ".main-page .vault",
+    ".main-page .hof",
     ".main-page .zk-feature",
     ".main-page .signal",
   ],
@@ -826,11 +826,6 @@ const compactMainSurfaceRule = requireCssRule(
     ".main-page .arrival-name",
     ".main-page .manifesto",
     ".main-page .arrival-sub",
-    ".main-page .spec",
-    ".main-page .spec-tech",
-    ".main-page .spec-presets",
-    ".main-page .spec-layers",
-    ".main-page .preset",
     ".main-page .signal-row",
     ".main-page .signal-cell",
     ".main-page .zk-feature-grid",
@@ -844,31 +839,10 @@ assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)
 assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
 assert.match(compactMainSurfaceRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
 
-const compactMainFieldsetRule = requireCssRule(
-  compactRules,
-  [".main-page .pieces"],
-  "the 420px block must let the main-page interest fieldset shrink below its intrinsic minimum",
-);
-assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*box-sizing\s*:\s*border-box\s*(?:;|$)/);
-assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/);
-assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
-assert.match(compactMainFieldsetRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
-
-const compactMainFieldsetChildRule = requireCssRule(
-  compactRules,
-  [".main-page .pieces legend", ".main-page .pieces label"],
-  "the 420px block must wrap the main-page interest fieldset labels",
-);
-assert.match(compactMainFieldsetChildRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
-assert.match(compactMainFieldsetChildRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
-assert.match(compactMainFieldsetChildRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
-
 const compactMainSurfaceChildRule = requireCssRule(
   compactRules,
   [
     ".main-page .manifesto .line",
-    ".main-page .spec-layers > *",
-    ".main-page .preset > *",
     ".main-page .signal-cell > *",
     ".main-page .zk-feature-copy > *",
     ".main-page .zk-process-map > *",
@@ -882,24 +856,13 @@ assert.match(compactMainSurfaceChildRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*an
 
 const compactMainGridRule = requireCssRule(
   compactRules,
-  [".main-page .spec", ".main-page .spec-presets", ".main-page .zk-feature-grid", ".main-page .signal-row"],
+  [".main-page .zk-feature-grid", ".main-page .signal-row"],
   "the 420px block must collapse main-page grids onto one shrinkable column",
 );
 assert.match(
   compactMainGridRule.body,
   /(?:^|;)\s*grid-template-columns\s*:\s*minmax\(\s*0\s*,\s*1fr\s*\)\s*(?:;|$)/,
 );
-
-const compactMainSpecLinkRule = requireCssRule(
-  compactRules,
-  [".main-page .spec-link"],
-  "the 420px block must bound the main-page technical-spec control",
-);
-assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*box-sizing\s*:\s*border-box\s*(?:;|$)/);
-assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*width\s*:\s*100%\s*(?:;|$)/);
-assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*max-width\s*:\s*100%\s*(?:;|$)/);
-assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*min-width\s*:\s*0\s*(?:;|$)/);
-assert.match(compactMainSpecLinkRule.body, /(?:^|;)\s*overflow-wrap\s*:\s*anywhere\s*(?:;|$)/);
 
 const compactMainFeatureControlRule = requireCssRule(
   compactRules,
@@ -1123,7 +1086,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir -p public
-      - run: cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
+      - run: cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html hall-of-fame.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -1139,7 +1102,7 @@ pages:
   script:
     - node scripts/test-zombie-killer-page.mjs
     - mkdir -p public
-    - cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
+    - cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html hall-of-fame.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
   artifacts:
     paths:
       - public
@@ -1266,5 +1229,31 @@ assert.doesNotMatch(
   /tools\\record-bounty-platform-event\.ps1/i,
   "README.md must not direct maintainers to a missing internal tool",
 );
+
+for (const removed of ["shop.html", "shop.css", "shop.js", "assets/products"]) {
+  assert.ok(!existsSync(path.join(root, removed)), `${removed} must stay removed`);
+}
+assert.doesNotMatch(enter, /Ghost Series|shop\.html|#vault|phantombugz-preorder|assets\/products/i, "enter.html must not reference retired merch");
+assert.doesNotMatch(enterScript, /phantombugz-preorder|INTEREST_ENDPOINT|spec-modal/, "enter.js must not reference retired merch");
+const hofNavLink = extractPairedElements(primaryNavigation.inner, "a").find(
+  (anchor) => attributeValue(anchor, "href") === "#hall-of-fame" && normalizedText(anchor) === "Hall of Fame",
+);
+assert.ok(hofNavLink, "the primary navigation must link to the Hall of Fame section");
+assert.match(hofSection.inner, /href="mailto:founder@phantombugz\.com"[^>]*>Researcher\? Join a lane/, "Hall of Fame must offer the researcher CTA");
+assert.match(hofSection.inner, /Disclosed write-ups land here once embargoes lift\./, "Hall of Fame must ship its empty state");
+assert.ok(existsSync(path.join(root, "hall-of-fame.html")), "hall-of-fame.html must exist");
+const hofData = JSON.parse(read("data/hall-of-fame.json"));
+assert.ok(Array.isArray(hofData.entries), "hall-of-fame.json must expose an entries array");
+for (const entry of hofData.entries) {
+  for (const field of ["title", "date", "severity", "platform", "summary", "url", "status"]) {
+    assert.ok(field in entry, `hall-of-fame entries must include ${field}`);
+  }
+}
+assert.equal(
+  sitemapLocations.filter((location) => location === "https://phantombugz.com/hall-of-fame.html").length,
+  1,
+  "sitemap.xml must include the Hall of Fame page",
+);
+assert.ok(!sitemapLocations.some((location) => /shop\.html/.test(location)), "sitemap.xml must not list the retired shop");
 
 console.log("Zombie Killer public-page contract passed.");

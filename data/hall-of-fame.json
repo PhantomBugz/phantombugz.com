@@ -1,0 +1,32 @@
+{
+  "_note": "Public-safe only. Never add program names or undisclosed finding details. Add an entry only after the program has approved public disclosure. Entries with status \"placeholder\" render as subtle coming-soon cards and do not count as published write-ups.",
+  "entries": [
+    {
+      "title": "Sample write-up — replace me",
+      "date": "2026-01-01",
+      "severity": "high",
+      "platform": "Sample platform",
+      "summary": "Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.",
+      "url": "",
+      "status": "placeholder"
+    },
+    {
+      "title": "Sample write-up — replace me",
+      "date": "2026-01-01",
+      "severity": "medium",
+      "platform": "Sample platform",
+      "summary": "Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.",
+      "url": "",
+      "status": "placeholder"
+    },
+    {
+      "title": "Sample write-up — replace me",
+      "date": "2026-01-01",
+      "severity": "critical",
+      "platform": "Sample platform",
+      "summary": "Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.",
+      "url": "",
+      "status": "placeholder"
+    }
+  ]
+}

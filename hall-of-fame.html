@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hall of Fame — Disclosed Write-ups | PhantomBugz</title>
+  <meta name="description" content="The PhantomBugz Hall of Fame: publicly disclosed security write-ups from our ethical hacker collective, published only after fixes ship and embargoes lift.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#010608">
+  <link rel="canonical" href="https://phantombugz.com/hall-of-fame.html">
+  <meta property="og:site_name" content="PhantomBugz">
+  <meta property="og:title" content="PhantomBugz Hall of Fame — Disclosed Write-ups">
+  <meta property="og:description" content="Disclosed security write-ups from PhantomBugz, published once embargoes lift.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phantombugz.com/hall-of-fame.html">
+  <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PhantomBugz Hall of Fame">
+  <meta name="twitter:description" content="Disclosed write-ups land here once embargoes lift.">
+  <meta name="twitter:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
+  <link rel="icon" href="./assets/exports/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="./assets/exports/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/exports/apple-touch-icon.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <link rel="preload" href="./assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./assets/fonts/fonts.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "PhantomBugz Hall of Fame",
+      "description": "Publicly disclosed security write-ups from PhantomBugz.",
+      "url": "https://phantombugz.com/hall-of-fame.html",
+      "publisher": { "@type": "Organization", "name": "PhantomBugz", "url": "https://phantombugz.com/" }
+    }
+  </script>
+</head>
+<body class="hof-page">
+  <a class="skip-link" href="#hall-of-fame">Skip to Hall of Fame</a>
+  <header class="site-header" aria-label="Primary">
+    <a class="brand-lockup" href="./enter.html#arrival" aria-label="PhantomBugz home">
+      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true" width="34" height="34">
+    </a>
+    <nav class="header-nav" aria-label="Sections">
+      <a href="./enter.html">Home</a>
+      <a href="./hall-of-fame.html" aria-current="page">Hall of Fame</a>
+      <a href="./zombie-killer.html">Zombie Killer</a>
+      <a href="./enter.html#signal">Signal</a>
+      <a href="https://github.com/PhantomBugz">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hall-of-fame" class="hof" aria-labelledby="hof-title" tabindex="-1">
+      <div class="hof-head">
+        <p class="eyebrow">Hall of Fame</p>
+        <h1 id="hof-title" class="hof-title">Disclosed write-ups</h1>
+        <p class="hof-caption">Every entry here was fixed by the affected team and cleared for public disclosure first. We never publish program names or details of findings that are still under embargo.</p>
+      </div>
+      <ul class="hof-list" data-hof-list hidden></ul>
+      <p class="hof-empty" data-hof-empty>Disclosed write-ups land here once embargoes lift.</p>
+      <p class="hof-soon" data-hof-soon hidden>Coming soon</p>
+      <ul class="hof-list" data-hof-soon-list hidden aria-label="Upcoming write-ups (placeholders)"></ul>
+      <div class="hof-foot">
+        <a class="hof-cta" href="mailto:founder@phantombugz.com">Researcher? Join a lane <span aria-hidden="true">&rarr;</span></a>
+        <a class="hof-more" href="./enter.html">Back to PhantomBugz</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="foot-mark" href="./enter.html#arrival" aria-label="PhantomBugz">
+      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true" width="26" height="26">
+      <span>PhantomBugz</span>
+    </a>
+    <nav aria-label="Footer">
+      <a href="https://github.com/PhantomBugz">GitHub</a>
+      <a href="https://gitlab.com/Phantombugz">GitLab</a>
+      <a href="mailto:founder@phantombugz.com">founder@phantombugz.com</a>
+    </nav>
+  </footer>
+
+  <script type="module">
+    import { initHallOfFame } from "./js/hall-of-fame.js";
+    initHallOfFame(document.getElementById("hall-of-fame"));
+  </script>
+</body>
+</html>

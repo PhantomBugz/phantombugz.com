@@ -1024,6 +1024,28 @@ a:focus-visible,
   color: var(--green);
 }
 
+/* ---------- Social links ---------- */
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  color: var(--muted);
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  color: var(--cyan);
+}
+
+.social-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {

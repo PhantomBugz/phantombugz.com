@@ -276,20 +276,8 @@ a:focus-visible,
     linear-gradient(to bottom, rgba(1, 6, 8, .72), rgba(1, 8, 10, .6) 60%, rgba(1, 6, 8, .72));
 }
 
-.main-page .vault {
-  background: linear-gradient(to bottom, rgba(1, 8, 10, .55), rgba(1, 6, 8, .72));
-}
-
 .main-page .signal {
   background: rgba(2, 10, 13, .82);
-}
-
-/* Alcoves stay readable over the roamers with an opaque-ish base (no
-   backdrop-filter: blurring behind an animating canvas tanks the frame rate). */
-.main-page .alcove {
-  background:
-    radial-gradient(ellipse at 50% 118%, rgba(0, 231, 255, .07), transparent 62%),
-    linear-gradient(to bottom, #01090b, #020a0d);
 }
 
 /* ---------- Header ---------- */
@@ -560,16 +548,7 @@ a:focus-visible,
   letter-spacing: .02em;
 }
 
-/* ---------- Vault ---------- */
-
-.vault {
-  position: relative;
-  z-index: 2;
-  padding: clamp(60px, 10vh, 120px) clamp(20px, 5vw, 64px) clamp(70px, 12vh, 130px);
-  border-top: 1px solid var(--line);
-  background:
-    linear-gradient(to bottom, #01080a, var(--base));
-}
+/* ---------- Shared section type ---------- */
 
 .eyebrow {
   margin: 0 0 10px;
@@ -579,12 +558,8 @@ a:focus-visible,
   color: var(--cyan);
 }
 
-.vault-head {
-  max-width: 1180px;
-  margin: 0 auto 42px;
-}
-
-.vault-head h2,
+.hof-head h2,
+.hof-title,
 .signal-head h2 {
   margin: 0;
   font-family: var(--font-display);
@@ -595,641 +570,148 @@ a:focus-visible,
   letter-spacing: .015em;
 }
 
-.vault-caption {
-  margin: 16px 0 0;
-  max-width: 60ch;
-  color: var(--muted);
-}
+/* ---------- Hall of Fame ---------- */
 
-.vault-grid {
-  max-width: 1180px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-}
-
-.vault-piece {
-  display: grid;
-  align-content: start;
-}
-
-.alcove {
+.hof {
   position: relative;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 150px 150px 8px 8px;
-  background:
-    radial-gradient(ellipse at 50% 118%, rgba(0, 231, 255, .07), transparent 62%),
-    linear-gradient(to bottom, #01090b, var(--surface));
-  box-shadow:
-    inset 0 26px 70px rgba(0, 0, 0, .66),
-    inset 0 0 30px rgba(0, 231, 255, .05),
-    inset 0 0 0 1px rgba(255, 255, 255, .02);
-  transition: box-shadow .5s ease, border-color .5s ease, opacity .45s ease;
-}
-
-/* Faint binary that lives inside the alcove even at rest. */
-.alcove::before {
-  content: "01001101 10110 011010 10011 0110 1001101 0110100 10 011 100101 0110 1001 0110110 10011010";
-  position: absolute;
-  inset: 0;
-  padding: 22px 16px;
-  font-size: 11px;
-  line-height: 1.9;
-  letter-spacing: .12em;
-  color: rgba(0, 231, 255, .1);
-  word-break: break-all;
-  overflow: hidden;
-  pointer-events: none;
-  transition: color .55s ease;
-}
-
-/* Silhouette hides in shadow until the piece wakes. */
-.silhouette {
-  position: absolute;
-  inset: 14% 12% 10%;
-  width: 76%;
-  height: 76%;
-  object-fit: contain;
-  opacity: .34;
-  /* Shift the source art (which carries green) toward phantom cyan. */
-  filter: grayscale(.6) brightness(.55) contrast(1.05) hue-rotate(60deg);
-  transition: opacity .55s ease, filter .55s ease, transform .55s ease;
-}
-
-/* Photo alcoves: the render is the surface, so drop the faux binary text overlay. */
-.alcove:has(.shot)::before {
-  display: none;
-}
-
-/* Product photo fills the alcove; dark and mysterious at rest, wakes on hover. */
-.alcove .shot {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: .5;
-  filter: brightness(.62) contrast(1.02) saturate(.9);
-  transform: scale(1.02);
-  transition: opacity .55s ease, filter .55s ease, transform .6s ease;
-}
-
-.vault-piece:hover .shot,
-.vault-piece:focus-within .shot {
-  opacity: 1;
-  filter: brightness(1.05) contrast(1.05) saturate(1.15)
-    drop-shadow(0 0 18px rgba(0, 231, 255, .5));
-  transform: scale(1.06);
-}
-
-.alcove-label {
-  position: absolute;
-  left: 16px;
-  bottom: 13px;
-  font-size: .7rem;
-  letter-spacing: .2em;
-  color: var(--muted);
-  opacity: .6;
   z-index: 2;
+  padding: clamp(60px, 10vh, 120px) clamp(20px, 5vw, 64px) clamp(70px, 12vh, 130px);
+  border-top: 1px solid var(--line);
+  background: linear-gradient(to bottom, #01080a, var(--base));
 }
 
-/* Stage lighting: the hovered piece brightens, its siblings recede. */
-.vault-grid:hover .vault-piece:not(:hover) {
-  opacity: .5;
+.main-page .hof {
+  background: linear-gradient(to bottom, rgba(1, 8, 10, .55), rgba(1, 6, 8, .72));
 }
 
-.vault-piece:hover .alcove,
-.vault-piece:focus-within .alcove {
-  border-color: var(--line-strong);
-  box-shadow:
-    inset 0 26px 70px rgba(0, 0, 0, .5),
-    inset 0 0 40px rgba(0, 231, 255, .12),
-    0 0 46px rgba(0, 231, 255, .3);
+.hof-head,
+.hof-list,
+.hof-empty,
+.hof-foot {
+  max-width: 1180px;
+  margin-inline: auto;
 }
 
-.vault-piece:hover .alcove::before,
-.vault-piece:focus-within .alcove::before {
-  color: rgba(0, 231, 255, .2);
+.hof-head {
+  margin-bottom: 36px;
 }
 
-.vault-piece:hover .silhouette,
-.vault-piece:focus-within .silhouette {
-  opacity: 1;
-  transform: translateY(-5px);
-  /* Cyan-shift the revealed art and make it glow from within. */
-  filter: grayscale(.15) brightness(1.05) contrast(1.05) hue-rotate(60deg) saturate(1.3)
-    drop-shadow(0 0 16px rgba(0, 231, 255, .7));
-}
-
-.vault-piece h3 {
+.hof-caption {
   margin: 16px 0 0;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 1.02rem;
-  letter-spacing: .02em;
+  max-width: 62ch;
+  color: var(--muted);
 }
 
-.vault-piece p {
-  margin: 7px 0 0;
+.hof-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hof-entry {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: rgba(2, 12, 15, .82);
+  overflow-wrap: anywhere;
+}
+
+.hof-entry h3 {
+  margin: 8px 0 10px;
+  font-size: 1rem;
+  letter-spacing: .04em;
+}
+
+.hof-entry h3 a {
+  color: inherit;
+}
+
+.hof-entry p {
+  margin: 0;
   color: var(--muted);
   font-size: .86rem;
-  line-height: 1.45;
+  line-height: 1.6;
 }
 
-.request {
-  margin-top: 12px;
-  justify-self: start;
-  font-size: .74rem;
+.hof-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: .66rem;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--cyan);
-  border-bottom: 1px solid var(--line-strong);
-  padding-bottom: 3px;
-  transition: color .3s ease, border-color .3s ease;
 }
 
-.request:hover {
-  color: var(--cyan-2);
-  border-color: var(--cyan-2);
+.hof-entry.is-placeholder {
+  border-style: dashed;
+  background: rgba(2, 10, 13, .4);
+  opacity: .55;
 }
 
-/* button reset for the register-interest buttons (were <a>, now <button>) */
-button.request {
-  background: none;
-  border: 0;
-  border-bottom: 1px solid var(--line-strong);
-  cursor: pointer;
-  font-family: var(--font-mono);
+.hof-entry.is-placeholder .hof-meta {
+  color: var(--muted);
 }
 
-/* "Preorder — Coming Soon" tag on each piece */
-.status-tag {
-  margin: 14px 0 0;
-  display: inline-block;
-  align-self: start;
-  font-size: .62rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--amber);
-  border: 1px solid rgba(255, 209, 102, .4);
-  border-radius: 3px;
-  padding: 3px 8px;
-}
-
-/* ---------- How Ghost Series works (spec + presets) ---------- */
-
-.spec {
+.hof-soon {
+  margin: 28px auto 12px;
   max-width: 1180px;
-  margin: clamp(48px, 8vh, 90px) auto 0;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 34px;
-  align-items: start;
-}
-
-.spec-layers {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 12px;
-}
-
-.spec-layers li {
+  font-size: .66rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
   color: var(--muted);
-  font-size: .9rem;
-  line-height: 1.5;
-  padding-left: 16px;
-  border-left: 1px solid var(--line);
 }
 
-.spec-layers strong {
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.spec-presets {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.preset {
-  padding: 14px 16px;
+.hof-empty {
+  padding: 28px 22px;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
-}
-
-.preset span {
-  display: block;
-  font-weight: 700;
-  color: var(--cyan);
+  color: var(--ink);
   letter-spacing: .04em;
-  margin-bottom: 5px;
 }
 
-.preset p {
-  margin: 0;
-  color: var(--muted);
-  font-size: .82rem;
-  line-height: 1.45;
+.hof-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  margin-top: 32px;
 }
 
-/* "View technical spec" link spans under the spec strip. */
-.spec-link {
-  grid-column: 1 / -1;
-  justify-self: start;
-  margin-top: 4px;
-  padding: 10px 20px;
-  background: none;
-  border: 1px solid var(--line-strong);
-  border-radius: 7px;
+.hof-cta,
+.hof-more {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--cyan);
   color: var(--cyan);
-  font-family: var(--font-mono);
   font-size: .74rem;
   letter-spacing: .2em;
   text-transform: uppercase;
-  cursor: pointer;
-  transition: color .3s ease, border-color .3s ease, box-shadow .3s ease;
+  text-decoration: none;
 }
 
-.spec-link:hover {
-  color: var(--cyan-2);
-  border-color: var(--cyan-2);
-  box-shadow: 0 0 24px rgba(0, 231, 255, .25);
-}
-
-/* Technical spec lightbox */
-.spec-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 40px 20px;
-  overflow: auto;
-  background: rgba(1, 5, 7, .92);
-  backdrop-filter: blur(6px);
-}
-
-.spec-modal[hidden] {
-  display: none;
-}
-
-.spec-modal-inner {
-  max-width: 900px;
-  width: 100%;
-  border: 1px solid var(--line-strong);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 60px rgba(0, 231, 255, .25);
-}
-
-.spec-modal-inner img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.spec-close {
-  position: fixed;
-  top: 16px;
-  right: 20px;
-  width: 44px;
-  height: 44px;
-  background: var(--surface);
-  border: 1px solid var(--line-strong);
-  border-radius: 50%;
-  color: var(--ink);
-  font-size: 1.6rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: border-color .3s ease, color .3s ease;
-}
-
-.spec-close:hover {
-  border-color: var(--cyan);
-  color: var(--cyan);
-}
-
-.spec-download {
-  flex: none;
-  padding: 11px 22px;
-  border: 1px solid var(--cyan);
-  border-radius: 8px;
-  color: var(--ink);
-  font-size: .76rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  background: rgba(0, 231, 255, .1);
-  transition: background .3s ease, box-shadow .3s ease;
-}
-
-.spec-download:hover {
-  background: rgba(0, 231, 255, .2);
-  box-shadow: 0 0 26px rgba(0, 231, 255, .35);
-}
-
-/* ---------- Preorder interest form ---------- */
-
-.interest {
-  max-width: 720px;
-  margin: clamp(50px, 9vh, 100px) auto 0;
-  padding: clamp(24px, 4vw, 40px);
-  border: 1px solid var(--line-strong);
-  border-radius: 14px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(0, 231, 255, .06), transparent 60%),
-    var(--surface);
-  box-shadow: 0 0 50px rgba(0, 231, 255, .1);
-}
-
-.interest-head {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.interest-head h3 {
-  margin: 6px 0 10px;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
-  text-transform: uppercase;
-  letter-spacing: .02em;
-}
-
-.interest-sub {
-  margin: 0 auto;
-  max-width: 52ch;
-  color: var(--muted);
-  font-size: .9rem;
-  line-height: 1.5;
-}
-
-.interest-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.field {
-  display: grid;
-  gap: 6px;
-  margin-top: 14px;
-}
-
-.field span {
-  font-size: .72rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
+.hof-more {
+  border-color: var(--line);
   color: var(--muted);
 }
 
-.field em {
-  font-style: normal;
-  opacity: .7;
+.hof-cta:hover,
+.hof-cta:focus-visible,
+.hof-more:hover,
+.hof-more:focus-visible {
+  background: rgba(0, 231, 255, .08);
+  color: #fff;
 }
 
-.interest input[type="text"],
-.interest input[type="email"],
-.interest textarea {
-  width: 100%;
-  padding: 11px 13px;
-  background: #01090b;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: .92rem;
-  transition: border-color .3s ease, box-shadow .3s ease;
-}
-
-.interest input:focus,
-.interest textarea:focus {
-  outline: none;
-  border-color: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(0, 231, 255, .16);
-}
-
-.pieces {
-  margin: 18px 0 0;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-
-.pieces legend {
-  padding: 0 8px;
-  font-size: .72rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.pieces label {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin: 4px 16px 4px 0;
-  font-size: .88rem;
-  cursor: pointer;
-}
-
-.pieces input {
-  accent-color: var(--cyan);
-  width: 16px;
-  height: 16px;
-}
-
-/* honeypot — visually hidden, off-screen, not display:none (bots skip those) */
-.hp {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-.interest-submit {
-  margin-top: 22px;
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(180deg, rgba(0, 231, 255, .18), rgba(0, 231, 255, .08));
-  border: 1px solid var(--cyan);
-  border-radius: 8px;
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: .8rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: box-shadow .3s ease, background .3s ease;
-}
-
-.interest-submit:hover:not(:disabled) {
-  background: linear-gradient(180deg, rgba(0, 231, 255, .3), rgba(0, 231, 255, .14));
-  box-shadow: 0 0 30px rgba(0, 231, 255, .35);
-}
-
-.interest-submit:disabled {
-  opacity: .55;
-  cursor: default;
-}
-
-.interest-status {
-  margin: 14px 0 0;
-  min-height: 1.2em;
-  text-align: center;
-  font-size: .86rem;
-}
-
-.interest-status.ok {
-  color: var(--green);
-}
-
-.interest-status.err {
-  color: var(--amber);
-}
-
-.interest-status a {
-  color: var(--cyan);
-  border-bottom: 1px solid var(--line-strong);
-}
-
-/* ---------- Ghost Series in motion (video showcase) ---------- */
-
-.motion {
-  position: relative;
-  z-index: 2;
-  padding: clamp(60px, 10vh, 120px) clamp(20px, 5vw, 64px) clamp(30px, 5vh, 56px);
-  background: linear-gradient(to bottom, var(--base), #01080a);
-}
-
-.motion-head {
-  max-width: 1180px;
-  margin: 0 auto 28px;
-}
-
-.motion-head h2 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: .015em;
-}
-
-.motion-stage {
-  display: block;
-  position: relative;
-  width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0;
-  border: 1px solid var(--line-strong);
-  border-radius: 14px;
-  overflow: hidden;
-  background: #000;
-  cursor: pointer;
-  box-shadow: 0 0 60px rgba(0, 231, 255, .16), inset 0 0 0 1px rgba(0, 231, 255, .06);
-  transition: box-shadow .4s ease, border-color .4s ease;
-}
-
-.motion-stage:hover,
-.motion-stage:focus-visible {
-  border-color: var(--cyan-2);
-  box-shadow: 0 0 80px rgba(0, 231, 255, .32), inset 0 0 0 1px rgba(0, 231, 255, .1);
-}
-
-.motion-poster {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  transition: transform .5s ease, filter .5s ease;
-}
-
-.motion-stage:hover .motion-poster,
-.motion-stage:focus-visible .motion-poster {
-  transform: scale(1.03);
-  filter: brightness(1.08);
-}
-
-/* Play button in the center. */
-.motion-play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 84px;
-  height: 84px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: rgba(1, 8, 10, .55);
-  border: 2px solid var(--cyan);
-  box-shadow: 0 0 30px rgba(0, 231, 255, .5);
-  backdrop-filter: blur(2px);
-  transition: transform .3s ease, background .3s ease, box-shadow .3s ease;
-}
-
-.motion-play::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 54%;
-  transform: translate(-50%, -50%);
-  border-style: solid;
-  border-width: 15px 0 15px 26px;
-  border-color: transparent transparent transparent var(--cyan);
-}
-
-.motion-stage:hover .motion-play,
-.motion-stage:focus-visible .motion-play {
-  transform: translate(-50%, -50%) scale(1.1);
-  background: rgba(0, 231, 255, .18);
-  box-shadow: 0 0 46px rgba(0, 231, 255, .7);
-}
-
-.motion-hint {
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  font-family: var(--font-mono);
-  font-size: .72rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--cyan);
-  text-shadow: 0 0 10px rgba(0, 231, 255, .5);
-  pointer-events: none;
-}
-
-/* Subtle cyan edge vignette so the poster seats into the page. */
-.motion-stage::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 90px rgba(1, 6, 8, .7);
-}
-
-/* Fullscreen playback element (appended to body on click). */
-.motion-fullscreen {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  object-fit: contain;
-  z-index: 200;
+.hof-page .hof {
+  padding-top: clamp(110px, 16vh, 160px);
+  min-height: 70vh;
 }
 
 /* ---------- Zombie Killer ---------- */
@@ -1589,9 +1071,6 @@ button.request {
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1080px) {
-  .vault-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
   .signal-row {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1624,12 +1103,12 @@ button.request {
     min-width: 44px;
     min-height: 44px;
   }
-  .shop-page .site-header,
-  body:not(.main-page):not(.zk-page):not(.shop-page) .site-header {
+  .hof-page .site-header,
+  body:not(.main-page):not(.zk-page):not(.hof-page) .site-header {
     padding: 12px 18px;
   }
-  .shop-page .header-nav,
-  body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav {
+  .hof-page .header-nav,
+  body:not(.main-page):not(.zk-page):not(.hof-page) .header-nav {
     gap: 14px;
     font-size: .66rem;
     letter-spacing: .16em;
@@ -1698,18 +1177,8 @@ button.request {
   .scroll-cue span::after {
     font-size: .74rem;
   }
-  .vault-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .signal-row {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .spec {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .interest-grid {
-    grid-template-columns: 1fr;
   }
   .site-footer {
     justify-content: flex-start;
@@ -1717,7 +1186,7 @@ button.request {
 }
 
 @media (max-width: 420px) {
-  body:not(.main-page):not(.zk-page):not(.shop-page) .site-header {
+  body:not(.main-page):not(.zk-page):not(.hof-page) .site-header {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
@@ -1725,7 +1194,7 @@ button.request {
     min-width: 0;
     gap: 8px;
   }
-  body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav {
+  body:not(.main-page):not(.zk-page):not(.hof-page) .header-nav {
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -1733,13 +1202,13 @@ button.request {
     flex-wrap: wrap;
     gap: 6px 10px;
   }
-  body:not(.main-page):not(.zk-page):not(.shop-page) .header-nav a {
+  body:not(.main-page):not(.zk-page):not(.hof-page) .header-nav a {
     min-width: 0;
     max-width: 100%;
     overflow-wrap: anywhere;
   }
   .main-page .arrival,
-  .main-page .vault,
+  .main-page .hof,
   .main-page .zk-feature,
   .main-page .signal {
     box-sizing: border-box;
@@ -1750,11 +1219,6 @@ button.request {
   .main-page .arrival-name,
   .main-page .manifesto,
   .main-page .arrival-sub,
-  .main-page .spec,
-  .main-page .spec-tech,
-  .main-page .spec-presets,
-  .main-page .spec-layers,
-  .main-page .preset,
   .main-page .signal-row,
   .main-page .signal-cell,
   .main-page .zk-feature-grid,
@@ -1765,21 +1229,7 @@ button.request {
     max-width: 100%;
     overflow-wrap: anywhere;
   }
-  .main-page .pieces {
-    box-sizing: border-box;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-  .main-page .pieces legend,
-  .main-page .pieces label {
-    min-width: 0;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-  }
   .main-page .manifesto .line,
-  .main-page .spec-layers > *,
-  .main-page .preset > *,
   .main-page .signal-cell > *,
   .main-page .zk-feature-copy > *,
   .main-page .zk-process-map > *,
@@ -1788,18 +1238,9 @@ button.request {
     max-width: 100%;
     overflow-wrap: anywhere;
   }
-  .main-page .spec,
-  .main-page .spec-presets,
   .main-page .zk-feature-grid,
   .main-page .signal-row {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .main-page .spec-link {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    overflow-wrap: anywhere;
   }
   .main-page .zk-feature-meta span,
   .main-page .zk-cta {
@@ -1859,9 +1300,6 @@ button.request {
     max-width: 100%;
     overflow-wrap: anywhere;
     font-size: clamp(1.75rem, 10vw, 2.5rem);
-  }
-  .vault-grid {
-    grid-template-columns: 1fr;
   }
   .zk-feature-meta span,
   .zk-status span,

@@ -27,7 +27,7 @@ Avoid:
 - Stock hooded-hacker photography
 - Decorative bokeh orbs
 - Fake cyber gibberish as page copy
-- Placeholder merch mockup art on the public page
+- Merchandise or apparel mockups on the public page (the site is research-only; the Hall of Fame replaced the old merch section)
 
 ## Asset Exports
 

@@ -1127,7 +1127,12 @@ a:focus-visible,
   .hof-page .header-nav {
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 8px 12px;
+    gap: 8px 14px;
+  }
+  .hof-page .header-nav a {
+    min-width: 48px;
+    min-height: 48px;
+    justify-content: center;
   }
   .hof-page .site-footer nav {
     width: 100%;

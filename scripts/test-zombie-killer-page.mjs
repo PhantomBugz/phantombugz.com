@@ -1123,7 +1123,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir -p public
-      - run: cp -r assets data js index.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
+      - run: cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -1139,7 +1139,7 @@ pages:
   script:
     - node scripts/test-zombie-killer-page.mjs
     - mkdir -p public
-    - cp -r assets data js index.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
+    - cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html shop.html shop.css shop.js main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
   artifacts:
     paths:
       - public

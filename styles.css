@@ -718,10 +718,6 @@ a:focus-visible,
   padding-top: clamp(110px, 16vh, 160px);
 }
 
-.hof-page [data-hof-soon-list] {
-  min-height: 220px;
-}
-
 /* ---------- Zombie Killer ---------- */
 
 .main-page .header-nav a,

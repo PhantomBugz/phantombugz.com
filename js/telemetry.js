@@ -1,22 +1,9 @@
 // The Signal: fills the public bounty telemetry strip from the public-safe JSON
-// and runs a live clock. Money figures only; no goals or private amounts.
-
-const money = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
+// and runs a live clock. All-time report counts by severity; no dollar amounts.
 
 function set(root, key, value) {
   const node = root.querySelector(`[data-k="${key}"]`);
   if (node) node.textContent = value;
-}
-
-function formatCycle(month) {
-  if (!month) return "—";
-  const date = new Date(`${month}-01T00:00:00`);
-  if (Number.isNaN(date.getTime())) return month;
-  return date.toLocaleDateString([], { month: "long", year: "numeric" });
 }
 
 function startClock(root) {
@@ -38,14 +25,14 @@ export function initTelemetry(root) {
       return res.json();
     })
     .then((data) => {
-      set(root, "submitted", money.format(Number(data.submittedThisMonthUsd || 0)));
-      set(root, "lastMonth", money.format(Number(data.lastMonthMadeUsd || 0)));
-      set(root, "total", money.format(Number(data.totalMadeSinceLaunchUsd || 0)));
+      const sev = data.allTimeBySeverity || {};
+      const n = (v) => Number(v || 0);
+      const total = ["critical", "high", "medium", "low"].reduce((s, k) => s + n(sev[k]), 0);
+      set(root, "reports", String(n(data.allTimeReports) || total));
+      for (const k of ["critical", "high", "medium", "low"]) set(root, k, String(n(sev[k])));
       set(root, "lanes", String(data.activeLaneCount || 0));
-      set(root, "cycle", formatCycle(data.month));
     })
     .catch(() => {
-      // Leave the seeded dashes; only the cycle gets a static fallback.
-      set(root, "cycle", "Current");
+      // Leave the seeded zeros on fetch failure.
     });
 }

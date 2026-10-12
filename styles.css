@@ -650,7 +650,7 @@ a:focus-visible,
 .hof-entry.is-placeholder {
   border-style: dashed;
   background: rgba(2, 10, 13, .4);
-  opacity: .55;
+  opacity: .78;
 }
 
 .hof-entry.is-placeholder .hof-meta {
@@ -709,9 +709,17 @@ a:focus-visible,
   color: #fff;
 }
 
+.hof-page main {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 .hof-page .hof {
   padding-top: clamp(110px, 16vh, 160px);
-  min-height: 70vh;
+}
+
+.hof-page [data-hof-soon-list] {
+  min-height: 220px;
 }
 
 /* ---------- Zombie Killer ---------- */
@@ -1112,6 +1120,25 @@ a:focus-visible,
     gap: 14px;
     font-size: .66rem;
     letter-spacing: .16em;
+  }
+  .hof-page .header-nav {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px 12px;
+  }
+  .hof-page .site-footer nav {
+    width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+  }
+  .hof-page .site-footer nav a,
+  .hof-page .foot-mark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   .zk-feature-grid,
   .zk-hero {

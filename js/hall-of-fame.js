@@ -55,6 +55,7 @@ export async function initHallOfFame(root, { limit = Infinity } = {}) {
   const soonHead = root.querySelector("[data-hof-soon]");
   const soonList = root.querySelector("[data-hof-soon-list]");
   const empty = root.querySelector("[data-hof-empty]");
+  const publishedHead = root.querySelector("[data-hof-published]");
 
   let entries = [];
   try {
@@ -75,6 +76,7 @@ export async function initHallOfFame(root, { limit = Infinity } = {}) {
 
   list.replaceChildren(...published.slice(0, limit).map((e) => card(e, false)));
   list.hidden = published.length === 0;
+  if (publishedHead) publishedHead.hidden = published.length === 0;
   if (empty) {
     empty.textContent = EMPTY_TEXT;
     empty.hidden = published.length !== 0;

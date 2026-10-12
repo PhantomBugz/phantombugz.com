@@ -95,6 +95,32 @@ body.gate-open {
   color: var(--cyan);
 }
 
+.gate-intro {
+  margin: -8px 0 0;
+  max-width: 34ch;
+  padding: 0 16px;
+  font-family: var(--font-mono);
+  font-size: clamp(.7rem, 1.6vw, .82rem);
+  line-height: 1.6;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+
+/* The link's hit area covers the whole gate, so clicking anywhere enters. */
+.gate-link {
+  color: inherit;
+  text-decoration: none;
+  pointer-events: auto;
+}
+.gate-link::after {
+  content: "";
+  position: absolute;
+  inset: -100vmax;
+}
+.gate-link:focus-visible {
+  outline: none;
+}
+
 .gate-enter {
   margin: 6px 0 0;
   font-size: .72rem;
@@ -113,7 +139,7 @@ body.gate-open {
 }
 
 .gate:hover .gate-enter span,
-.gate:focus-visible .gate-enter span {
+.gate-link:focus-visible span {
   color: var(--ink);
   border-color: var(--cyan);
   box-shadow: 0 0 26px rgba(0, 231, 255, .3);
@@ -196,21 +222,6 @@ a:focus-visible,
 
 .skip-link:focus {
   top: 12px;
-}
-
-/* Crawlable copy for search engines: off-screen but readable by bots and screen
-   readers (not display:none, which crawlers discount). Visitors see the gate. */
-.seo-copy {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-  padding: 0;
-  margin: -1px;
 }
 
 /* ---------- Sling (corridor releases into the main page) ---------- */

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PhantomBugz — Ethical Hacking &amp; Bug Bounty Team</title>
   <meta name="description" content="PhantomBugz is an ethical hacker collective. A team strong enough to destroy that chooses to protect. Bug bounty operation, live sprint signal, and the limited Ghost Series gear.">
-  <meta name="keywords" content="PhantomBugz, ethical hacking, bug bounty, ethical hackers, security research, Ghost Series, cybersecurity team">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#010608">
   <link rel="canonical" href="https://phantombugz.com/">
@@ -14,10 +13,10 @@
   <meta property="og:description" content="A team strong enough to destroy. We choose to protect. Bug bounty operation, live signal, and the limited Ghost Series.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://phantombugz.com/">
-  <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.gif">
-  <meta property="og:image:type" content="image/gif">
-  <meta property="og:image:width" content="800">
-  <meta property="og:image:height" content="420">
+  <meta property="og:image" content="https://phantombugz.com/assets/exports/phantombugz-og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="PhantomBugz — Ethical Hacking &amp; Bug Bounty Team">
   <meta name="twitter:description" content="When the power of love beats the love of power.">
@@ -47,18 +46,19 @@
   </script>
 </head>
 <body>
-  <a class="skip-link" href="./enter.html">Skip intro</a>
+  <a class="skip-link" href="./enter.html">Enter site</a>
 
-  <!-- The gate is a REAL link so entering works even if JS never runs. The JS enhances
-       it with a cyan flash + corridor, but navigation never depends on JS. -->
-  <a id="gate" class="gate" href="./enter.html" aria-label="Enter PhantomBugz">
+  <!-- The gate's "Click to enter" is a REAL link (stretched over the whole gate via CSS)
+       so entering works even if JS never runs. JS only adds the cyan flash + corridor. -->
+  <div id="gate" class="gate">
     <canvas id="gate-canvas" aria-hidden="true"></canvas>
     <div class="gate-inner">
-      <img class="gate-emblem" src="./assets/exports/phantombugz-emblem-transparent.png" alt="PhantomBugz" width="150" height="150">
-      <p class="gate-name">PHANTOMBUGZ</p>
-      <p class="gate-enter"><span>Click to enter</span></p>
+      <img class="gate-emblem" src="./assets/exports/phantombugz-emblem-transparent.png" alt="" width="150" height="150">
+      <h1 class="gate-name">PHANTOMBUGZ</h1>
+      <p class="gate-intro">Ethical hacking &amp; bug bounty collective. Strong enough to destroy &mdash; we choose to protect.</p>
+      <p class="gate-enter"><a class="gate-link" href="./enter.html"><span>Click to enter</span></a></p>
     </div>
-  </a>
+  </div>
 
   <header class="site-header" aria-label="Primary">
     <a class="brand-lockup" href="./enter.html" aria-label="PhantomBugz">
@@ -72,15 +72,6 @@
   </header>
 
   <main>
-    <!-- Crawlable content for search engines. Visually hidden behind the corridor
-         gate, but present in the HTML so the entry page carries real keywords. -->
-    <section class="seo-copy">
-      <h1>PhantomBugz — Ethical Hacking &amp; Bug Bounty Team</h1>
-      <p>PhantomBugz is a collective of ethical hackers. A team strong enough to destroy that chooses to protect. When the power of love beats the love of power.</p>
-      <p>We run a bug bounty operation, publish a live sprint signal of what we are doing now, and release the Ghost Series: a strictly limited line of gear with binary that glows from inside the weave. Hidden in plain sight.</p>
-      <p><a href="./enter.html">Enter PhantomBugz</a> to see the manifesto, the Ghost Series vault, and the public bounty signal.</p>
-    </section>
-
     <section id="corridor" class="corridor" aria-label="Enter PhantomBugz">
       <div class="corridor-viewport">
         <div class="corridor-space">

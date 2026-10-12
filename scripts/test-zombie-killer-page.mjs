@@ -449,6 +449,7 @@ const approvedAnchorReferences = new Set([
   "./enter.html",
   "./hall-of-fame.html",
   "https://github.com/PhantomBugz",
+  "https://x.com/phantombugz",
   "mailto:founder@phantombugz.com",
 ]);
 const pageIds = new Set(

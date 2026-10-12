@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hall of Fame — Disclosed Write-ups | PhantomBugz</title>
   <meta name="description" content="The PhantomBugz Hall of Fame: publicly disclosed security write-ups from our ethical hacker collective, published only after fixes ship and embargoes lift.">
@@ -44,7 +46,7 @@
   <a class="skip-link" href="#hall-of-fame">Skip to Hall of Fame</a>
   <header class="site-header" aria-label="Primary">
     <a class="brand-lockup" href="./enter.html#arrival" aria-label="PhantomBugz home">
-      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true" width="34" height="34">
+      <img src="./assets/exports/phantombugz-emblem-96.png" alt="" aria-hidden="true" width="34" height="34">
     </a>
     <nav class="header-nav" aria-label="Sections">
       <a href="./enter.html">Home</a>
@@ -52,6 +54,7 @@
       <a href="./zombie-killer.html">Zombie Killer</a>
       <a href="./enter.html#signal">Signal</a>
       <a href="https://github.com/PhantomBugz">GitHub</a>
+      <a href="https://gitlab.com/Phantombugz">GitLab</a>
     </nav>
   </header>
 
@@ -62,9 +65,10 @@
         <h1 id="hof-title" class="hof-title">Disclosed write-ups</h1>
         <p class="hof-caption">Every entry here was fixed by the affected team and cleared for public disclosure first. We never publish program names or details of findings that are still under embargo.</p>
       </div>
+      <h2 class="hof-soon" data-hof-published hidden>Published</h2>
       <ul class="hof-list" data-hof-list hidden></ul>
       <p class="hof-empty" data-hof-empty>Disclosed write-ups land here once embargoes lift.</p>
-      <p class="hof-soon" data-hof-soon hidden>Coming soon</p>
+      <h2 class="hof-soon" data-hof-soon hidden>Coming soon</h2>
       <ul class="hof-list" data-hof-soon-list hidden aria-label="Upcoming write-ups (placeholders)"></ul>
       <div class="hof-foot">
         <a class="hof-cta" href="mailto:founder@phantombugz.com">Researcher? Join a lane <span aria-hidden="true">&rarr;</span></a>
@@ -75,19 +79,18 @@
 
   <footer class="site-footer">
     <a class="foot-mark" href="./enter.html#arrival" aria-label="PhantomBugz">
-      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true" width="26" height="26">
+      <img src="./assets/exports/phantombugz-emblem-96.png" alt="" aria-hidden="true" width="26" height="26">
       <span>PhantomBugz</span>
     </a>
     <nav aria-label="Footer">
+      <a href="./enter.html">Home</a>
+      <a href="./zombie-killer.html">Zombie Killer</a>
       <a href="https://github.com/PhantomBugz">GitHub</a>
       <a href="https://gitlab.com/Phantombugz">GitLab</a>
       <a href="mailto:founder@phantombugz.com">founder@phantombugz.com</a>
     </nav>
   </footer>
 
-  <script type="module">
-    import { initHallOfFame } from "./js/hall-of-fame.js";
-    initHallOfFame(document.getElementById("hall-of-fame"));
-  </script>
+  <script type="module" src="./js/hall-of-fame-page.js"></script>
 </body>
 </html>

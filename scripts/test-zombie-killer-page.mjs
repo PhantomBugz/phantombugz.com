@@ -447,6 +447,7 @@ const approvedAnchorReferences = new Set([
   "#zk-main",
   "./enter.html#arrival",
   "./enter.html",
+  "./hall-of-fame.html",
   "https://github.com/PhantomBugz",
   "mailto:founder@phantombugz.com",
 ]);

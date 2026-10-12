@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PhantomBugz — Ethical Hacking &amp; Bug Bounty Team</title>
   <meta name="description" content="PhantomBugz is an ethical hacker collective. A team strong enough to destroy that chooses to protect. Bug bounty operation, live sprint signal, and a Hall of Fame of disclosed write-ups.">
@@ -53,7 +55,7 @@
   <div id="gate" class="gate">
     <canvas id="gate-canvas" aria-hidden="true"></canvas>
     <div class="gate-inner">
-      <img class="gate-emblem" src="./assets/exports/phantombugz-emblem-transparent.png" alt="" width="150" height="150">
+      <img class="gate-emblem" src="./assets/exports/phantombugz-emblem-300.png" alt="" width="150" height="150">
       <h1 class="gate-name">PHANTOMBUGZ</h1>
       <p class="gate-intro">Ethical hacking &amp; bug bounty collective. Strong enough to destroy &mdash; we choose to protect.</p>
       <p class="gate-enter"><a class="gate-link" href="./enter.html"><span>Click to enter</span></a></p>
@@ -62,10 +64,11 @@
 
   <header class="site-header" aria-label="Primary">
     <a class="brand-lockup" href="./enter.html" aria-label="PhantomBugz">
-      <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true" width="34" height="34">
+      <img src="./assets/exports/phantombugz-emblem-96.png" alt="" aria-hidden="true" width="34" height="34">
     </a>
     <nav class="header-nav" aria-label="Sections">
       <a href="./enter.html">Enter</a>
+      <a href="./hall-of-fame.html">Hall of Fame</a>
       <a href="https://github.com/PhantomBugz">GitHub</a>
       <a href="https://gitlab.com/Phantombugz">GitLab</a>
     </nav>
@@ -80,7 +83,7 @@
           <div class="surface surface--left"><canvas></canvas></div>
           <div class="surface surface--right"><canvas></canvas></div>
           <div class="corridor-emblem">
-            <img src="./assets/exports/phantombugz-emblem-transparent.png" alt="" aria-hidden="true">
+            <img src="./assets/exports/phantombugz-emblem-300.png" alt="" aria-hidden="true">
           </div>
         </div>
         <p class="scroll-cue" aria-hidden="true"><span>scroll into the system</span></p>

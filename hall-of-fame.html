@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hall of Fame — Disclosed Write-ups | PhantomBugz</title>
@@ -68,8 +68,12 @@
       <h2 class="hof-soon" data-hof-published hidden>Published</h2>
       <ul class="hof-list" data-hof-list hidden></ul>
       <p class="hof-empty" data-hof-empty>Disclosed write-ups land here once embargoes lift.</p>
-      <h2 class="hof-soon" data-hof-soon hidden>Coming soon</h2>
-      <ul class="hof-list" data-hof-soon-list hidden aria-label="Upcoming write-ups (placeholders)"></ul>
+      <h2 class="hof-soon" data-hof-soon>Coming soon</h2>
+      <ul class="hof-list" data-hof-soon-list aria-label="Upcoming write-ups (placeholders)">
+        <li class="hof-entry is-placeholder"><p class="hof-meta"><span>high</span><span>Sample platform</span><time datetime="2026-01-01">2026-01-01</time><span>Coming soon</span></p><h3>Sample write-up — replace me</h3><p>Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.</p></li>
+        <li class="hof-entry is-placeholder"><p class="hof-meta"><span>high</span><span>Sample platform</span><time datetime="2026-01-01">2026-01-01</time><span>Coming soon</span></p><h3>Sample write-up — replace me</h3><p>Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.</p></li>
+        <li class="hof-entry is-placeholder"><p class="hof-meta"><span>high</span><span>Sample platform</span><time datetime="2026-01-01">2026-01-01</time><span>Coming soon</span></p><h3>Sample write-up — replace me</h3><p>Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.</p></li>
+      </ul>
       <div class="hof-foot">
         <a class="hof-cta" href="mailto:founder@phantombugz.com">Researcher? Join a lane <span aria-hidden="true">&rarr;</span></a>
         <a class="hof-more" href="./enter.html">Back to PhantomBugz</a>

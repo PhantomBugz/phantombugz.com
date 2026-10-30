@@ -1,6 +1,8 @@
 # PhantomBugz Site
 
-This folder is the imported PhantomBugz public site prototype and public bug bounty signal (all-time report counts by severity).
+This repository contains the [PhantomBugz public site](https://phantombugz.com/) and a privacy-reviewed bug bounty activity signal (all-time report counts by severity). The live site is available over HTTPS.
+
+The [Zombie Killer preview](https://phantombugz.com/zombie-killer.html) is labeled coming soon. For public software and liveD LoRA Studio updates, see the [PhantomBugz GitHub profile](https://github.com/PhantomBugz).
 
 ## Commands
 
@@ -32,6 +34,6 @@ The all-time counts come from the internal ledger. Real platform events must ref
 
 `data/hall-of-fame.json` drives the Hall of Fame section on `enter.html` and the full `hall-of-fame.html` page. Each entry has `title`, `date`, `severity`, `platform`, `summary`, `url`, and `status`. Add an entry only after the affected program has fixed the issue and approved public disclosure, and keep it free of undisclosed details. Entries with `status: "placeholder"` render only as subtle "coming soon" cards; when there are no other entries the page shows "Disclosed write-ups land here once embargoes lift."
 
-## Launch Notes
+## Hosting
 
-The current public preview uses a temporary Cloudflare quick tunnel. Permanent launch still needs `phantombugz.com` DNS pointed at a static host such as Cloudflare Pages or GitHub Pages.
+The public domain is live at [https://phantombugz.com/](https://phantombugz.com/). This repository records the static site and its publication checks; verify the current hosting and DNS configuration in the deployment system before changing it.

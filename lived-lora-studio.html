@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>liveD LoRA Studio — Reviewed Data and NVIDIA GPU Selection | PhantomBugz</title>
+  <meta name="description" content="Explore the liveD LoRA Studio developer preview: encrypted synthetic review and approved-only export, plus local or SSH NVIDIA GPU selection. Training is pending.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#010608">
+  <link rel="canonical" href="https://phantombugz.com/lived-lora-studio.html">
+  <meta property="og:site_name" content="PhantomBugz">
+  <meta property="og:title" content="liveD LoRA Studio — Developer Preview">
+  <meta property="og:description" content="Human-reviewed encrypted examples and exact local or SSH NVIDIA GPU target selection. Model training and installers are pending.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phantombugz.com/lived-lora-studio.html">
+  <meta property="og:image" content="https://phantombugz.com/assets/exports/lived-social-preview.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@phantombugz">
+  <meta name="twitter:title" content="liveD LoRA Studio — PhantomBugz">
+  <meta name="twitter:description" content="Developer preview: encrypted review/export and a separate NVIDIA GPU target picker. Training is pending.">
+  <meta name="twitter:image" content="https://phantombugz.com/assets/exports/lived-social-preview.png">
+  <link rel="icon" href="./assets/exports/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="./assets/exports/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/exports/apple-touch-icon.png">
+  <link rel="preload" href="./assets/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./assets/fonts/fonts.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "liveD LoRA Studio",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Windows, Linux",
+      "license": "https://spdx.org/licenses/Apache-2.0.html",
+      "url": "https://phantombugz.com/lived-lora-studio.html",
+      "codeRepository": "https://github.com/PhantomBugz/lived-lora-studio",
+      "author": { "@type": "Organization", "name": "PhantomBugz", "url": "https://phantombugz.com/", "sameAs": ["https://x.com/phantombugz", "https://github.com/PhantomBugz"] }
+    }
+  </script>
+</head>
+<body class="zk-page lived-page">
+  <a class="skip-link" href="#lived-main">Skip to liveD LoRA Studio</a>
+  <header class="site-header" aria-label="Primary">
+    <a class="brand-lockup" href="./enter.html#arrival" aria-label="PhantomBugz home">
+      <img src="./assets/exports/phantombugz-emblem-96.png" alt="" aria-hidden="true" width="34" height="34">
+    </a>
+    <nav class="header-nav" aria-label="Sections">
+      <a href="./enter.html">PhantomBugz</a>
+      <a href="./zombie-killer.html">Zombie Killer</a>
+      <a href="#quickstart">Demo</a>
+      <a class="social-link" href="https://github.com/PhantomBugz/lived-lora-studio" rel="noopener" target="_blank" aria-label="liveD LoRA Studio source on GitHub (opens in a new tab)"><svg class="social-icon" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+    </nav>
+  </header>
+
+  <main id="lived-main" class="zk-shell" tabindex="-1">
+    <section class="zk-hero lived-hero" aria-labelledby="lived-title">
+      <img class="lived-hero-art" src="./assets/exports/lived-hero.png" width="1200" height="340" alt="PhantomBugz preview artwork showing encrypted review, approved-only export, and a separate local or SSH GPU picker">
+      <div class="lived-hero-copy">
+        <p class="eyebrow">Open source / developer preview</p>
+        <h1 id="lived-title">liveD LoRA Studio</h1>
+        <p class="zk-lead">Build training examples through explicit human review.</p>
+        <p class="zk-intro">Explore a real encrypted vault and approved-only export path with synthetic data. A separate picker discovers local and remote NVIDIA GPUs by UUID, so you can select the exact target for future training workflows.</p>
+        <p class="zk-status"><span>Source preview</span><span>Apache-2.0</span><span>Training pending</span></p>
+        <div class="zk-actions">
+          <a class="zk-cta" href="https://github.com/PhantomBugz/lived-lora-studio" target="_blank" rel="noopener">Explore source on GitHub <span aria-hidden="true">&rarr;</span></a>
+          <a class="zk-text-link" href="#quickstart">Run the synthetic demo</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="quickstart" class="zk-capabilities lived-section" aria-labelledby="lived-quickstart-title">
+      <p class="eyebrow">One-command source preview</p>
+      <h2 id="lived-quickstart-title">Run the review path.</h2>
+      <p class="lived-section-lead">With Python 3.12 or newer, run this command from the source checkout. It creates a dedicated preview environment, installs its pinned cryptography dependency, and uses disposable synthetic records.</p>
+      <p class="lived-command"><code>python scripts/quickstart_preview.py</code></p>
+      <p class="lived-section-lead">The demo creates one approved, one rejected, and one pending example. It checks that only the approved record enters the encrypted JSONL export and that sample response text is absent from the staged ciphertext files.</p>
+      <figure class="lived-figure">
+        <img src="./assets/exports/lived-pipeline.png" width="1200" height="360" loading="lazy" alt="Preview workflow diagram: encrypted local vault, human review, approved-only encrypted export; the GPU target picker is separate and does not run training">
+        <figcaption>Workflow artwork for the synthetic demo. The GPU picker is a separate target-selection tool.</figcaption>
+      </figure>
+    </section>
+
+    <section id="gpu-targets" class="zk-platforms lived-section" aria-labelledby="lived-gpu-title">
+      <p class="eyebrow">Exact target selection</p>
+      <h2 id="lived-gpu-title">Pick the machine. Pick the GPU.</h2>
+      <p class="lived-section-lead">The preview discovers NVIDIA devices on local Windows or Linux, or on a remote Linux machine reached through your existing SSH alias. It shows the UUID, device name, memory, compute capability, and driver, then requires an exact choice.</p>
+      <div class="zk-capability-grid lived-card-grid">
+        <article><p class="zk-card-number">01</p><h3>Local NVIDIA</h3><p>Inspect the cards visible to this machine and choose a specific UUID.</p></article>
+        <article><p class="zk-card-number">02</p><h3>SSH remote NVIDIA</h3><p>Use your configured SSH alias with strict host-key checking to inspect and select one remote UUID.</p></article>
+      </div>
+      <p class="lived-section-lead">The picker reads hardware inventory only. It does not send a dataset, install CUDA, or start model training. An observed GPU still needs a compatible runtime, model recipe, and execution smoke before training can be called ready.</p>
+    </section>
+
+    <section class="zk-release lived-section" aria-labelledby="lived-status-title">
+      <p class="eyebrow">Release boundary</p>
+      <h2 id="lived-status-title">Open source now. Training later.</h2>
+      <dl class="zk-platform-list lived-status-list">
+        <div><dt>Ready to try</dt><dd>Source preview, synthetic review/export demo, and local or SSH NVIDIA target selection.</dd></div>
+        <div><dt>Still being qualified</dt><dd>GPU-specific CUDA training, the full desktop application, and platform installers.</dd></div>
+      </dl>
+      <p>This page describes the public source preview. It includes no collected corpus, private vault, model weights, or deployment credentials. Use only material you are authorized to collect and review.</p>
+      <p><a class="zk-text-link" href="https://github.com/PhantomBugz/lived-lora-studio/blob/main/docs/STATUS.md" target="_blank" rel="noopener">Read the current release status</a> or explore <a class="zk-text-link" href="./zombie-killer.html">Zombie Killer</a>, our separate process-safety project preview.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="foot-mark" href="./enter.html" aria-label="PhantomBugz home">
+      <img src="./assets/exports/phantombugz-emblem-96.png" alt="" aria-hidden="true" width="26" height="26">
+      <span>PhantomBugz</span>
+    </a>
+    <nav aria-label="Footer">
+      <a href="./enter.html">Home</a>
+      <a href="./zombie-killer.html">Zombie Killer</a>
+      <a href="https://github.com/PhantomBugz/lived-lora-studio" target="_blank" rel="noopener">liveD source</a>
+    </nav>
+  </footer>
+</body>
+</html>

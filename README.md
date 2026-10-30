@@ -2,7 +2,7 @@
 
 This repository contains the [PhantomBugz public site](https://phantombugz.com/) and a privacy-reviewed bug bounty activity signal (all-time report counts by severity). The live site is available over HTTPS.
 
-The [Zombie Killer preview](https://phantombugz.com/zombie-killer.html) is labeled coming soon. For public software and liveD LoRA Studio updates, see the [PhantomBugz GitHub profile](https://github.com/PhantomBugz).
+The [liveD LoRA Studio developer preview](https://phantombugz.com/lived-lora-studio.html) links to the [public source](https://github.com/PhantomBugz/lived-lora-studio), including a synthetic encrypted review/export demo and local or remote NVIDIA GPU selection. Model training is not yet released. The [Zombie Killer preview](https://phantombugz.com/zombie-killer.html) is labeled coming soon. For other public software, see the [PhantomBugz GitHub profile](https://github.com/PhantomBugz).
 
 ## Commands
 
@@ -18,7 +18,7 @@ Preview the static site from the repository root:
 python -m http.server 4173 --bind 127.0.0.1
 ```
 
-Open http://127.0.0.1:4173/zombie-killer.html.
+Open http://127.0.0.1:4173/lived-lora-studio.html or http://127.0.0.1:4173/zombie-killer.html.
 
 GitHub and GitLab Pages run the same contract and publish only the reviewed static-site allowlist assembled under `public/`.
 

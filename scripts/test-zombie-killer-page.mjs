@@ -10,6 +10,10 @@ assert.ok(
   existsSync(path.join(root, "zombie-killer.html")),
   "zombie-killer.html must exist",
 );
+assert.ok(
+  existsSync(path.join(root, "lived-lora-studio.html")),
+  "lived-lora-studio.html must exist",
+);
 
 const sanitizeMarkup = (html) =>
   html
@@ -262,6 +266,7 @@ assert.throws(
 const enter = read("enter.html");
 const enterScript = read("enter.js");
 const page = read("zombie-killer.html");
+const livedPage = read("lived-lora-studio.html");
 const styles = read("styles.css");
 const sitemap = read("sitemap.xml");
 const githubPagesWorkflow = read(".github/workflows/pages.yml");
@@ -271,6 +276,7 @@ const implementationPlan = read("docs/superpowers/plans/2026-08-14-zombie-killer
 
 const enterMarkup = sanitizeMarkup(enter);
 const pageMarkup = sanitizeMarkup(page);
+const livedMarkup = sanitizeMarkup(livedPage);
 
 const earlyJsClassScript = /<script>\s*document\.documentElement\.classList\.add\("js"\);\s*window\.__phantombugzRevealFallback = window\.setTimeout\(\(\) => \{\s*document\.documentElement\.classList\.remove\("js"\);\s*\}, 3000\);\s*<\/script>/m.exec(enter);
 assert.ok(earlyJsClassScript, "enter.html must set and fail-safe the enhancement class in the document head");
@@ -296,6 +302,8 @@ const sitemapMarkup = sitemap
   .replace(/<\?[\s\S]*?\?>/g, "");
 const pageTags = extractOpeningTags(pageMarkup);
 const pageAnchors = extractPairedElements(pageMarkup, "a");
+const livedTags = extractOpeningTags(livedMarkup);
+const livedAnchors = extractPairedElements(livedMarkup, "a");
 const enterSections = extractPairedElements(enterMarkup, "section");
 
 const primaryNavigation = extractPairedElements(enterMarkup, "nav").find((nav) => hasClass(nav, "header-nav"));
@@ -305,6 +313,24 @@ const navLink = extractPairedElements(primaryNavigation.inner, "a").find(
     attributeValue(anchor, "href") === "./zombie-killer.html" && normalizedText(anchor) === "Zombie Killer",
 );
 assert.ok(navLink, "the primary navigation must link to the Zombie Killer page");
+
+const livedFeature = enterSections.find(
+  (section) => attributeValue(section, "id") === "lived" && hasClass(section, "zk-feature"),
+);
+assert.ok(livedFeature, "enter.html must feature the liveD source preview");
+const livedLink = extractPairedElements(livedFeature.inner, "a").find(
+  (anchor) => attributeValue(anchor, "href") === "./lived-lora-studio.html",
+);
+assert.ok(livedLink, "the liveD feature must link to its standalone page");
+assert.match(
+  normalizedText(livedFeature),
+  /synthetic encrypted review and export demo[\s\S]*Model training is not yet released\./,
+  "the liveD feature must state its verified preview scope and training limit",
+);
+const zombieLivedLink = pageAnchors.find(
+  (anchor) => attributeValue(anchor, "href") === "./lived-lora-studio.html",
+);
+assert.ok(zombieLivedLink, "the Zombie Killer page must cross-link to the liveD preview");
 
 const featureSection = enterSections.find(
   (section) => attributeValue(section, "id") === "zombie-killer" && hasClass(section, "zk-feature"),
@@ -334,6 +360,76 @@ assert.ok(
   hofSection && signalSection && hofSection.index < featureSection.index && featureSection.index < signalSection.index,
   "Zombie Killer feature must appear between the Hall of Fame and signal",
 );
+assert.ok(
+  hofSection.index < livedFeature.index && livedFeature.index < featureSection.index,
+  "the liveD preview must appear before the Zombie Killer feature",
+);
+assert.match(
+  readme,
+  /https:\/\/phantombugz\.com\/lived-lora-studio\.html[\s\S]*https:\/\/github\.com\/PhantomBugz\/lived-lora-studio[\s\S]*Model training is not yet released\./,
+  "the site README must link the liveD page and source, and state the training limit",
+);
+
+const livedMain = extractPairedElements(livedMarkup, "main").find(
+  (element) => attributeValue(element, "id") === "lived-main",
+);
+assert.ok(livedMain, "the liveD page must have a main landmark");
+const livedTitle = extractPairedElements(livedMain.inner, "h1").find(
+  (heading) => normalizedText(heading) === "liveD LoRA Studio",
+);
+assert.ok(livedTitle, "the liveD page must name the project in a text heading");
+const livedText = normalizedText(livedMain);
+assert.match(livedText, /synthetic data/, "the liveD page must label the demo data");
+assert.match(livedText, /only the approved record/, "the liveD page must state the export filter");
+assert.match(livedText, /remote NVIDIA GPUs by UUID/, "the liveD page must state its GPU picker scope");
+assert.match(livedText, /does not send a dataset, install CUDA, or start model training/, "the GPU picker must not be presented as a trainer");
+assert.match(livedText, /platform installers/, "the liveD page must state the installer limit");
+assert.match(livedText, /python scripts\/quickstart_preview\.py/, "the liveD page must show the runnable demo command");
+assert.ok(
+  livedAnchors.some((anchor) => attributeValue(anchor, "href") === "https://github.com/PhantomBugz/lived-lora-studio"),
+  "the liveD page must offer a direct GitHub source link",
+);
+assert.ok(
+  livedAnchors.some((anchor) => attributeValue(anchor, "href") === "./zombie-killer.html"),
+  "the liveD page must link to the Zombie Killer preview",
+);
+assert.ok(
+  livedAnchors.some((anchor) => attributeValue(anchor, "href") === "./enter.html"),
+  "the liveD page must link back to PhantomBugz",
+);
+assert.ok(
+  livedTags.some((tag) => tag.name === "link" && attributeValue(tag, "rel") === "canonical" &&
+    attributeValue(tag, "href") === "https://phantombugz.com/lived-lora-studio.html"),
+  "the liveD page must publish its canonical URL",
+);
+assert.ok(
+  livedTags.some((tag) => tag.name === "meta" && attributeValue(tag, "property") === "og:image" &&
+    attributeValue(tag, "content") === "https://phantombugz.com/assets/exports/lived-social-preview.png"),
+  "the liveD page must publish its own social preview image",
+);
+const livedStructuredData = extractPairedElements(livedPage, "script").filter(
+  (script) => attributeValue(script, "type") === "application/ld+json",
+);
+assert.equal(livedStructuredData.length, 1, "the liveD page must contain one JSON-LD block");
+const livedMetadata = JSON.parse(livedStructuredData[0].inner);
+assert.equal(livedMetadata.name, "liveD LoRA Studio", "liveD JSON-LD must name the project");
+assert.equal(livedMetadata.codeRepository, "https://github.com/PhantomBugz/lived-lora-studio", "liveD JSON-LD must link the source");
+assert.equal(livedMetadata.license, "https://spdx.org/licenses/Apache-2.0.html", "liveD JSON-LD must identify Apache-2.0");
+for (const tag of livedTags) {
+  for (const attribute of tag.attributes.filter(({ name }) => name === "src" || name === "href")) {
+    if (attribute.value?.startsWith("./")) assertLocalFileReference(tag, attribute);
+  }
+}
+for (const [file, width, height] of [
+  ["assets/exports/lived-hero.png", 1200, 340],
+  ["assets/exports/lived-pipeline.png", 1200, 360],
+  ["assets/exports/lived-social-preview.png", 1280, 640],
+]) {
+  const bytes = readFileSync(path.join(root, file));
+  assert.deepEqual([...bytes.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10], `${file} must be a PNG`);
+  assert.equal(bytes.readUInt32BE(16), width, `${file} width must match its metadata`);
+  assert.equal(bytes.readUInt32BE(20), height, `${file} height must match its metadata`);
+}
 
 const main = extractPairedElements(pageMarkup, "main").find((element) => attributeValue(element, "id") === "zk-main");
 assert.ok(main, "the standalone page must expose its main landmark");
@@ -448,6 +544,7 @@ const approvedAnchorReferences = new Set([
   "./enter.html#arrival",
   "./enter.html",
   "./hall-of-fame.html",
+  "./lived-lora-studio.html",
   "https://github.com/PhantomBugz",
   "https://x.com/phantombugz",
   "mailto:founder@phantombugz.com",
@@ -1030,6 +1127,11 @@ assert.equal(
   1,
   "sitemap.xml must include exactly one real Zombie Killer <url><loc> entry",
 );
+assert.equal(
+  sitemapLocations.filter((location) => location === "https://phantombugz.com/lived-lora-studio.html").length,
+  1,
+  "sitemap.xml must include exactly one liveD LoRA Studio <url><loc> entry",
+);
 
 const normalizeCanonicalFile = (source) => {
   const withoutBom = source.startsWith("\uFEFF") ? source.slice(1) : source;
@@ -1088,7 +1190,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: mkdir -p public
-      - run: cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html hall-of-fame.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
+      - run: cp -r assets data js index.html 404.html enter.html enter.js lived-lora-studio.html zombie-killer.html hall-of-fame.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -1104,7 +1206,7 @@ pages:
   script:
     - node scripts/test-zombie-killer-page.mjs
     - mkdir -p public
-    - cp -r assets data js index.html 404.html enter.html enter.js zombie-killer.html hall-of-fame.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
+    - cp -r assets data js index.html 404.html enter.html enter.js lived-lora-studio.html zombie-killer.html hall-of-fame.html main.js styles.css site.webmanifest robots.txt sitemap.xml _headers _redirects public/
   artifacts:
     paths:
       - public

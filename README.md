@@ -2,7 +2,7 @@
 
 This repository contains the [PhantomBugz public site](https://phantombugz.com/) and a privacy-reviewed bug bounty activity signal (all-time report counts by severity). The live site is available over HTTPS.
 
-The [liveD LoRA Studio developer preview](https://phantombugz.com/lived-lora-studio.html) links to the [public source](https://github.com/PhantomBugz/lived-lora-studio), including a synthetic encrypted review/export demo and local or remote NVIDIA GPU selection. Model training is not yet released. The [Zombie Killer preview](https://phantombugz.com/zombie-killer.html) is labeled coming soon. For other public software, see the [PhantomBugz GitHub profile](https://github.com/PhantomBugz).
+The [liveD LoRA Studio developer preview](https://phantombugz.com/lived-lora-studio.html) links to the [public source](https://github.com/PhantomBugz/lived-lora-studio), including a synthetic encrypted review/export demo and local or remote NVIDIA GPU selection. Model training is not yet released. The [Zombie Killer source alpha](https://phantombugz.com/zombie-killer.html) links to its [public repository](https://github.com/PhantomBugz/Zombie-Killer-AI) and [v0.1.0-alpha.1 release](https://github.com/PhantomBugz/Zombie-Killer-AI/releases/tag/v0.1.0-alpha.1); it targets Windows and Linux, with macOS unsupported. For other public software, see the [PhantomBugz GitHub profile](https://github.com/PhantomBugz).
 
 ## Commands
 

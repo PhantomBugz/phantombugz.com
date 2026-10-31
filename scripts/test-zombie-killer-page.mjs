@@ -344,6 +344,7 @@ const featureCta = extractPairedElements(featureSection.inner, "a").find(
     normalizedText(anchor).startsWith("Meet Zombie Killer"),
 );
 assert.ok(featureCta, "the Zombie Killer feature must link to its standalone page");
+assert.match(normalizedText(featureSection), /Source Alpha/, "the Zombie Killer feature must show the published source-alpha status");
 const featureCopy = extractOpeningTags(featureSection.inner).find(
   (element) => element.name === "div" && hasClass(element, "zk-feature-copy"),
 );
@@ -445,7 +446,7 @@ assert.match(
   "the standalone page must state the product purpose",
 );
 assert.match(mainText, /v0\.1\.0-alpha\.1/, "the standalone page must identify the planned alpha release");
-assert.match(mainText, /Coming Soon/, "the standalone page must make the release status clear");
+assert.match(mainText, /Source Alpha/, "the standalone page must show the published source-alpha status");
 assert.match(mainText, /Apache-2\.0/, "the standalone page must state the planned license");
 assert.match(mainText, /Windows/, "the standalone page must describe Windows support");
 assert.match(mainText, /Linux/, "the standalone page must describe Linux support");
@@ -455,8 +456,8 @@ assert.match(mainText, /macOS remains unqualified and unsupported in this alpha/
 assert.match(mainText, /auditable receipts/i, "the standalone page must describe auditable receipts");
 assert.match(
   mainText,
-  /The source release candidate is prepared\. Public source will follow completed hosted verification and a verified release tag\. Signed installers will follow human-controlled platform signing\. macOS remains outside the alpha support scope\./,
-  "the release copy must separate public source verification from installer signing gates",
+  /The v0\.1\.0-alpha\.1 source alpha is public for Windows and Linux targets\. It provides source for review and development, not signed installers\. macOS remains outside the alpha support scope\./,
+  "the release copy must separate public source availability from installer qualification",
 );
 assert.ok(
   !pageTags.some((tag) => getAttribute(tag, "data-reveal")),
@@ -472,7 +473,7 @@ assert.equal(
 );
 assert.deepEqual(
   extractPairedElements(status.inner, "span").map(normalizedText),
-  ["v0.1.0-alpha.1", "Coming Soon", "Apache-2.0"],
+  ["v0.1.0-alpha.1", "Source Alpha", "Apache-2.0"],
   "the release status must keep its visible version, availability, and license text",
 );
 
@@ -531,12 +532,18 @@ assert.equal(
 );
 assert.equal(softwareMetadata.operatingSystem, "Windows, Linux", "JSON-LD must state the alpha OS set");
 
-const githubAnchor = pageAnchors.find(
+const sourceAnchor = pageAnchors.find(
   (anchor) =>
-    attributeValue(anchor, "href") === "https://github.com/PhantomBugz" &&
-    normalizedText(anchor) === "Follow PhantomBugz on GitHub",
+    attributeValue(anchor, "href") === "https://github.com/PhantomBugz/Zombie-Killer-AI" &&
+    normalizedText(anchor) === "Explore source on GitHub",
 );
-assert.ok(githubAnchor, "the coming-soon page must direct visitors to the PhantomBugz GitHub profile");
+assert.ok(sourceAnchor, "the source-alpha page must direct visitors to the public Zombie Killer repository");
+const releaseAnchor = pageAnchors.find(
+  (anchor) =>
+    attributeValue(anchor, "href") === "https://github.com/PhantomBugz/Zombie-Killer-AI/releases/tag/v0.1.0-alpha.1" &&
+    normalizedText(anchor) === "View source alpha release",
+);
+assert.ok(releaseAnchor, "the source-alpha page must link to the tagged release");
 
 const packageExtension = /\.(?:exe|msi|msix|appx|dmg|pkg|zip|deb|rpm|appimage|tar\.(?:gz|xz)|tgz|7z)$/i;
 const approvedAnchorReferences = new Set([
@@ -546,6 +553,8 @@ const approvedAnchorReferences = new Set([
   "./hall-of-fame.html",
   "./lived-lora-studio.html",
   "https://github.com/PhantomBugz",
+  "https://github.com/PhantomBugz/Zombie-Killer-AI",
+  "https://github.com/PhantomBugz/Zombie-Killer-AI/releases/tag/v0.1.0-alpha.1",
   "https://x.com/phantombugz",
   "mailto:founder@phantombugz.com",
 ]);
@@ -561,9 +570,9 @@ for (const tag of pageTags) {
   if (tag.name === "a") {
     assert.ok(
       !tag.attributes.some(({ name }) => name === "download"),
-      "the coming-soon page must not contain a real anchor download attribute",
+      "the source-alpha page must not contain a direct package download attribute",
     );
-    assert.equal(hrefAttributes.length, 1, "every anchor on the coming-soon page must have exactly one href");
+    assert.equal(hrefAttributes.length, 1, "every anchor on the source-alpha page must have exactly one href");
 
     const [attribute] = hrefAttributes;
     assert.equal(typeof attribute.value, "string", "every anchor href attribute must have a value");
@@ -571,11 +580,11 @@ for (const tag of pageTags) {
     assert.doesNotMatch(
       hrefPath,
       packageExtension,
-      `the coming-soon page must not link to a downloadable package: ${attribute.value}`,
+      `the source-alpha page must not link directly to a package: ${attribute.value}`,
     );
     assert.ok(
       approvedAnchorReferences.has(attribute.value),
-      `<a> href="${attribute.value}" is not approved for the coming-soon page`,
+      `<a> href="${attribute.value}" is not approved for the source-alpha page`,
     );
     if (attribute.value.startsWith("./")) assertLocalFileReference(tag, attribute);
     if (attribute.value === "#zk-main") {

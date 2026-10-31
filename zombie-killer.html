@@ -38,7 +38,7 @@
       "name": "Zombie Killer",
       "applicationCategory": "SecurityApplication",
       "softwareVersion": "0.1.0-alpha.1",
-      "operatingSystem": "Windows, Linux, macOS",
+      "operatingSystem": "Windows, Linux",
       "license": "https://spdx.org/licenses/Apache-2.0.html",
       "url": "https://phantombugz.com/zombie-killer.html",
       "author": { "@type": "Organization", "name": "PhantomBugz", "url": "https://phantombugz.com/", "sameAs": ["https://x.com/phantombugz", "https://github.com/PhantomBugz"] }
@@ -87,7 +87,7 @@
       <div class="zk-capability-grid">
         <article><p class="zk-card-number">01</p><h3>Local-first detection</h3><p>Inspect likely AI-agent processes and their evidence without sending process data to a remote control plane.</p></article>
         <article><p class="zk-card-number">02</p><h3>Identity-bound containment</h3><p>Bind actions to the reviewed process instance so PID reuse or identity drift fails closed, then record truthful local auditable receipts.</p></article>
-        <article><p class="zk-card-number">03</p><h3>Capability-aware platforms</h3><p>Use reviewed actions on Windows and supported Linux systems with pidfd; use scan and inspect only on macOS in this alpha.</p></article>
+        <article><p class="zk-card-number">03</p><h3>Capability-aware platforms</h3><p>Use reviewed actions on Windows and supported Linux systems with pidfd. macOS remains unqualified and unsupported in this alpha.</p></article>
       </div>
     </section>
 
@@ -97,14 +97,14 @@
       <dl class="zk-platform-list">
         <div><dt>Windows</dt><dd>Reviewed stop actions are available after the stable-binding capability probe succeeds.</dd></div>
         <div><dt>Linux</dt><dd>Stop actions require pidfd support and a successful runtime capability probe.</dd></div>
-        <div><dt>macOS</dt><dd>Zombie Killer can scan and inspect only in this alpha; process actions remain unavailable.</dd></div>
+        <div><dt>macOS</dt><dd>Not supported in this alpha. macOS scan, inspect, and process actions have not completed qualification.</dd></div>
       </dl>
     </section>
 
     <section class="zk-release" aria-labelledby="zk-release-title">
       <p class="eyebrow">Release status</p>
       <h2 id="zk-release-title">Coming soon, after the evidence is complete.</h2>
-      <p>The source release candidate is prepared. Public source will follow completed hosted verification and a verified release tag. Signed installers will follow human-controlled platform signing; macOS installers also require notarization and stapling.</p>
+      <p>The source release candidate is prepared. Public source will follow completed hosted verification and a verified release tag. Signed installers will follow human-controlled platform signing. macOS remains outside the alpha support scope.</p>
       <p>Zombie Killer software is licensed under Apache-2.0. Bundled artwork, fonts, and third-party components retain their own notices and licenses.</p>
     </section>
   </main>

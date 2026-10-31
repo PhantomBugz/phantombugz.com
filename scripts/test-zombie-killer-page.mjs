@@ -450,12 +450,12 @@ assert.match(mainText, /Apache-2\.0/, "the standalone page must state the planne
 assert.match(mainText, /Windows/, "the standalone page must describe Windows support");
 assert.match(mainText, /Linux/, "the standalone page must describe Linux support");
 assert.match(mainText, /pidfd/, "the Linux capability must mention pidfd");
-assert.match(mainText, /macOS/, "the standalone page must describe macOS support");
-assert.match(mainText, /scan and inspect only/i, "the macOS capability must state its initial safety boundary");
+assert.match(mainText, /macOS/, "the standalone page must describe the macOS boundary");
+assert.match(mainText, /macOS remains unqualified and unsupported in this alpha/i, "the macOS capability must state its unsupported status");
 assert.match(mainText, /auditable receipts/i, "the standalone page must describe auditable receipts");
 assert.match(
   mainText,
-  /The source release candidate is prepared\. Public source will follow completed hosted verification and a verified release tag\. Signed installers will follow human-controlled platform signing; macOS installers also require notarization and stapling\./,
+  /The source release candidate is prepared\. Public source will follow completed hosted verification and a verified release tag\. Signed installers will follow human-controlled platform signing\. macOS remains outside the alpha support scope\./,
   "the release copy must separate public source verification from installer signing gates",
 );
 assert.ok(
@@ -529,7 +529,7 @@ assert.equal(
   "https://phantombugz.com/zombie-killer.html",
   "JSON-LD must publish the canonical application URL",
 );
-assert.equal(softwareMetadata.operatingSystem, "Windows, Linux, macOS", "JSON-LD must state the supported OS set");
+assert.equal(softwareMetadata.operatingSystem, "Windows, Linux", "JSON-LD must state the alpha OS set");
 
 const githubAnchor = pageAnchors.find(
   (anchor) =>

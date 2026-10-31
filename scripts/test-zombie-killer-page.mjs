@@ -456,7 +456,7 @@ assert.match(mainText, /macOS remains unqualified and unsupported in this alpha/
 assert.match(mainText, /auditable receipts/i, "the standalone page must describe auditable receipts");
 assert.match(
   mainText,
-  /The v0\.1\.0-alpha\.1 source alpha is public for Windows and Linux targets\. It provides source for review and development, not signed installers\. macOS remains outside the alpha support scope\./,
+  /The v0\.1\.0-alpha\.1 source alpha targets Windows and Ubuntu Linux\. It provides source for review and development, not signed installers\. macOS native operation remains outside the alpha support scope\./,
   "the release copy must separate public source availability from installer qualification",
 );
 assert.ok(

@@ -496,6 +496,24 @@ const openGraphUrl = pageTags.find(
 );
 assert.ok(openGraphUrl, "the standalone page must publish its Open Graph URL");
 
+const zombieSocialImage = "https://phantombugz.com/assets/exports/zombie-social-preview.png";
+for (const [attribute, name] of [["property", "og:image"], ["name", "twitter:image"]]) {
+  assert.ok(
+    pageTags.some((tag) => tag.name === "meta" &&
+      attributeValue(tag, attribute) === name &&
+      attributeValue(tag, "content") === zombieSocialImage),
+    `${name} must use the Zombie Killer social image`,
+  );
+}
+const zombieSocialBytes = readFileSync(path.join(root, "assets/exports/zombie-social-preview.png"));
+assert.deepEqual(
+  [...zombieSocialBytes.subarray(0, 8)],
+  [137, 80, 78, 71, 13, 10, 26, 10],
+  "the Zombie Killer social image must be a PNG",
+);
+assert.equal(zombieSocialBytes.readUInt32BE(16), 1200, "the Zombie Killer social image must be 1200 pixels wide");
+assert.equal(zombieSocialBytes.readUInt32BE(20), 630, "the Zombie Killer social image must be 630 pixels high");
+
 for (const [property, expected] of [
   ["og:image:width", "1200"],
   ["og:image:height", "630"],

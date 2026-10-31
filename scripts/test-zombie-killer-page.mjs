@@ -496,7 +496,7 @@ const openGraphUrl = pageTags.find(
 );
 assert.ok(openGraphUrl, "the standalone page must publish its Open Graph URL");
 
-const zombieSocialImage = "https://phantombugz.com/assets/exports/zombie-social-preview.png";
+const zombieSocialImage = "https://phantombugz.com/assets/exports/zombie-social-preview.png?v=f41a3bf2";
 for (const [attribute, name] of [["property", "og:image"], ["name", "twitter:image"]]) {
   assert.ok(
     pageTags.some((tag) => tag.name === "meta" &&

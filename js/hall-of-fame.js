@@ -1,6 +1,4 @@
 // Hall of Fame: renders disclosed write-ups from data/hall-of-fame.json.
-// Entries with status "placeholder" are shown only as subtle coming-soon cards.
-const EMPTY_TEXT = "Disclosed write-ups land here once embargoes lift.";
 const SEVERITIES = new Set(["critical", "high", "medium", "low", "info"]);
 
 const safeUrl = (value) => {
@@ -20,8 +18,8 @@ const el = (tag, className, text) => {
   return node;
 };
 
-const card = (entry, placeholder) => {
-  const li = el("li", placeholder ? "hof-entry is-placeholder" : "hof-entry");
+const card = (entry) => {
+  const li = el("li", "hof-entry");
   const meta = el("p", "hof-meta");
   const severity = String(entry.severity || "").toLowerCase();
   if (SEVERITIES.has(severity)) meta.appendChild(el("span", "", severity));
@@ -31,11 +29,10 @@ const card = (entry, placeholder) => {
     time.dateTime = String(entry.date);
     meta.appendChild(time);
   }
-  if (placeholder) meta.appendChild(el("span", "", "Coming soon"));
-  li.appendChild(meta);
+  if (meta.hasChildNodes()) li.appendChild(meta);
 
   const h3 = el("h3");
-  const href = placeholder ? "" : safeUrl(entry.url);
+  const href = safeUrl(entry.url);
   if (href) {
     const a = el("a", "", String(entry.title || "Untitled write-up"));
     a.href = href;
@@ -50,10 +47,8 @@ const card = (entry, placeholder) => {
 };
 
 export async function initHallOfFame(root, { limit = Infinity } = {}) {
-  if (!root) return;
-  const list = root.querySelector("[data-hof-list]");
-  const soonHead = root.querySelector("[data-hof-soon]");
-  const soonList = root.querySelector("[data-hof-soon-list]");
+  const list = root?.querySelector("[data-hof-list]");
+  if (!list) return;
   const empty = root.querySelector("[data-hof-empty]");
   const publishedHead = root.querySelector("[data-hof-published]");
 
@@ -62,28 +57,19 @@ export async function initHallOfFame(root, { limit = Infinity } = {}) {
     const res = await fetch("./data/hall-of-fame.json", { cache: "no-cache" });
     if (res.ok) {
       const data = await res.json();
-      entries = Array.isArray(data) ? data : Array.isArray(data.entries) ? data.entries : [];
+      entries = Array.isArray(data) ? data : Array.isArray(data?.entries) ? data.entries : [];
     }
   } catch {
     entries = [];
   }
 
-  const isPlaceholder = (e) => String(e.status || "").toLowerCase() === "placeholder";
   const published = entries
-    .filter((e) => e && !isPlaceholder(e))
-    .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
-  const placeholders = entries.filter((e) => e && isPlaceholder(e));
+    .filter((entry) => entry?.status === "published")
+    .sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")))
+    .slice(0, limit);
 
-  list.replaceChildren(...published.slice(0, limit).map((e) => card(e, false)));
+  list.replaceChildren(...published.map(card));
   list.hidden = published.length === 0;
   if (publishedHead) publishedHead.hidden = published.length === 0;
-  if (empty) {
-    empty.textContent = EMPTY_TEXT;
-    empty.hidden = published.length !== 0;
-  }
-  if (soonList) {
-    soonList.replaceChildren(...placeholders.slice(0, 3).map((e) => card(e, true)));
-    soonList.hidden = placeholders.length === 0;
-    if (soonHead) soonHead.hidden = placeholders.length === 0;
-  }
+  if (empty) empty.hidden = published.length !== 0;
 }

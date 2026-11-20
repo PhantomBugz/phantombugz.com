@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="34 29 232 242" width="464" height="484">
+  <title>PhantomBugz skull-beetle emblem, simplified from the website artwork</title>
+  <g fill="none" stroke="#53F5FF" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Retain the original hooked horns and the forehead arch. -->
+    <path d="M105 91C96 83 89 73 88 62c0-5 3-9 7-11l-12-12c10 1 23 8 37 21 16-8 44-8 60 0 14-13 27-20 37-21l-12 12c4 2 7 6 7 11-1 11-8 21-17 29"/>
+    <path d="M100 125c2-31 26-56 50-56s48 25 50 56"/>
+    <!-- The three legs on each side follow the site's jagged top and hooked lower legs. -->
+    <path d="M101 93 87 103 63 94 51 80l5 34 10-7 16 21 12 3M92 139c-22 0-40 12-40 32v18c6-15 14-22 23-27l17-7M91 171l-14 17c0 14 12 38 24 49l-7-24 4-19 11-11"/>
+    <path d="m199 93 14 10 24-9 12-14-5 34-10-7-16 21-12 3m2 8c22 0 40 12 40 32v18c-6-15-14-22-23-27l-17-7m1 16 14 17c0 14-12 38-24 49l7-24-4-19-11-11"/>
+    <!-- The eye line flows into the cheeks and the long, rounded jaw. -->
+    <path d="M99 121c7-4 12 2 19 8l22 17m61-25c-7-4-12 2-19 8l-22 17m-54 2c0 12 7 20 20 20h9m59-20c0 12-7 20-20 20h-9m-62-20c-5 8-7 15-2 22 3 4 9 5 16 7l12 58c3 15 10 23 21 23s18-8 21-23l12-58c7-2 13-3 16-7 5-7 3-14-2-22"/>
+  </g>
+  <path fill="#53F5FF" d="M150 150c-7 6-11 13-12 21 5-1 9-4 12-9 3 5 7 8 12 9-1-8-5-15-12-21Z"/>
+</svg>

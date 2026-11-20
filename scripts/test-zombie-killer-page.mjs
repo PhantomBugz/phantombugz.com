@@ -324,7 +324,7 @@ const livedLink = extractPairedElements(livedFeature.inner, "a").find(
 assert.ok(livedLink, "the liveD feature must link to its standalone page");
 assert.match(
   normalizedText(livedFeature),
-  /synthetic encrypted review and export demo[\s\S]*Model training is not yet released\./,
+  /encrypted vault[\s\S]*encrypted JSONL[\s\S]*Model training is not yet released\./,
   "the liveD feature must state its verified preview scope and training limit",
 );
 const zombieLivedLink = pageAnchors.find(
@@ -1370,12 +1370,16 @@ const hofNavLink = extractPairedElements(primaryNavigation.inner, "a").find(
   (anchor) => attributeValue(anchor, "href") === "#hall-of-fame" && normalizedText(anchor) === "Hall of Fame",
 );
 assert.ok(hofNavLink, "the primary navigation must link to the Hall of Fame section");
-assert.match(hofSection.inner, /href="mailto:founder@phantombugz\.com"[^>]*>Researcher\? Join a lane/, "Hall of Fame must offer the researcher CTA");
-assert.match(hofSection.inner, /Disclosed write-ups land here once embargoes lift\./, "Hall of Fame must ship its empty state");
+assert.match(hofSection.inner, /href="mailto:founder@phantombugz\.com"[^>]*>Contact the research team/, "Hall of Fame must link to the research team");
+assert.match(hofSection.inner, /No public write-ups yet\./, "Hall of Fame must ship its empty state");
 assert.ok(existsSync(path.join(root, "hall-of-fame.html")), "hall-of-fame.html must exist");
+for (const [page, markup] of [["enter.html", enter], ["hall-of-fame.html", read("hall-of-fame.html")]]) {
+  assert.doesNotMatch(markup, /data-hof-soon|Sample write-up|Sample platform/i, `${page} must not ship sample write-ups`);
+}
 const hofData = JSON.parse(read("data/hall-of-fame.json"));
 assert.ok(Array.isArray(hofData.entries), "hall-of-fame.json must expose an entries array");
 for (const entry of hofData.entries) {
+  assert.equal(entry.status, "published", "public Hall of Fame data must only contain entries cleared for publication");
   for (const field of ["title", "date", "severity", "platform", "summary", "url", "status"]) {
     assert.ok(field in entry, `hall-of-fame entries must include ${field}`);
   }

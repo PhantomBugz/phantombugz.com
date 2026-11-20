@@ -32,7 +32,7 @@ The all-time counts come from the internal ledger. Real platform events must ref
 
 ## Hall of Fame
 
-`data/hall-of-fame.json` drives the Hall of Fame section on `enter.html` and the full `hall-of-fame.html` page. Each entry has `title`, `date`, `severity`, `platform`, `summary`, `url`, and `status`. Add an entry only after the affected program has fixed the issue and approved public disclosure, and keep it free of undisclosed details. Entries with `status: "placeholder"` render only as subtle "coming soon" cards; when there are no other entries the page shows "Disclosed write-ups land here once embargoes lift."
+`data/hall-of-fame.json` drives the Hall of Fame section on `enter.html` and the full `hall-of-fame.html` page. The file is public. Add an entry only after the affected program has fixed the issue and approved public disclosure. Each entry has `title`, `date`, `severity`, `platform`, `summary`, `url`, and `status`. Only entries with `status: "published"` are rendered.
 
 ## Hosting
 

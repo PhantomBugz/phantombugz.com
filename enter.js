@@ -1,6 +1,6 @@
 import { initRoam } from "./js/roam.js";
-import { initTelemetry } from "./js/telemetry.js";
-import { initHallOfFame } from "./js/hall-of-fame.js";
+import { initTelemetry } from "./js/telemetry.js?v=9cc8c38e";
+import { initHallOfFame } from "./js/hall-of-fame.js?v=168a11f3";
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 

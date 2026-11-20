@@ -281,7 +281,7 @@ const livedMarkup = sanitizeMarkup(livedPage);
 const earlyJsClassScript = /<script>\s*document\.documentElement\.classList\.add\("js"\);\s*window\.__phantombugzRevealFallback = window\.setTimeout\(\(\) => \{\s*document\.documentElement\.classList\.remove\("js"\);\s*\}, 3000\);\s*<\/script>/m.exec(enter);
 assert.ok(earlyJsClassScript, "enter.html must set and fail-safe the enhancement class in the document head");
 assert.ok(
-  earlyJsClassScript.index < enter.indexOf('<link rel="stylesheet" href="./styles.css">'),
+  earlyJsClassScript.index < enter.search(/<link rel="stylesheet" href="\.\/styles\.css\?v=[0-9a-f]+">/),
   "enter.html must set the progressive-enhancement class before the main stylesheet loads",
 );
 const revealRegistrationIndex = enterScript.indexOf("reveals.forEach((el) => observer.observe(el));");

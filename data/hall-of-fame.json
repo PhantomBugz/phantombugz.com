@@ -1,32 +1,14 @@
 {
-  "_note": "Public-safe only. Never add program names or undisclosed finding details. Add an entry only after the program has approved public disclosure. Entries with status \"placeholder\" render as subtle coming-soon cards and do not count as published write-ups.",
+  "_note": "This file is public. Add only fixed issues approved for public disclosure. Use status \"published\" and only include details cleared for public release.",
   "entries": [
     {
-      "title": "Sample write-up — replace me",
-      "date": "2026-01-01",
-      "severity": "high",
-      "platform": "Sample platform",
-      "summary": "Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.",
-      "url": "",
-      "status": "placeholder"
-    },
-    {
-      "title": "Sample write-up — replace me",
-      "date": "2026-01-01",
-      "severity": "medium",
-      "platform": "Sample platform",
-      "summary": "Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.",
-      "url": "",
-      "status": "placeholder"
-    },
-    {
-      "title": "Sample write-up — replace me",
-      "date": "2026-01-01",
-      "severity": "critical",
-      "platform": "Sample platform",
-      "summary": "Placeholder entry. A disclosed write-up summary goes here once the embargo lifts.",
-      "url": "",
-      "status": "placeholder"
+      "title": "CVE-2026-112459 · IOMobileFrameBuffer",
+      "date": "2026-10-26",
+      "severity": "",
+      "platform": "Apple",
+      "summary": "Apple fixed an IOMobileFrameBuffer race condition in iOS 27.2 and iPadOS 27.2. PhantomBugz is the researcher credited anonymously in the advisory alongside Lily Cohl (@GenericCoding).",
+      "url": "https://support.apple.com/en-us/149230#:~:text=CVE-2026-112459",
+      "status": "published"
     }
   ]
 }
